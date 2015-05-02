@@ -5,4 +5,5 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_feed_fregment">FeedFregmentActivity</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="Ingredients">מצרכים:</string>
 </resources>
