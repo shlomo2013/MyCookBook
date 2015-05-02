@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
@@ -42,7 +43,9 @@ public class MainActivity extends ActionBarActivity {
         frag = new MenuFragment();
         fragTransaction = getFragmentManager().beginTransaction().add(R.id.menuFrag, frag);
         fragTransaction.commit();
+
     }
+
 
 }
        // return view;//super.onCreateView(inflater, container, savedInstanceState);
