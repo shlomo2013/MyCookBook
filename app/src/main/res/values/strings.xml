@@ -6,4 +6,37 @@
     <string name="title_activity_feed_fregment">FeedFregmentActivity</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="Ingredients">מצרכים:</string>
+
+    <string-array name="ingridient_type_array">
+          <item>בבוס/ות</item>
+          <item>כף/ות</item>
+          <item>כפית/יות</item>
+          <item>גרם</item>
+          <item>קילו</item>
+          <item>ס״מ</item>
+          <item>מטר</item>
+          <item>חופן</item>
+      </string-array>
+
+    <string-array name="personal_pref_array">
+              <item>איטלקי</item>
+              <item>סיני</item>
+              <item>תאילנדי</item>
+              <item>יפני</item>
+              <item>מזרחי</item>
+              <item>בשרי</item>
+              <item>פסלטים</item>
+              <item>תוספות</item>
+              <item>צמחוני</item>
+              <item>דגים</item>
+              <item>עוף</item>
+              <item>תבשילים</item>
+              <item>ארוחות בוקר</item>
+              <item>ממקסיקני</item>
+              <item>ישראלי</item>
+              <item>דרום אמריקאי</item>
+              <item>קינוחים</item>
+              <item>מנות פיתחה</item>
+              <item>מנות מהירות</item>
+</string-array>
 </resources>
