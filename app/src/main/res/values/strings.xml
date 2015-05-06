@@ -6,6 +6,8 @@
     <string name="title_activity_feed_fregment">FeedFregmentActivity</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="Ingredients">מצרכים:</string>
+    <string name="facebook_app_id">869910013067316:</string>
+    <string name="select_string">Select an item</string>
 
     <string-array name="ingridient_type_array">
           <item>בבוס/ות</item>
@@ -39,4 +41,19 @@
               <item>מנות פיתחה</item>
               <item>מנות מהירות</item>
 </string-array>
+
+
+    <string-array name="personal_no_pref_array">
+              <item>זיתים</item>
+              <item>בוטנים</item>
+              <item>חלב</item>
+              <item>שמנת</item>
+              <item>בשר</item>
+              <item>בצל</item>
+              <item>סויה</item>
+              <item>פול</item>
+              <item>דנה</item>
+
+    </string-array>
 </resources>
+
