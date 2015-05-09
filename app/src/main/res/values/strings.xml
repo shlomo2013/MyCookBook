@@ -6,7 +6,7 @@
     <string name="title_activity_feed_fregment">FeedFregmentActivity</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="Ingredients">מצרכים:</string>
-    <string name="facebook_app_id">869910013067316:</string>
+    <string name="facebook_app_id">869910013067316</string>
     <string name="select_string">Select an item</string>
 
     <string-array name="ingridient_type_array">
@@ -55,5 +55,42 @@
               <item>דנה</item>
 
     </string-array>
+
+    <string-array name="subCategorySweets">
+        <item></item>
+        <item>עוגות</item>
+        <item>עוגיות</item>
+        <item>שוקולדים</item>
+    </string-array>
+
+    <string-array name="subCategorySoop">
+        <item></item>
+        <item>צח</item>
+        <item>סמיך</item>
+        <item>חלבי</item>
+    </string-array>
+
+    <string-array name="subCategoryBreakfest">
+        <item></item>
+        <item>ישראלית</item>
+        <item>שקשוקה</item>
+    </string-array>
+
+    <string-array name="subCategoryBread">
+        <item></item>
+        <item>לבן</item>
+        <item>כפרי</item>
+        <item>קמח מלא</item>
+        <item>קשמרים</item>
+        <item>קממולא</item>
+    </string-array>
+
+    <string-array name="subCategoryDrinks">
+        <item></item>
+        <item>מיצים</item>
+        <item>שייקים</item>
+        <item>אלכוהולי</item>
+    </string-array>
+
 </resources>
 
