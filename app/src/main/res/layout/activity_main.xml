@@ -7,7 +7,7 @@
 
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="86dp"
+        android:layout_height="81dp"
         android:id="@+id/menuFrag"
         android:orientation="vertical"/>
 

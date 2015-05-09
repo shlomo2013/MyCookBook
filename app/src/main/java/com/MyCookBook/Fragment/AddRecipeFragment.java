@@ -11,7 +11,10 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import android.app.AlertDialog;
@@ -27,6 +30,12 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.Spinner;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -44,28 +53,73 @@ import java.io.File;
 public class AddRecipeFragment extends Fragment {
 
     ImageView viewImage;
-    Button b;
-
+    Button bSelecPic;
+    Button bAddIngridient;
+    // Spinner spIngredType;
+    View rootView;
+    TableLayout tbLayout;
+   // AutoCompleteTextView actIngredient;
+    //EditText etIngredientAmount;
 
     public AddRecipeFragment() {
 
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.activity_addrecipe_fragment, container , false);
+        rootView            = inflater.inflate(R.layout.activity_addrecipe_fragment, container , false);
+        tbLayout            = (TableLayout)          rootView.findViewById(R.id.tbIngredients);
+        bSelecPic           = (Button)               rootView.findViewById(R.id.btnSelectPhoto);
+        viewImage           = (ImageView)            rootView.findViewById(R.id.viewImage);
+        bAddIngridient      = (Button)               rootView.findViewById(R.id.btnAddIngridient);
+  //      actIngredient       = (AutoCompleteTextView) rootView.findViewById(R.id.actIngedient);
+  //      etIngredientAmount  = (EditText)             rootView.findViewById(R.id.etTextAmount);
 
-        b = (Button) rootView.findViewById(R.id.btnSelectPhoto);
-        viewImage = (ImageView) rootView.findViewById(R.id.viewImage);
+        bAddIngridient.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View arg0) {
 
-        b.setOnClickListener(new View.OnClickListener() {
+                   AutoCompleteTextView actNewIngredient= new AutoCompleteTextView(getActivity().getBaseContext());
+                   Spinner spNewIngredientType = new Spinner(getActivity().getBaseContext());
+                   EditText etNewIngredientAmount = new EditText(getActivity().getBaseContext());
+
+                   TableRow tr = new TableRow(getActivity().getBaseContext());
+                   TableRow.LayoutParams trLP = new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT,
+                           TableRow.LayoutParams.WRAP_CONTENT);
+                   tr.setLayoutParams(trLP);
+                   tr.setTextDirection(View.LAYOUT_DIRECTION_RTL);
+
+                   // Handle AutoCompleteTextView
+                   actNewIngredient.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+                   actNewIngredient.setMaxWidth(350);
+                   // Handle Spinner
+                   createSpinner(spNewIngredientType);
+                   spNewIngredientType.setScrollContainer(true);
+                   spNewIngredientType.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT));
+
+                   // Handle EditText
+                   etNewIngredientAmount.setInputType(3);
+                   etNewIngredientAmount.setLayoutParams(new TableRow.LayoutParams(120,TableRow.LayoutParams.WRAP_CONTENT));
+
+                   // Add to layOut
+                   tr.addView(actNewIngredient);
+                   tr.addView(spNewIngredientType);
+                   tr.addView(etNewIngredientAmount);
+
+                   tbLayout.addView(tr);
+
+
+               }
+       });
+        // Handle Photo select
+        bSelecPic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 selectImage();
             }
         });
-
 
         return rootView;
     }
@@ -99,6 +153,21 @@ public class AddRecipeFragment extends Fragment {
         });
         builder.show();
     }
+
+    private void createSpinner(Spinner sp){
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity().getBaseContext(),
+                                                                             R.array.ingridient_type_array,
+                                                                             android.R.layout.simple_spinner_item);
+
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // Apply the adapter to the spinner
+        sp.setAdapter(adapter);
+
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -157,4 +226,13 @@ public class AddRecipeFragment extends Fragment {
             }
         }
     }
+
+    public void addIngridientButton(){
+
+
+    }
+    public void addListenerOnSpinnerItemSelection() {
+  // 	spIngredType = (Spinner) rootView.findViewById(R.id.spinner1);
+  // 	spinner.setOnItemSelectedListener(new CustomOnItemSelectedListener());
+     }
 }
