@@ -12,10 +12,12 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.ExpandableListView;
 
 import com.example.mycookbook.mycookbook.R;
 
@@ -38,6 +40,7 @@ public class SearchFragment extends Fragment {
     private ArrayAdapter<String> aa;
     private int compId;
     private int noCopmId;
+    private ListView myListView;
 
     public SearchFragment() {
 
@@ -73,6 +76,12 @@ public class SearchFragment extends Fragment {
         noCopmId = dropdownNoCopm.getId();
         createSpinner((dropdownNoCopm), R.array.personal_no_pref_array);
 
+        myListView = (ListView) rootView.findViewById(R.id.listView);
+        //ArrayAdapter<String> adapter = new ArrayAdapter<String>()
+
+        // Assign adapter to ListView
+       // myListView.setAdapter(adapter);
+
         rgpTypes = (RadioGroup) rootView.findViewById(R.id.RBgroup);
 
                 /* Attach CheckedChangeListener to radio group */
@@ -97,6 +106,10 @@ public class SearchFragment extends Fragment {
 
         cbSoop=(CheckBox) rootView.findViewById(R.id.CBsoop);
         cbBreakfast=(CheckBox) rootView.findViewById(R.id.CBbreakfast);
+        cbBread=(CheckBox) rootView.findViewById(R.id.CBbredAnd);
+        cbDrinks=(CheckBox) rootView.findViewById(R.id.CBdrinks);
+        cbSweets=(CheckBox) rootView.findViewById(R.id.CBsweets);
+
         checkBoxListener = new View.OnClickListener() {
 
             @Override
@@ -154,6 +167,9 @@ public class SearchFragment extends Fragment {
 
         cbSoop.setOnClickListener(checkBoxListener);
         cbBreakfast.setOnClickListener(checkBoxListener);
+        cbSweets.setOnClickListener(checkBoxListener);
+        cbBread.setOnClickListener(checkBoxListener);
+        cbDrinks.setOnClickListener(checkBoxListener);
 
         return rootView;
     }
