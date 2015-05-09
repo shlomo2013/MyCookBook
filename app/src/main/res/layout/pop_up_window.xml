@@ -7,7 +7,7 @@
 
     <ListView android:id="@+id/lvDropDownList"
     android:layout_width="fill_parent"
-    android:layout_height="521dp">
+    android:layout_height="450dp">
     </ListView>
 
     <Button

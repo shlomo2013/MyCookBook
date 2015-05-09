@@ -10,134 +10,169 @@
 
     -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:id="@+id/scrollView"
-      android:layout_marginBottom="56dp"
-      android:fillViewport="true"
-      android:layout_row="0"
-      android:layout_column="0" >
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/scrollView"
+    android:layout_marginBottom="56dp"
+    android:fillViewport="true"
+    android:layout_row="0"
+    android:layout_column="0" >
 
-<GridLayout   android:id="@+id/GridLayout1"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:padding="10dp"
-               android:orientation="vertical">
+    <GridLayout   android:id="@+id/GridLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:orientation="vertical">
 
-    <TableLayout
+        <TableLayout
             android:layout_width="366dp"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="20dp"
-        android:id="@+id/tbIngredients"
-        android:layout_weight="0.12"
-        android:baselineAligned="false">
+            android:id="@+id/tbIngredients"
+            android:layout_weight="0.12"
+            android:baselineAligned="false">
 
 
-        <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/Ingredients"
+                    android:id="@+id/ingredientsTitle"
+                    android:textDirection="rtl"
+                    android:textStyle="bold"
+                    android:padding="10dp"
+                    android:layout_gravity="top"
+                    android:layout_column="0"
+                    android:layout_weight="1" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+                <Button
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="הוסף מרכיב למתכון"
+                    android:id="@+id/btnAddIngridient"
+                    android:layout_weight="1"
+                    android:layout_column="0" />
+            </TableRow>
+
+        </TableLayout>
+
+
+        <TableLayout
+            android:layout_width="366dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="20dp"
+            android:id="@+id/tbPicForRecipe"
+            android:layout_weight="0.12"
+            android:baselineAligned="false">
+
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
 
             <TextView
-                   android:layout_width="fill_parent"
-                   android:layout_height="wrap_content"
-                   android:textAppearance="?android:attr/textAppearanceLarge"
-                   android:text="@string/Ingredients"
-                   android:id="@+id/ingredientsTitle"
-                   android:textDirection="rtl"
-                   android:textStyle="bold"
-                   android:padding="10dp"
-                   android:layout_gravity="top"
-                   android:layout_column="0"
-                android:layout_weight="1" />
+                android:layout_width="fill_parent"
+                                   android:layout_height="wrap_content"
+                                   android:textAppearance="?android:attr/textAppearanceLarge"
+                                   android:text="@string/HowToMake"
+                                   android:id="@+id/tvHowToMake"
+                                   android:textDirection="rtl"
+                                   android:textStyle="bold"
+                                   android:padding="10dp"
+                                   android:layout_gravity="top"
+                                   android:layout_column="0"
+                                   android:layout_weight="1"/>
+            </TableRow>
 
-        </TableRow>
-
-        <TableRow
-                 android:layout_width="fill_parent"
-                 android:layout_height="fill_parent">
-
-            <Button
-                style="?android:attr/buttonStyleSmall"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="הוסף מרכיב למתכון"
-                android:id="@+id/btnAddIngridient"
-                android:layout_weight="1"
-                android:layout_column="0" />
-        </TableRow>
-
-    </TableLayout>
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
 
 
-    <TableLayout
-            android:layout_width="366dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="20dp"
-        android:id="@+id/tbPicForRecipe"
-        android:layout_weight="0.12"
-        android:baselineAligned="false">
+                <EditText
+                    android:textDirection="rtl"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
+                    android:ems="10"
+                    android:id="@+id/etHowToMake"
+                    android:layout_column="0"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1" />
+            </TableRow>
 
-    <TableRow
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
 
-        <Button
-            android:id="@+id/btnSelectPhoto"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="בחר תמונה"
-            android:layout_gravity="center_vertical"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_weight="1"
-            android:layout_column="0"/>
-    </TableRow>
+                <Button
+                    android:id="@+id/btnSelectPhoto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="בחר תמונה"
+                    android:layout_gravity="center_vertical"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_weight="1"
+                    android:layout_column="0"/>
+            </TableRow>
 
-    <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
 
-        <ImageView
-             android:id="@+id/viewImage"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:layout_above="@+id/btnSelectPhoto"
-             android:layout_alignParentLeft="true"
-             android:layout_alignParentStart="true"
-             android:layout_gravity="center_vertical"
-             android:layout_weight="1"
-             android:layout_column="0" />
+                <ImageView
+                    android:id="@+id/viewImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/btnSelectPhoto"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:layout_column="0" />
 
-    </TableRow>
+            </TableRow>
 
-        <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
 
-            <Button
-                android:id="@+id/btnSaveRecipe"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/abc_btn_check_material"
-                            android:layout_above="@+id/btnSelectPhoto"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignParentStart="true"
-                            android:layout_gravity="center_vertical"
-                            android:layout_weight="1"
-                            android:layout_column="0"
-                android:text="שמור מתכון" />
+                <Button
+                    android:id="@+id/btnSaveRecipe"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/abc_btn_check_material"
+                    android:layout_above="@+id/btnSelectPhoto"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:layout_column="0"
+                    android:text="שמור מתכון" />
 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="New Button"
                 android:id="@+id/button"
                 android:layout_column="3" />
-        </TableRow>
-    </TableLayout>
+            </TableRow>
+        </TableLayout>
 
-</GridLayout>
+    </GridLayout>
 
 </ScrollView>

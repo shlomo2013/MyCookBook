@@ -1,15 +1,12 @@
 package com.MyCookBook.Fragment;
 
 import android.app.Fragment;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.ArrayRes;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -19,7 +16,6 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
-import android.widget.TextView;
 
 import com.example.mycookbook.mycookbook.R;
 
@@ -37,9 +33,13 @@ public class PersonalFragment extends Fragment {
     LinearLayout llPopup;
     RelativeLayout tlpersonalfrag;
     ViewGroup vgl;
-    View popUpView;
+//    View popUpView;
     private boolean expanded; 		//to  store information whether the selected values are displayed completely or in shortened representatn
    	public static boolean[] checkSelected;	// store select/unselect information about the values in the list
+
+    ArrayList<CheckBox> alFoodCategory;
+    DropDownListAdapter mAdapter;
+    ListView lv;
 
     public PersonalFragment() {
 
@@ -49,16 +49,30 @@ public class PersonalFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         final View  rootView     = inflater.inflate(R.layout.activity_personal_fregment, container, false);
-                    popUpView    = inflater.inflate(R.layout.pop_up_window, container, false);
+        final View  popUpView    = inflater.inflate(R.layout.pop_up_window, container, false);
         final View  dropDownView = inflater.inflate(R.layout.drop_down_list_row, container, false);
 
-        tbLayout                 = (TableLayout) rootView.findViewById(R.id.tbPersonalLayout);
+       //tbLayout                 = (TableLayout) rootView.findViewById(R.id.tbPersonalLayout);
         llPopup                  = (LinearLayout) rootView.findViewById(R.id.DropDownList);
         tlpersonalfrag           = (RelativeLayout) rootView.findViewById(R.id.personalfragRelativelayout);
-        btnDDPersonalCategories  = (Button) rootView.findViewById(R.id.btnDropDownPersonalCategories);
+//      btnDDPersonalCategories  = (Button) rootView.findViewById(R.id.btnDropDownPersonalCategories);
+        ListView lvDropDownList  = (ListView) dropDownView.findViewById(R.id.lvDropDownList);
+        lv              = (ListView) rootView.findViewById(R.id.listView111);
+
+        displayModelList();
+
+//        modelItems = new Model[5];
+//        modelItems[0] = new Model("pizza", false);
+//        modelItems[1] = new Model("burger", true);
+//        modelItems[2] = new Model("olives", true);
+//        modelItems[3] = new Model("orange", false);
+//        modelItems[4] = new Model("tomato", true);
+
+//        DropDownListAdapter adapter = new DropDownListAdapter(getActivity().getBaseContext(), modelItems);
+//        lv.setAdapter(adapter);
 
 //********************************************************************************************
-        final ArrayList<String> items = new ArrayList<String>();
+    /*    final ArrayList<String> items = new ArrayList<String>();
            	items.add("Item 1");
            	items.add("Item 2");
            	items.add("Item 3");
@@ -68,21 +82,20 @@ public class PersonalFragment extends Fragment {
         checkSelected = new boolean[items.size()];
         //initialize all values of list to 'unselected' initially
         for (int i = 0; i < checkSelected.length; i++) {
-            checkSelected[i] = false;
+            checkSelected[i] = true;
         }
 
-        /*SelectBox is the TextView where the selected values will be displayed in the form of "Item 1 & 'n' more".
+        *//*SelectBox is the TextView where the selected values will be displayed in the form of "Item 1 & 'n' more".
          * When this selectBox is clicked it will display all the selected values
          * and when clicked again it will display in shortened representation as before.
-         * */
+         * *//*
         final TextView tv = (TextView) dropDownView.findViewById(R.id.tvSelectOption);
         tv.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
                 if(!expanded){
-                    //display all selected values
+                 //display all selected values
                 String selected = "";
                 int flag = 0;
                 for (int i = 0; i < items.size(); i++) {
@@ -114,7 +127,7 @@ public class PersonalFragment extends Fragment {
 		});
 
 
-
+*/
 //********************************************************************************************
 
 //        btnDDPersonalCategories.setOnClickListener(new Button.OnClickListener() {
@@ -200,9 +213,34 @@ public class PersonalFragment extends Fragment {
     }
 
 
-    public void creatCheckBoxOnLayout(@ArrayRes int ArrayName){
+    public void displayModelList(){
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity().getBaseContext(),
+                R.array.personal_pref_array,
+                android.R.layout.simple_list_item_1);
 
-            // Create an ArrayAdapter using the string array and a default spinner layout
+        alFoodCategory = new ArrayList<CheckBox>();
+        for (int i = 0; i < adapter.getCount(); i++){
+            String s = (String)adapter.getItem(i);
+            CheckBox c = new CheckBox(getActivity().getBaseContext());
+            c.setText(s);
+
+            if(i%2 == 0) {
+                c.setChecked(true);
+            }else
+            {
+                c.setChecked(false);
+            }
+            alFoodCategory.add(c);
+        }
+
+        mAdapter = new DropDownListAdapter(alFoodCategory, getActivity().getBaseContext());
+        lv.setAdapter(mAdapter);
+    }
+
+
+    public void createCheckBoxOnLayout(@ArrayRes int ArrayName){
+
+        // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity().getBaseContext(),
                                                                              ArrayName,
                                                                              android.R.layout.activity_list_item);
@@ -239,51 +277,47 @@ public class PersonalFragment extends Fragment {
         return tr;
     }
 
-
     /*
      * Function to set up the pop-up window which acts as drop-down list
      * */
-    private void initiatePopUp(ArrayList<String> items, TextView tv){
-
-    	//get the view to which drop-down layout is to be anchored
-    	pw = new PopupWindow(popUpView, LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, true);
-
-    	//Pop-up window background cannot be null if we want the pop-up to listen touch events outside its window
-    	pw.setBackgroundDrawable(new BitmapDrawable());
-    	pw.setTouchable(true);
-
-    	//let pop-up be informed about touch events outside its window. This  should be done before setting the content of pop-up
-    	pw.setOutsideTouchable(true);
-    	pw.setHeight(LayoutParams.WRAP_CONTENT);
-
-    	//dismiss the pop-up i.e. drop-down when touched anywhere outside the pop-up
-    	pw.setTouchInterceptor(new View.OnTouchListener() {
-
-    		public boolean onTouch(View v, MotionEvent event) {
-    			// TODO Auto-generated method stub
-    			if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
-    				pw.dismiss();
-        			return true;
-    			}
-    			return false;
-    		}
-    	});
-
-    	//provide the source layout for drop-down
-    	pw.setContentView(popUpView);
-
-    	//anchor the drop-down to bottom-left corner of 'layout1'
-    	pw.showAsDropDown(tlpersonalfrag);
-
-    	//populate the drop-down list
-    	final ListView list = (ListView) popUpView.findViewById(R.id.lvDropDownList);
-        DropDownListAdapter adapter = new DropDownListAdapter(getActivity().getBaseContext(), items, tv);
-    	list.setAdapter(adapter);
-    }
-
-
-
-}
+//    private void initiatePopUp(ArrayList<String> items, TextView tv){
+//
+//    	//get the view to which drop-down layout is to be anchored
+//    	pw = new PopupWindow(popUpView, LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, true);
+//
+//    	//Pop-up window background cannot be null if we want the pop-up to listen touch events outside its window
+//    	pw.setBackgroundDrawable(new BitmapDrawable());
+//    	pw.setTouchable(true);
+//
+//    	//let pop-up be informed about touch events outside its window. This  should be done before setting the content of pop-up
+//    	pw.setOutsideTouchable(true);
+//    	pw.setHeight(LayoutParams.WRAP_CONTENT);
+//
+//    	//dismiss the pop-up i.e. drop-down when touched anywhere outside the pop-up
+//    	pw.setTouchInterceptor(new View.OnTouchListener() {
+//
+//    		public boolean onTouch(View v, MotionEvent event) {
+//    			// TODO Auto-generated method stub
+//    			if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+//    				pw.dismiss();
+//        			return true;
+//    			}
+//    			return false;
+//    		}
+//    	});
+//
+//    	//provide the source layout for drop-down
+//    	pw.setContentView(popUpView);
+//
+//    	//anchor the drop-down to bottom-left corner of 'layout1'
+//    	pw.showAsDropDown(tlpersonalfrag);
+//
+//    	//populate the drop-down list
+//    //	final ListView list = (ListView) popUpView.findViewById(R.id.lvDropDownList);
+//   //     DropDownListAdapter adapter = new DropDownListAdapter(getActivity().getBaseContext(), items, tv);
+//   // 	list.setAdapter(adapter);
+//    }
+ }
 
 
 
