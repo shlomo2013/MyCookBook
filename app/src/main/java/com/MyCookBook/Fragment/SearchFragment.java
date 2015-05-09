@@ -36,13 +36,12 @@ public class SearchFragment extends Fragment {
     private  View.OnClickListener checkBoxListener;
     private ArrayList<String> categoryArr;
     private ArrayAdapter<String> aa;
+    private int compId;
+    private int noCopmId;
 
     public SearchFragment() {
 
     }
-
-    public static final int VISIBLE = 0x00000000;
-    public static final int INVISIBLE = 0x00000004;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -65,6 +64,14 @@ public class SearchFragment extends Fragment {
 
         final Spinner dropdownBread = (Spinner) rootView.findViewById(R.id.lowBread);
         createSpinner((dropdownBread), R.array.subCategoryBread);
+
+        final Spinner dropdownComp = (Spinner) rootView.findViewById(R.id.component);
+        compId = dropdownComp.getId();
+        createSpinner((dropdownComp), R.array.personal_no_pref_array);
+
+        final Spinner dropdownNoCopm = (Spinner) rootView.findViewById(R.id.noComponent);
+        noCopmId = dropdownNoCopm.getId();
+        createSpinner((dropdownNoCopm), R.array.personal_no_pref_array);
 
         rgpTypes = (RadioGroup) rootView.findViewById(R.id.RBgroup);
 
@@ -160,7 +167,10 @@ public class SearchFragment extends Fragment {
         // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        sp.setVisibility(View.INVISIBLE);
+        if (sp.getId() != compId && sp.getId() != noCopmId)
+        {
+            sp.setVisibility(View.INVISIBLE);
+        }
 
         // Apply the adapter to the spinner
         sp.setAdapter(adapter);
