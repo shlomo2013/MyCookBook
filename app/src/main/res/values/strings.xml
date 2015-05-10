@@ -92,5 +92,13 @@
         <item>אלכוהולי</item>
     </string-array>
 
+    <string-array name="Levels">
+        <item></item>
+        <item>מתחיל</item>
+        <item>במתקדם</item>
+        <item>מומחה</item>
+        <item>שף</item>
+    </string-array>
+
 </resources>
 

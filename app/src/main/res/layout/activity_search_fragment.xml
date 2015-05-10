@@ -13,7 +13,7 @@
     tools:context="com.MyCookBook.Fragment.SearchFragment"
     android:id="@+id/search"
     android:textDirection="rtl"
-    android:minHeight="700dp">
+    android:minHeight="800dp">
 
     <CheckBox
         android:layout_width="wrap_content"
@@ -320,14 +320,26 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
+    <Spinner
+        android:id="@+id/Level"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@android:drawable/btn_dropdown"
+        android:spinnerMode="dropdown"
+        android:textDirection="rtl"
+        android:layout_alignParentStart="false"
+        android:layout_below="@+id/textView5"
+        android:layout_alignParentRight="true" />
+
     <ListView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="200dp"
         android:id="@+id/listView"
-        android:layout_below="@+id/textView5"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:choiceMode="multipleChoice" />
+        android:layout_below="@+id/Level"
+        android:layout_toStartOf="@+id/textView4"
+        android:choiceMode="multipleChoice"
+        android:layout_alignRight="@+id/Level"
+        android:layout_alignEnd="@+id/Level" />
 
 </RelativeLayout>
 </ScrollView>
