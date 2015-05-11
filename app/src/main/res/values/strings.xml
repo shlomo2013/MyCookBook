@@ -6,7 +6,7 @@
     <string name="title_activity_feed_fregment">FeedFregmentActivity</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="Ingredients">מצרכים:</string>
-    <string name="facebook_app_id">869910013067316:</string>
+    <string name="facebook_app_id">869910013067316</string>
     <string name="select_string">Select an item</string>
 
     <string-array name="ingridient_type_array">
