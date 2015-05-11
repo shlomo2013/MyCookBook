@@ -21,6 +21,7 @@
       </string-array>
 
     <string-array name="personal_pref_array">
+              <item></item>
               <item>איטלקי</item>
               <item>סיני</item>
               <item>תאילנדי</item>
@@ -44,6 +45,7 @@
 
 
     <string-array name="personal_no_pref_array">
+              <item></item>
               <item>זיתים</item>
               <item>בוטנים</item>
               <item>חלב</item>

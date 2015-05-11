@@ -13,7 +13,7 @@
     tools:context="com.MyCookBook.Fragment.SearchFragment"
     android:id="@+id/search"
     android:textDirection="rtl"
-    android:minHeight="800dp">
+    android:minHeight="1050dp">
 
     <CheckBox
         android:layout_width="wrap_content"
@@ -197,50 +197,51 @@
     <Spinner
         android:id="@+id/lowSweets"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="43dp"
         android:background="@android:drawable/btn_dropdown"
         android:spinnerMode="dropdown"
         android:layout_alignTop="@+id/CBsweets"
         android:layout_alignRight="@+id/CBdesert"
         android:layout_alignEnd="@+id/CBdesert"
-        android:layout_above="@+id/CBbreakfast"
         android:textDirection="rtl"
         android:layout_alignParentRight="false"
-        android:visibility="visible" />
+        android:visibility="visible"
+        android:textSize="2dp"
+        />
 
     <Spinner
         android:id="@+id/lowBreakfest"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="43dp"
         android:background="@android:drawable/btn_dropdown"
         android:spinnerMode="dropdown"
-        android:layout_alignTop="@+id/CBbreakfast"
-        android:layout_alignRight="@+id/CBdesert"
-        android:layout_alignEnd="@+id/CBdesert"
-        android:layout_above="@+id/CBsoop"
         android:textDirection="rtl"
-        android:layout_alignParentRight="false" />
+        android:layout_below="@+id/lowSweets"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/textView3"
+        android:layout_alignRight="@+id/lowSweets"
+        android:layout_alignEnd="@+id/lowSweets" />
 
     <Spinner
         android:id="@+id/lowSoop"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="43dp"
         android:background="@android:drawable/btn_dropdown"
         android:spinnerMode="dropdown"
-        android:layout_alignTop="@+id/CBsoop"
-        android:layout_alignRight="@+id/CBdesert"
-        android:layout_alignEnd="@+id/CBdesert"
-        android:layout_above="@+id/CBsalad"
         android:textDirection="rtl"
-        android:layout_alignParentRight="false" />
+        android:layout_below="@+id/lowBreakfest"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/lowSweets"
+        android:layout_alignEnd="@+id/lowSweets" />
 
     <Spinner
         android:id="@+id/lowBread"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="43dp"
         android:background="@android:drawable/btn_dropdown"
         android:spinnerMode="dropdown"
-        android:layout_alignTop="@+id/CBbredAnd"
         android:layout_alignRight="@+id/CBdesert"
         android:layout_alignEnd="@+id/CBdesert"
         android:layout_above="@+id/CBdrinks"
@@ -250,13 +251,12 @@
     <Spinner
         android:id="@+id/lowDrinks"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="43dp"
         android:background="@android:drawable/btn_dropdown"
         android:spinnerMode="dropdown"
         android:layout_alignTop="@+id/CBdrinks"
         android:layout_alignRight="@+id/CBdesert"
         android:layout_alignEnd="@+id/CBdesert"
-        android:layout_above="@+id/textView2"
         android:textDirection="rtl"
         android:layout_alignParentRight="false" />
 
@@ -272,54 +272,6 @@
         android:textStyle="bold"
         android:textColor="#ffff4f45" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="רכיבים שלא יהיו במנה"
-        android:id="@+id/textView4"
-        android:textColor="#ffff4f45"
-        android:textStyle="bold"
-        android:layout_below="@+id/component"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
-    <Spinner
-        android:id="@+id/component"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@android:drawable/btn_dropdown"
-        android:spinnerMode="dropdown"
-        android:textDirection="rtl"
-        android:clickable="true"
-        android:focusable="false"
-        android:layout_below="@+id/textView3"
-        android:layout_alignRight="@+id/textView4"
-        android:layout_alignEnd="@+id/textView4" />
-
-    <Spinner
-        android:id="@+id/noComponent"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@android:drawable/btn_dropdown"
-        android:spinnerMode="dropdown"
-        android:textDirection="rtl"
-        android:layout_alignParentStart="false"
-        android:layout_below="@+id/textView4"
-        android:layout_alignParentRight="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="רמת קושי"
-        android:id="@+id/textView5"
-        android:textColor="#ffff4f45"
-        android:textStyle="bold"
-        android:layout_below="@+id/noComponent"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
     <Spinner
         android:id="@+id/Level"
         android:layout_width="match_parent"
@@ -327,20 +279,117 @@
         android:background="@android:drawable/btn_dropdown"
         android:spinnerMode="dropdown"
         android:textDirection="rtl"
-        android:layout_alignParentStart="false"
         android:layout_below="@+id/textView5"
-        android:layout_alignParentRight="true" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="200dp"
         android:id="@+id/listView"
-        android:layout_below="@+id/Level"
-        android:layout_toStartOf="@+id/textView4"
+        android:layout_below="@+id/textView3"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:choiceMode="multipleChoice"
-        android:layout_alignRight="@+id/Level"
-        android:layout_alignEnd="@+id/Level" />
+        android:clickable="false"
+        android:background="@android:drawable/bottom_bar" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="רכיבים שלא יהיו במנה"
+        android:id="@+id/textView4"
+        android:textStyle="bold"
+        android:textColor="#ffff4f45"
+        android:layout_below="@+id/listView"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:id="@+id/listViewNo"
+        android:layout_below="@+id/textView4"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:choiceMode="multipleChoice"
+        android:clickable="false"
+        android:background="@android:drawable/bottom_bar" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="רמת קושי"
+        android:id="@+id/textView5"
+        android:textStyle="bold"
+        android:textColor="#ffff4f45"
+        android:layout_below="@+id/listViewNo"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="סוג מטבח"
+        android:id="@+id/textView6"
+        android:textStyle="bold"
+        android:textColor="#ffff4f45"
+        android:layout_below="@+id/Level"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <Spinner
+        android:id="@+id/KitchenType"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@android:drawable/btn_dropdown"
+        android:spinnerMode="dropdown"
+        android:textDirection="rtl"
+        android:layout_below="@+id/textView6"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="הגבלות תזונתיות"
+        android:id="@+id/textView7"
+        android:textStyle="bold"
+        android:textColor="#ffff4f45"
+        android:layout_below="@+id/KitchenType"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="צמחוני"
+        android:id="@+id/CBveg"
+        android:layout_below="@+id/textView7"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="טבעוני"
+        android:id="@+id/CBvegan"
+        android:layout_below="@+id/textView7"
+        android:layout_toLeftOf="@+id/CBsides"
+        android:layout_toStartOf="@+id/CBsides" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="דיאטטי"
+        android:id="@+id/CBdiet"
+        android:layout_below="@+id/textView7"
+        android:layout_toLeftOf="@+id/CBvegan"
+        android:layout_toStartOf="@+id/CBvegan" />
 </RelativeLayout>
 </ScrollView>
 

@@ -37,19 +37,39 @@ import static com.example.mycookbook.mycookbook.R.array.personal_no_pref_array;
 public class SearchFragment extends Fragment {
 
     private RadioGroup rgpTypes;
+
+    // Categories checkboxes
     private CheckBox cbSoop;
     private CheckBox cbBreakfast;
     private CheckBox cbSweets;
     private CheckBox cbDrinks;
     private CheckBox cbBread;
-    private  View.OnClickListener checkBoxListener;
+
+    // Dish types checkboxes
+    private CheckBox cbMain;
+    private CheckBox cbFirst;
+    private CheckBox cbDesert;
+
+    // Special limits checkboxes
+    private CheckBox cbVeg;
+    private CheckBox cbVegan;
+    private CheckBox cbDiet;
+
+    // Listeners
+    private  View.OnClickListener checkBoxListenerCategory;
+    private  View.OnClickListener checkBoxListenerType;
+    private  View.OnClickListener checkBoxListenerSpec;
     private  View.OnClickListener ListViewListener;
+
+
     private ArrayList<String> categoryArr;
     private ArrayAdapter<String> aa;
     private int compId;
     private int noCopmId;
     private int levelId;
+    private int KitchenTypeId;
     private  ListView myListView;
+    private  ListView myListViewNo;
 
     public SearchFragment() {
 
@@ -77,17 +97,21 @@ public class SearchFragment extends Fragment {
         final Spinner dropdownBread = (Spinner) rootView.findViewById(R.id.lowBread);
         createSpinner((dropdownBread), R.array.subCategoryBread);
 
-        final Spinner dropdownComp = (Spinner) rootView.findViewById(R.id.component);
+        /*final Spinner dropdownComp = (Spinner) rootView.findViewById(R.id.component);
         compId = dropdownComp.getId();
         createSpinner((dropdownComp), personal_no_pref_array);
 
         final Spinner dropdownNoCopm = (Spinner) rootView.findViewById(R.id.noComponent);
         noCopmId = dropdownNoCopm.getId();
-        createSpinner((dropdownNoCopm), personal_no_pref_array);
+        createSpinner((dropdownNoCopm), personal_no_pref_array); */
 
         final Spinner dropdownLevel = (Spinner) rootView.findViewById(R.id.Level);
         levelId = dropdownLevel.getId();
         createSpinner((dropdownLevel), R.array.Levels);
+
+        final Spinner dropdownKitchenType = (Spinner) rootView.findViewById(R.id.KitchenType);
+        KitchenTypeId = dropdownKitchenType.getId();
+        createSpinner((dropdownKitchenType), R.array.personal_pref_array);
 
         //String[] dataList = R.array.personal_no_pref_array;
 
@@ -99,9 +123,16 @@ public class SearchFragment extends Fragment {
         // Assign adapter to ListView
         myListView.setAdapter(adapter);
 
+        myListViewNo = (ListView) rootView.findViewById(R.id.listViewNo);
+        final ArrayAdapter<CharSequence> adapterNo = ArrayAdapter.createFromResource(getActivity().getBaseContext(),
+                personal_no_pref_array,
+                android.R.layout.simple_list_item_multiple_choice);
+
+        // Assign adapter to ListView
+        myListViewNo.setAdapter(adapterNo);
+
         rgpTypes = (RadioGroup) rootView.findViewById(R.id.RBgroup);
 
-                /* Attach CheckedChangeListener to radio group */
         rgpTypes.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -126,7 +157,8 @@ public class SearchFragment extends Fragment {
         cbDrinks=(CheckBox) rootView.findViewById(R.id.CBdrinks);
         cbSweets=(CheckBox) rootView.findViewById(R.id.CBsweets);
 
-        checkBoxListener = new View.OnClickListener() {
+        // Listener for Categories checkboxes
+        checkBoxListenerCategory = new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -181,11 +213,58 @@ public class SearchFragment extends Fragment {
             }
         };
 
-        cbSoop.setOnClickListener(checkBoxListener);
-        cbBreakfast.setOnClickListener(checkBoxListener);
-        cbSweets.setOnClickListener(checkBoxListener);
-        cbBread.setOnClickListener(checkBoxListener);
-        cbDrinks.setOnClickListener(checkBoxListener);
+        cbSoop.setOnClickListener(checkBoxListenerCategory);
+        cbBreakfast.setOnClickListener(checkBoxListenerCategory);
+        cbSweets.setOnClickListener(checkBoxListenerCategory);
+        cbBread.setOnClickListener(checkBoxListenerCategory);
+        cbDrinks.setOnClickListener(checkBoxListenerCategory);
+
+        // Listener for Dish type checkboxes
+        checkBoxListenerType = new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if(cbMain.isChecked()) {
+
+                }
+
+                if(cbFirst.isChecked()) {
+
+                }
+
+                if(cbDesert.isChecked()) {
+
+                }
+
+            }
+        };
+
+        cbMain.setOnClickListener(checkBoxListenerType);
+        cbFirst.setOnClickListener(checkBoxListenerType);
+        cbDesert.setOnClickListener(checkBoxListenerType);
+
+        // Listener for Special limits checkboxes
+        checkBoxListenerSpec = new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if(cbVeg.isChecked()) {
+
+                }
+
+                if(cbVegan.isChecked()) {
+
+                }
+
+                if(cbDiet.isChecked()) {
+
+                }
+            }
+        };
+
+        cbVeg.setOnClickListener(checkBoxListenerSpec);
+        cbVegan.setOnClickListener(checkBoxListenerSpec);
+        cbDiet.setOnClickListener(checkBoxListenerSpec);
 
         myListView.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
             @Override
@@ -224,7 +303,7 @@ public class SearchFragment extends Fragment {
         // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        if (sp.getId() != compId && sp.getId() != noCopmId && sp.getId() != levelId)
+        if (sp.getId() != compId && sp.getId() != noCopmId && sp.getId() != levelId && sp.getId() != KitchenTypeId)
         {
             sp.setVisibility(View.INVISIBLE);
         }
