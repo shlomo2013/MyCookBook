@@ -7,14 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Spinner;
 
 import com.example.mycookbook.mycookbook.R;
 
-/**
- * Created by nirgadasi on 4/29/15.
- */
 public class FeedFragment extends Fragment {
+
+    AutoCompleteTextView myAutoComplete;
 
     public FeedFragment() {
 
@@ -29,6 +29,15 @@ public class FeedFragment extends Fragment {
      //   String[] items = new String[]{"1", "2", "three"};
       //  ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
      //   dropdown.setAdapter(adapter);
+
+        myAutoComplete = (AutoCompleteTextView) rootView.findViewById(R.id.autoCompleteTextView);
+
+        //myAutoComplete.addTextChangedListener(this);
+
+        final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity().getBaseContext(),
+                R.array.ingridient_type_array,
+                android.R.layout.simple_list_item_1);
+        myAutoComplete.setAdapter(adapter);
 
         return rootView;
     }
