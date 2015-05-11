@@ -120,25 +120,25 @@ public class connAct extends Activity {
                 r.put("name","tbeha");
                 r.put("Type","bishul");
                 r.saveInBackground();
-                myUser.addRecipe(r);
+                r.addRecipe(myUser);
 
                 myUser.saveInBackground();
 
-
+/*
                 ParseQuery<ParseObject> query = ParseQuery.getQuery("Comment");
                 // Retrieve the most recent ones
                 query.orderByDescending("createdAt");
                 // Only retrieve the last ten
                 //query.setLimit(10);
                 // Include the post data with each comment
-                query.include("User");
-                query.findInBackground(new FindCallback<ParseObject>() {
-                    public void done(List<ParseObject> commentList, ParseException e) {
+                query.include("User");*/
+                myUser.findMyRecipies(myUser).findInBackground(new FindCallback<ParseObject>() {
+                    public void done(List<ParseObject> recipiesList, ParseException e) {
                         // commentList now contains the last ten comments, and the "post"
                         // field has been populated. For example:
-                        for (ParseObject comment : commentList) {
+                        for (ParseObject recipe : recipiesList) {
                             // This does not require a network access.
-                            ParseObject post = comment.getParseObject("post");
+                            ParseObject recipe2 = recipe.getParseObject("Recipe");
                             Log.d("post", "retrieved a related post");
                         }
                     }

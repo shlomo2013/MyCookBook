@@ -1,10 +1,16 @@
 package com.MyCookBook.Entities;
 
+import android.util.Log;
+
+import com.parse.FindCallback;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.SaveCallback;
+
+import java.util.List;
 
 /**
  * Created by shirabd on 09/05/2015.
@@ -15,7 +21,7 @@ public class User extends ParseObject {
     public static final String USER_ID="UserId";
     public static final String RECIPES="Recipes";
 
-    ParseRelation<ParseObject> recipesRel = this.getRelation(RECIPES);;
+    //ParseRelation<ParseObject> recipesRel = this.getRelation(RECIPES);
 
     public User() {
     }
@@ -27,9 +33,11 @@ public class User extends ParseObject {
         put(USER_ID, value);
     }
 
-    public void addRecipe(ParseObject recipe) {
-        recipesRel.add(recipe);
-        this.saveInBackground();
+    public ParseQuery<ParseObject> findMyRecipies(User user){
+        ParseQuery<ParseObject> recipiesQuery = ParseQuery.getQuery("Recipe");
+        recipiesQuery.whereEqualTo("createdBy", user);
+
+        return recipiesQuery;
     }
 
     //public ParseRelation getRecip
