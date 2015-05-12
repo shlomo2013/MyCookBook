@@ -81,4 +81,27 @@
             android:completionThreshold="1"
             android:inputType="textAutoComplete|text" />
     </RelativeLayout>
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:fillViewport="false"
+        android:id="@+id/ScrollView"
+        android:layout_below="@+id/relativeLayout2"
+        android:layout_toLeftOf="@+id/relativeLayout"
+        android:layout_toStartOf="@+id/relativeLayout">
+
+        <TableLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_below="@+id/relativeLayout2"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_toLeftOf="@+id/relativeLayout"
+            android:layout_toStartOf="@+id/relativeLayout"
+            android:textDirection="rtl"
+            android:layoutDirection="rtl"
+            android:id="@+id/tbFeed"></TableLayout>
+    </ScrollView>
+
 </RelativeLayout>
