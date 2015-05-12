@@ -2,66 +2,62 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="1"
-    android:orientation="vertical">
+    android:weightSum="1">
 
     <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
+        android:layout_width="326dp"
         android:background="#ef131313"
         android:id="@+id/btnFrag"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="1">
 
-    <ImageButton
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:id="@+id/btnFeed"
-        android:background="#000000"
-        android:scaleType="centerCrop"
-        android:src="@mipmap/red_home_icon"
-        android:layout_weight="0.10"
-        android:clickable="true" />
+        <ImageButton
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:id="@+id/btnFeed"
+            android:background="#000000"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/red_home_icon"
+            android:clickable="true" />
 
-    <ImageButton
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:background="#000000"
-        android:id="@+id/btnPersonal"
-        android:scaleType="centerCrop"
-        android:src="@mipmap/red_user_icon"
-        android:layout_weight="0.10"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/btnFeed"
-        android:layout_toEndOf="@+id/btnFeed"
-        android:clickable="true" />
+        <ImageButton
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:background="#000000"
+            android:id="@+id/btnPersonal"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/red_user_icon"
+            android:clickable="true"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/btnFeed"
+            android:layout_toEndOf="@+id/btnFeed" />
 
 
-    <ImageButton
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:background="#000000"
-        android:id="@+id/btnSearch"
-        android:scaleType="centerCrop"
-        android:src="@mipmap/red_search_icon"
-        android:layout_weight="0.10"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/btnPersonal"
-        android:layout_toEndOf="@+id/btnPersonal"
-        android:clickable="true" />
+        <ImageButton
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:background="#000000"
+            android:id="@+id/btnSearch"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/red_search_icon"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/btnPersonal"
+            android:clickable="true" />
 
-    <ImageButton
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:background="#000000"
-        android:id="@+id/btnAddRecipe"
-        android:scaleType="centerCrop"
-        android:src="@mipmap/red_address_book_icon"
-        android:layout_weight="0.10"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/btnSearch"
-        android:layout_toEndOf="@+id/btnSearch"
-        android:clickable="true" />
+        <ImageButton
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:background="#000000"
+            android:id="@+id/btnAddRecipe"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/red_address_book_icon"
+            android:clickable="true"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/btnSearch"
+            android:layout_toEndOf="@+id/btnSearch" />
 
     </RelativeLayout>
 
