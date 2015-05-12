@@ -34,11 +34,13 @@ public class User extends ParseObject {
     }
 
     public ParseQuery<ParseObject> findMyRecipies(User user){
-        ParseQuery<ParseObject> recipiesQuery = ParseQuery.getQuery("Recipe");
-        recipiesQuery.whereEqualTo("createdBy", user);
+        ParseQuery<ParseObject> recQuery = ParseQuery.getQuery("Recipe");
+        recQuery.whereEqualTo("createdBy", user);
 
-        return recipiesQuery;
+        return recQuery;
     }
+
+
 
     //public ParseRelation getRecip
 

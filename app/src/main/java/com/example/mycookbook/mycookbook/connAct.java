@@ -111,18 +111,7 @@ public class connAct extends Activity {
                 // App code
                 accessToken = loginResult.getAccessToken();
 
-                myUser = new User();
-                myUser.setUserId(accessToken.getUserId());
-                myUser.saveInBackground();
-                Log.d("create User ", "after");
 
-                Recipe r = new Recipe();
-                r.put("name","tbeha");
-                r.put("Type","bishul");
-                r.saveInBackground();
-                r.addRecipe(myUser);
-
-                myUser.saveInBackground();
 
 /*
                 ParseQuery<ParseObject> query = ParseQuery.getQuery("Comment");
@@ -132,17 +121,11 @@ public class connAct extends Activity {
                 //query.setLimit(10);
                 // Include the post data with each comment
                 query.include("User");*/
-                myUser.findMyRecipies(myUser).findInBackground(new FindCallback<ParseObject>() {
-                    public void done(List<ParseObject> recipiesList, ParseException e) {
-                        // commentList now contains the last ten comments, and the "post"
-                        // field has been populated. For example:
-                        for (ParseObject recipe : recipiesList) {
-                            // This does not require a network access.
-                            ParseObject recipe2 = recipe.getParseObject("Recipe");
-                            Log.d("post", "retrieved a related post");
-                        }
-                    }
-                });
+                //
+                // myUser.findMyRecipies(myUser).findInBackground(new FindCallback<ParseObject>() {
+
+
+
 
 
 
@@ -178,7 +161,59 @@ public class connAct extends Activity {
         Intent intent;
         intent = new Intent(this, MainActivity.class);
         intent.putExtra("faceUser",accessToken);
+
+        myUser = new User();
+        myUser.setUserId(accessToken.getUserId());
+        myUser.saveInBackground();
+        Log.d("create User ", "after");
+
+        Recipe r = new Recipe();
+        r.put("name","r First");
+        r.put("Type","r First");
+        r.saveInBackground();
+        r.addRecipe(myUser);
+
+
+        Recipe d = new Recipe();
+        d.put("name","d first");
+        d.put("Type","d first");
+        d.saveInBackground();
+        d.addRecipe(myUser);
+
+        myUser.saveInBackground();
+
         intent.putExtra("myUserId",myUser.getUserId());
+
+
+
+
+        ParseQuery<ParseObject> recQuery = ParseQuery.getQuery("Recipe");
+        recQuery.whereEqualTo("createdBy", myUser);
+
+        recQuery.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> recList, ParseException e) {
+                if (e == null) {
+                    Recipe a = (Recipe)recList.get(0);
+                    a.put("Category","wow");
+                    a.saveInBackground();
+                            /*Log.d("recList", "Retrieved " + recList.size() + " scores");
+
+                            for (ParseObject recipe : recList) {
+                                // This does not require a network access.
+                                ParseObject recipe2 = recipe.getParseObject("Recipe");
+                                ((Recipe)recipe).put("Category","Updated");
+                                recipe.saveInBackground();
+                                Log.d("post", "retrieved a related post");
+                            }
+*/
+                } else {
+                    Log.d("score", "Error: " + e.getMessage());
+                }
+
+
+            }
+        });
+
         startActivity(intent);
     }
     @Override

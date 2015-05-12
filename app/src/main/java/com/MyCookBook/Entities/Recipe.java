@@ -11,11 +11,11 @@ import java.util.ArrayList;
  */
 @ParseClassName("Recipe")
 public class Recipe  extends ParseObject {
-    public final String Name = "Name";
-    public final String Category = "Category";
-    public final String SubCategory = "SubCategory";
-    public final String Preparation = "Preparation";
-    public final String Groceries = "Groceries";
+    public static final String Name = "Name";
+    public static final String Category = "Category";
+    public static final String SubCategory = "SubCategory";
+    public static final String Preparation = "Preparation";
+    public static final String Groceries = "Groceries";
     ArrayList<Grocery> groceries = new ArrayList<Grocery>();
 
 
