@@ -1,64 +1,61 @@
 package com.MyCookBook.Fragment;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
-import android.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
-
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.os.Bundle;
-import android.app.Activity;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.util.Log;
-import android.view.Menu;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
+import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+
+import com.example.mycookbook.mycookbook.R;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-
-
-import com.example.mycookbook.mycookbook.R;
-
-import java.io.File;
+import java.util.ArrayList;
 
 /**
  * Created by nirgadasi on 4/29/15.
  */
 public class AddRecipeFragment extends Fragment {
+    private PopupWindow pw;
+    private ArrayList<CheckBox> alFoodCategory;
 
     ImageView viewImage;
     Button bSelecPic;
     Button bAddIngridient;
-    // Spinner spIngredType;
+    Button bSetCategory;
     View rootView;
     TableLayout tbLayout;
-   // AutoCompleteTextView actIngredient;
+    ListView lvDropDownList;
+    View popupView;
+
+    // AutoCompleteTextView actIngredient;
     //EditText etIngredientAmount;
 
     public AddRecipeFragment() {
@@ -70,49 +67,50 @@ public class AddRecipeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         rootView            = inflater.inflate(R.layout.activity_addrecipe_fragment, container , false);
+        popupView            = inflater.inflate(R.layout.popup, container , false);
         tbLayout            = (TableLayout)          rootView.findViewById(R.id.tbIngredients);
         bSelecPic           = (Button)               rootView.findViewById(R.id.btnSelectPhoto);
         viewImage           = (ImageView)            rootView.findViewById(R.id.viewImage);
         bAddIngridient      = (Button)               rootView.findViewById(R.id.btnAddIngridient);
-  //      actIngredient       = (AutoCompleteTextView) rootView.findViewById(R.id.actIngedient);
-  //      etIngredientAmount  = (EditText)             rootView.findViewById(R.id.etTextAmount);
+        bSetCategory        = (Button)               rootView.findViewById(R.id.btnAddCategoryToRecipe);
+        lvDropDownList      = (ListView)             popupView.findViewById(R.id.lvDropDownList);
+
+        //      actIngredient       = (AutoCompleteTextView) rootView.findViewById(R.id.actIngedient);
+        //      etIngredientAmount  = (EditText)             rootView.findViewById(R.id.etTextAmount);
 
         bAddIngridient.setOnClickListener(new View.OnClickListener() {
-               @Override
-               public void onClick(View arg0) {
+            @Override
+            public void onClick(View arg0) {
+                AutoCompleteTextView actNewIngredient= new AutoCompleteTextView(getActivity().getBaseContext());
+                Spinner spNewIngredientType = new Spinner(getActivity().getBaseContext());
+                EditText etNewIngredientAmount = new EditText(getActivity().getBaseContext());
 
-                   AutoCompleteTextView actNewIngredient= new AutoCompleteTextView(getActivity().getBaseContext());
-                   Spinner spNewIngredientType = new Spinner(getActivity().getBaseContext());
-                   EditText etNewIngredientAmount = new EditText(getActivity().getBaseContext());
+                TableRow tr = new TableRow(getActivity().getBaseContext());
+                TableRow.LayoutParams trLP = new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT,
+                        TableRow.LayoutParams.WRAP_CONTENT);
+                tr.setLayoutParams(trLP);
+                tr.setTextDirection(View.LAYOUT_DIRECTION_RTL);
 
-                   TableRow tr = new TableRow(getActivity().getBaseContext());
-                   TableRow.LayoutParams trLP = new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT,
-                           TableRow.LayoutParams.WRAP_CONTENT);
-                   tr.setLayoutParams(trLP);
-                   tr.setTextDirection(View.LAYOUT_DIRECTION_RTL);
+                // Handle AutoCompleteTextView
+                actNewIngredient.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+                actNewIngredient.setMaxWidth(350);
+                // Handle Spinner
+                createSpinner(spNewIngredientType);
+                spNewIngredientType.setScrollContainer(true);
+                spNewIngredientType.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT));
 
-                   // Handle AutoCompleteTextView
-                   actNewIngredient.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-                   actNewIngredient.setMaxWidth(350);
-                   // Handle Spinner
-                   createSpinner(spNewIngredientType);
-                   spNewIngredientType.setScrollContainer(true);
-                   spNewIngredientType.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT));
+                // Handle EditText
+                etNewIngredientAmount.setInputType(3);
+                etNewIngredientAmount.setLayoutParams(new TableRow.LayoutParams(120,TableRow.LayoutParams.WRAP_CONTENT));
 
-                   // Handle EditText
-                   etNewIngredientAmount.setInputType(3);
-                   etNewIngredientAmount.setLayoutParams(new TableRow.LayoutParams(120,TableRow.LayoutParams.WRAP_CONTENT));
+                // Add to layOut
+                tr.addView(actNewIngredient);
+                tr.addView(spNewIngredientType);
+                tr.addView(etNewIngredientAmount);
 
-                   // Add to layOut
-                   tr.addView(actNewIngredient);
-                   tr.addView(spNewIngredientType);
-                   tr.addView(etNewIngredientAmount);
-
-                   tbLayout.addView(tr);
-
-
-               }
-       });
+                tbLayout.addView(tr);
+            }
+        });
         // Handle Photo select
         bSelecPic.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,6 +119,28 @@ public class AddRecipeFragment extends Fragment {
             }
         });
 
+        // Handle Categories btn
+        bSetCategory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                // get all of the categories
+                initCategories(lvDropDownList , alFoodCategory, R.array.personal_pref_array);
+
+                // set the pop up window
+                initiatePopUp();
+
+                // dismiss
+                Button btnDismiss = (Button)popupView.findViewById(R.id.dismiss);
+                btnDismiss.setOnClickListener(new Button.OnClickListener(){
+                    @Override
+                    public void onClick(View v) {
+                        // TODO Auto-generated method stub
+                        pw.dismiss();
+                    }});
+
+                pw.showAsDropDown(bSetCategory);
+            }
+        });
         return rootView;
     }
 
@@ -157,14 +177,98 @@ public class AddRecipeFragment extends Fragment {
     private void createSpinner(Spinner sp){
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity().getBaseContext(),
-                                                                             R.array.ingridient_type_array,
-                                                                             android.R.layout.simple_spinner_item);
+                R.array.ingridient_type_array,
+                android.R.layout.simple_spinner_item);
 
         // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         // Apply the adapter to the spinner
         sp.setAdapter(adapter);
+
+    }
+
+    public void handleCategories() {
+        final Button btnDDPersonalCategories = (Button) rootView.findViewById(R.id.btnDropDownPersonalCategories);
+        btnDDPersonalCategories.setOnClickListener(new Button.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                LayoutInflater layoutInflater = (LayoutInflater) getActivity().getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                popupView = layoutInflater.inflate(R.layout.popup, null);
+                lvDropDownList = (ListView) popupView.findViewById(R.id.lvDropDownList);
+
+                // get all of the categories
+                initCategories(lvDropDownList, alFoodCategory, R.array.personal_pref_array);
+
+                // set the pop up window
+                initiatePopUp();
+
+                // dismiss
+                Button btnDismiss = (Button) popupView.findViewById(R.id.dismiss);
+                btnDismiss.setOnClickListener(new Button.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // TODO Auto-generated method stub
+                        pw.dismiss();
+                    }
+                });
+
+                pw.showAsDropDown(btnDDPersonalCategories);
+
+            }
+        });
+    }
+
+    public void initCategories(ListView lvListView, ArrayList<CheckBox> items, int ArrayName){
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity().getBaseContext(),
+                ArrayName,
+                android.R.layout.simple_list_item_1);
+
+        items = new ArrayList<CheckBox>();
+        for (int i = 0; i < adapter.getCount(); i++){
+            String s = (String)adapter.getItem(i);
+            CheckBox c = new CheckBox(getActivity().getBaseContext());
+            c.setText(s);
+            //
+            //            if(i%2 == 0) {
+            //                c.setChecked(true);
+            //            }else
+            //            {
+            //                c.setChecked(false);
+            //            }
+            items.add(c);
+        }
+        DropDownListAdapter mAdapter = new DropDownListAdapter(items, getActivity().getBaseContext());
+        lvListView.setAdapter(mAdapter);
+
+    }
+
+    private void initiatePopUp(){
+
+        pw = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        //Pop-up window background cannot be null if we want the pop-up to listen touch events outside its window
+        pw.setBackgroundDrawable(new BitmapDrawable());
+        pw.setTouchable(true);
+
+        //let pop-up be informed about touch events outside its window. This  should be done before setting the content of pop-up
+        pw.setOutsideTouchable(true);
+        pw.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        //dismiss the pop-up i.e. drop-down when touched anywhere outside the pop-up
+        pw.setTouchInterceptor(new View.OnTouchListener() {
+
+            public boolean onTouch(View v, MotionEvent event) {
+                // TODO Auto-generated method stub
+                if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+                    pw.dismiss();
+                    return true;
+                }
+                return false;
+            }
+        });
 
     }
 
@@ -231,8 +335,12 @@ public class AddRecipeFragment extends Fragment {
 
 
     }
+
     public void addListenerOnSpinnerItemSelection() {
-  // 	spIngredType = (Spinner) rootView.findViewById(R.id.spinner1);
-  // 	spinner.setOnItemSelectedListener(new CustomOnItemSelectedListener());
-     }
+        // 	spIngredType = (Spinner) rootView.findViewById(R.id.spinner1);
+        // 	spinner.setOnItemSelectedListener(new CustomOnItemSelectedListener());
+    }
+
+
+
 }

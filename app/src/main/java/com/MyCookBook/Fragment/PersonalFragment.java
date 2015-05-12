@@ -1,7 +1,6 @@
 package com.MyCookBook.Fragment;
 
 import android.app.Fragment;
-import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.ArrayRes;
@@ -36,6 +35,7 @@ public class PersonalFragment extends Fragment {
     LinearLayout llPopup;
     RelativeLayout rlpersonalfrag;
     ListView lvDropDownList;
+    View popupView;
 
     View  rootView    ;
     View  popUpView   ;
@@ -54,10 +54,11 @@ public class PersonalFragment extends Fragment {
 
         rootView     = inflater.inflate(R.layout.activity_personal_fregment, container, false);
         dropDownView = inflater.inflate(R.layout.drop_down_list_row, container, false);
+        popupView    = inflater.inflate(R.layout.popup, null);
+
         llPopup                  = (LinearLayout)       rootView.findViewById(R.id.DropDownList);
         rlpersonalfrag           = (RelativeLayout)     rootView.findViewById(R.id.personalfragRelativelayout);
-        //btnDDPersonalCategories  = (Button)             rootView.findViewById(R.id.btnDropDownPersonalCategories);
-        lvDropDownList           = (ListView)           popUpView.findViewById(R.id.lvDropDownList);
+        lvDropDownList           = (ListView)           popupView.findViewById(R.id.lvDropDownList);
 
         handleCategories();
         handleNoCategories();
@@ -75,24 +76,25 @@ public class PersonalFragment extends Fragment {
             String s = (String)adapter.getItem(i);
             CheckBox c = new CheckBox(getActivity().getBaseContext());
             c.setText(s);
-
-            if(i%2 == 0) {
-                c.setChecked(true);
-            }else
-            {
-                c.setChecked(false);
-            }
+//
+//            if(i%2 == 0) {
+//                c.setChecked(true);
+//            }else
+//            {
+//                c.setChecked(false);
+//            }
             items.add(c);
 
-            mAdapter = new DropDownListAdapter(items, getActivity().getBaseContext());
-            lvListView.setAdapter(mAdapter);
-
         }
+
+        mAdapter = new DropDownListAdapter(items, getActivity().getBaseContext());
+        lvListView.setAdapter(mAdapter);
+
     }
 
-    private void initiatePopUp(ArrayList<CheckBox> items){
+    private void initiatePopUp(){
 
-        pw = new PopupWindow(popUpView, LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, true);
+        pw = new PopupWindow(popupView,LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
 
         //Pop-up window background cannot be null if we want the pop-up to listen touch events outside its window
         pw.setBackgroundDrawable(new BitmapDrawable());
@@ -114,12 +116,6 @@ public class PersonalFragment extends Fragment {
                 return false;
             }
         });
-
-        //provide the source layout for drop-down
-        pw.setContentView(popUpView);
-
-        //anchor the drop-down to bottom-left corner
-        pw.showAsDropDown(rlpersonalfrag);
 
     }
 
@@ -168,36 +164,27 @@ public class PersonalFragment extends Fragment {
 
                  @Override
                  public void onClick(View arg0) {
-                     LayoutInflater layoutInflater = (LayoutInflater)getActivity().getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                 //    ListView  lvDropDownListNot = (ListView)         rootView.findViewById(R.id.lvDropDownListNot);
 
-                     View popupView = layoutInflater.inflate(R.layout.popup, null);
-                     lvDropDownList           = (ListView)           popupView.findViewById(R.id.lvDropDownList);
-                     ListView  lvDropDownListNot = (ListView)         rootView.findViewById(R.id.lvDropDownListNot);
-
+                     // get all of the categories
                      initCategories(lvDropDownList , alNoFoodCategory, R.array.personal_no_pref_array);
 
-                     final PopupWindow popupWindow = new PopupWindow(popupView,LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
-                     popupWindow.setBackgroundDrawable(new BitmapDrawable());
-                     popupWindow.setTouchable(true);
+                     // set the pop up window
+                     initiatePopUp();
 
-                            //let pop-up be informed about touch events outside its window. This  should be done before setting the content of pop-up
-                     popupWindow.setOutsideTouchable(true);
-                     popupWindow.setHeight(LayoutParams.WRAP_CONTENT);
-
-
+                     // dismiss
                      Button btnDismiss = (Button)popupView.findViewById(R.id.dismiss);
                      btnDismiss.setOnClickListener(new Button.OnClickListener(){
                          @Override
                          public void onClick(View v) {
                              // TODO Auto-generated method stub
-                             popupWindow.dismiss();
+                             pw.dismiss();
                          }});
 
-                     popupWindow.showAsDropDown(btnDDNoPersonalCategories);
+                     pw.showAsDropDown(btnDDNoPersonalCategories);
 
                  }});
     }
-
 
     public void handleCategories(){
         final Button btnDDPersonalCategories = (Button)rootView.findViewById(R.id.btnDropDownPersonalCategories);
@@ -205,32 +192,23 @@ public class PersonalFragment extends Fragment {
 
                  @Override
                  public void onClick(View arg0) {
-                     LayoutInflater layoutInflater = (LayoutInflater)getActivity().getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-                     View popupView = layoutInflater.inflate(R.layout.popup, null);
-                     lvDropDownList           = (ListView)           popupView.findViewById(R.id.lvDropDownList);
-                     ListView  lvDropDownListNot = (ListView)         rootView.findViewById(R.id.lvDropDownListNot);
-
+                     // get all of the categories
                      initCategories(lvDropDownList , alFoodCategory, R.array.personal_pref_array);
 
-                     final PopupWindow popupWindow = new PopupWindow(popupView,LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
-                     popupWindow.setBackgroundDrawable(new BitmapDrawable());
-                     popupWindow.setTouchable(true);
+                     // set the pop up window
+                     initiatePopUp();
 
-                            //let pop-up be informed about touch events outside its window. This  should be done before setting the content of pop-up
-                     popupWindow.setOutsideTouchable(true);
-                     popupWindow.setHeight(LayoutParams.WRAP_CONTENT);
-
-
+                     // dismiss
                      Button btnDismiss = (Button)popupView.findViewById(R.id.dismiss);
                      btnDismiss.setOnClickListener(new Button.OnClickListener(){
                          @Override
                          public void onClick(View v) {
                              // TODO Auto-generated method stub
-                             popupWindow.dismiss();
+                             pw.dismiss();
                          }});
 
-                     popupWindow.showAsDropDown(btnDDPersonalCategories);
+                     pw.showAsDropDown(btnDDPersonalCategories);
 
                  }});
 
