@@ -41,7 +41,7 @@ public class FeedFragment extends Fragment {
         //myAutoComplete.addTextChangedListener(this);
 
         final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity().getBaseContext(),
-                R.array.ingridient_type_array,
+                R.array.categories,
                 android.R.layout.simple_list_item_1);
         myAutoComplete.setAdapter(adapter);
 

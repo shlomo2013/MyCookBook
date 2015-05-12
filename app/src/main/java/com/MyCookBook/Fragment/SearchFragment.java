@@ -111,7 +111,7 @@ public class SearchFragment extends Fragment {
 
         final Spinner dropdownKitchenType = (Spinner) rootView.findViewById(R.id.KitchenType);
         KitchenTypeId = dropdownKitchenType.getId();
-        createSpinner((dropdownKitchenType), R.array.categories);
+        createSpinner((dropdownKitchenType), R.array.personal_pref_array);
 
         //String[] dataList = R.array.personal_no_pref_array;
 
