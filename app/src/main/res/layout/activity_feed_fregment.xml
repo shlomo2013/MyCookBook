@@ -25,7 +25,8 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="#ffff4f45" />
 
         <CheckBox
             android:layout_width="wrap_content"
