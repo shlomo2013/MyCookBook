@@ -8,6 +8,7 @@
     <string name="Ingredients">מצרכים:</string>
     <string name="facebook_app_id">869910013067316</string>
     <string name="select_string">Select an item</string>
+    <string name="HowToMake">אופן הכנה:</string>
 
     <string-array name="ingridient_type_array">
           <item>בבוס/ות</item>
