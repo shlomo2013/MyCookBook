@@ -102,5 +102,16 @@
         <item>שף</item>
     </string-array>
 
+    <string-array name="categories">
+        <item></item>
+        <item>מתוקים</item>
+        <item>מרקים</item>
+        <item>סלטים</item>
+        <item>תוספות</item>
+        <item>שתיה</item>
+        <item>לחם ומאפים</item>
+        <item>פסטה ואורז</item>
+    </string-array>
+
 </resources>
 

@@ -111,7 +111,7 @@ public class SearchFragment extends Fragment {
 
         final Spinner dropdownKitchenType = (Spinner) rootView.findViewById(R.id.KitchenType);
         KitchenTypeId = dropdownKitchenType.getId();
-        createSpinner((dropdownKitchenType), R.array.personal_pref_array);
+        createSpinner((dropdownKitchenType), R.array.categories);
 
         //String[] dataList = R.array.personal_no_pref_array;
 
@@ -219,6 +219,10 @@ public class SearchFragment extends Fragment {
         cbBread.setOnClickListener(checkBoxListenerCategory);
         cbDrinks.setOnClickListener(checkBoxListenerCategory);
 
+        cbMain=(CheckBox) rootView.findViewById(R.id.CBmain);
+        cbFirst=(CheckBox) rootView.findViewById(R.id.CBfirst);
+        cbDesert=(CheckBox) rootView.findViewById(R.id.CBdesert);
+
         // Listener for Dish type checkboxes
         checkBoxListenerType = new View.OnClickListener() {
 
@@ -242,6 +246,10 @@ public class SearchFragment extends Fragment {
         cbMain.setOnClickListener(checkBoxListenerType);
         cbFirst.setOnClickListener(checkBoxListenerType);
         cbDesert.setOnClickListener(checkBoxListenerType);
+
+        cbVeg=(CheckBox) rootView.findViewById(R.id.CBveg);
+        cbVegan=(CheckBox) rootView.findViewById(R.id.CBvegan);
+        cbDiet=(CheckBox) rootView.findViewById(R.id.CBdiet);
 
         // Listener for Special limits checkboxes
         checkBoxListenerSpec = new View.OnClickListener() {
