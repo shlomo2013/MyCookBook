@@ -1,5 +1,14 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/scrollView"
+    android:layout_marginBottom="56dp"
+    android:fillViewport="true"
+    android:layout_row="0"
+    android:layout_column="0">
+
+<RelativeLayout
     android:id="@+id/personalfragRelativelayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -22,17 +31,13 @@
             android:layout_height="wrap_content"
             android:background="@android:drawable/btn_dropdown"
             android:text="קטגוריות מועדפות" />
-        <ListView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/lvDropDownListNot"/>
 
     <Button
                android:id="@+id/btnDropDownPersonalCategoriesNOT"
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
                android:background="@android:drawable/btn_dropdown"
-               android:text="קטגוריות להסתרה"
+               android:text="רכיבים להסתרה "
         android:layout_below="@+id/btnDropDownPersonalCategories"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
@@ -46,6 +51,5 @@
 
 
     </TableLayout>
-
-
 </RelativeLayout>
+</ScrollView>

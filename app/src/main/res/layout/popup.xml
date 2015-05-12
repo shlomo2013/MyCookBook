@@ -1,39 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical" 
-    android:background="@android:color/background_light">
- <LinearLayout
-     android:layout_width="wrap_content"
-     android:layout_height="wrap_content"
-     android:layout_margin="1dp"
-     android:background="@android:color/darker_gray"
-     android:orientation="vertical">
-     >
-
-         <ListView android:id="@+id/lvDropDownList"
-         android:layout_width="wrap_content"
-         android:layout_height="300dp">
-         </ListView>
-<LinearLayout
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_gravity="center_horizontal">
-         <Button
-             android:id="@+id/dismiss"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:text="Dismiss"
-             android:layout_gravity="center_vertical" />
+    android:id="@+id/scrollView"
+    android:layout_marginBottom="56dp"
+    android:fillViewport="true"
+    android:layout_row="0"
+    android:layout_column="0" >
 
-         <Button
-                  android:id="@+id/btnSaveCategory"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:text="שמור"
-             android:layout_gravity="center_vertical" />
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:background="@android:color/background_light">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="1dp"
+            android:background="@android:color/darker_gray"
+            android:orientation="vertical">
 
-     </LinearLayout>
- </LinearLayout>
-</LinearLayout>
+            <ListView android:id="@+id/lvDropDownList"
+                android:layout_width="wrap_content"
+                android:layout_height="200dp">
+            </ListView>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal">
+                <Button
+                    android:id="@+id/dismiss"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="בטל"
+                    android:layout_gravity="center_vertical" />
+
+                <Button
+                    android:id="@+id/btnSaveCategory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="שמור"
+                    android:layout_gravity="center_vertical" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
