@@ -1,6 +1,7 @@
 package com.MyCookBook.Fragment;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.ArrayRes;
@@ -32,7 +33,6 @@ public class PersonalFragment extends Fragment {
 
     private PopupWindow pw;
     TableLayout tbLayout;
-    Button btnDDPersonalCategories;
     LinearLayout llPopup;
     RelativeLayout rlpersonalfrag;
     ListView lvDropDownList;
@@ -42,6 +42,7 @@ public class PersonalFragment extends Fragment {
     View  dropDownView;
 
     ArrayList<CheckBox> alFoodCategory;
+    ArrayList<CheckBox> alNoFoodCategory;
     DropDownListAdapter mAdapter;
 
     public PersonalFragment() {
@@ -52,31 +53,24 @@ public class PersonalFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         rootView     = inflater.inflate(R.layout.activity_personal_fregment, container, false);
-        popUpView    = inflater.inflate(R.layout.pop_up_window, container, false);
         dropDownView = inflater.inflate(R.layout.drop_down_list_row, container, false);
-
         llPopup                  = (LinearLayout)       rootView.findViewById(R.id.DropDownList);
         rlpersonalfrag           = (RelativeLayout)     rootView.findViewById(R.id.personalfragRelativelayout);
-        btnDDPersonalCategories  = (Button)             rootView.findViewById(R.id.btnDropDownPersonalCategories);
+        //btnDDPersonalCategories  = (Button)             rootView.findViewById(R.id.btnDropDownPersonalCategories);
         lvDropDownList           = (ListView)           popUpView.findViewById(R.id.lvDropDownList);
 
-        //onClickListener to initiate the dropDown list
-        btnDDPersonalCategories.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                initCategories();
-                initiatePopUp(alFoodCategory);
-            }
-        });
+        handleCategories();
+        handleNoCategories();
         return rootView;
     }
 
 
-    public void initCategories(){
+    public void initCategories(ListView lvListView, ArrayList<CheckBox> items, int ArrayName){
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity().getBaseContext(),
-                R.array.personal_pref_array,
+                ArrayName,
                 android.R.layout.simple_list_item_1);
 
-        alFoodCategory = new ArrayList<CheckBox>();
+        items = new ArrayList<CheckBox>();
         for (int i = 0; i < adapter.getCount(); i++){
             String s = (String)adapter.getItem(i);
             CheckBox c = new CheckBox(getActivity().getBaseContext());
@@ -88,10 +82,10 @@ public class PersonalFragment extends Fragment {
             {
                 c.setChecked(false);
             }
-            alFoodCategory.add(c);
+            items.add(c);
 
-            mAdapter = new DropDownListAdapter(alFoodCategory, getActivity().getBaseContext());
-            lvDropDownList.setAdapter(mAdapter);
+            mAdapter = new DropDownListAdapter(items, getActivity().getBaseContext());
+            lvListView.setAdapter(mAdapter);
 
         }
     }
@@ -166,6 +160,81 @@ public class PersonalFragment extends Fragment {
         tr.setLayoutParams(trLP);
         //   tr.setTextDirection(View.LAYOUT_DIRECTION_RTL);
         return tr;
+    }
+
+    public void handleNoCategories(){
+        final Button btnDDNoPersonalCategories = (Button)rootView.findViewById(R.id.btnDropDownPersonalCategoriesNOT);
+        btnDDNoPersonalCategories.setOnClickListener(new Button.OnClickListener(){
+
+                 @Override
+                 public void onClick(View arg0) {
+                     LayoutInflater layoutInflater = (LayoutInflater)getActivity().getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                     View popupView = layoutInflater.inflate(R.layout.popup, null);
+                     lvDropDownList           = (ListView)           popupView.findViewById(R.id.lvDropDownList);
+                     ListView  lvDropDownListNot = (ListView)         rootView.findViewById(R.id.lvDropDownListNot);
+
+                     initCategories(lvDropDownList , alNoFoodCategory, R.array.personal_no_pref_array);
+
+                     final PopupWindow popupWindow = new PopupWindow(popupView,LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
+                     popupWindow.setBackgroundDrawable(new BitmapDrawable());
+                     popupWindow.setTouchable(true);
+
+                            //let pop-up be informed about touch events outside its window. This  should be done before setting the content of pop-up
+                     popupWindow.setOutsideTouchable(true);
+                     popupWindow.setHeight(LayoutParams.WRAP_CONTENT);
+
+
+                     Button btnDismiss = (Button)popupView.findViewById(R.id.dismiss);
+                     btnDismiss.setOnClickListener(new Button.OnClickListener(){
+                         @Override
+                         public void onClick(View v) {
+                             // TODO Auto-generated method stub
+                             popupWindow.dismiss();
+                         }});
+
+                     popupWindow.showAsDropDown(btnDDNoPersonalCategories);
+
+                 }});
+    }
+
+
+    public void handleCategories(){
+        final Button btnDDPersonalCategories = (Button)rootView.findViewById(R.id.btnDropDownPersonalCategories);
+        btnDDPersonalCategories.setOnClickListener(new Button.OnClickListener(){
+
+                 @Override
+                 public void onClick(View arg0) {
+                     LayoutInflater layoutInflater = (LayoutInflater)getActivity().getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                     View popupView = layoutInflater.inflate(R.layout.popup, null);
+                     lvDropDownList           = (ListView)           popupView.findViewById(R.id.lvDropDownList);
+                     ListView  lvDropDownListNot = (ListView)         rootView.findViewById(R.id.lvDropDownListNot);
+
+                     initCategories(lvDropDownList , alFoodCategory, R.array.personal_pref_array);
+
+                     final PopupWindow popupWindow = new PopupWindow(popupView,LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
+                     popupWindow.setBackgroundDrawable(new BitmapDrawable());
+                     popupWindow.setTouchable(true);
+
+                            //let pop-up be informed about touch events outside its window. This  should be done before setting the content of pop-up
+                     popupWindow.setOutsideTouchable(true);
+                     popupWindow.setHeight(LayoutParams.WRAP_CONTENT);
+
+
+                     Button btnDismiss = (Button)popupView.findViewById(R.id.dismiss);
+                     btnDismiss.setOnClickListener(new Button.OnClickListener(){
+                         @Override
+                         public void onClick(View v) {
+                             // TODO Auto-generated method stub
+                             popupWindow.dismiss();
+                         }});
+
+                     popupWindow.showAsDropDown(btnDDPersonalCategories);
+
+                 }});
+
+
     }
 }
 
