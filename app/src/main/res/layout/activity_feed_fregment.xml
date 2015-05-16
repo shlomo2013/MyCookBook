@@ -28,32 +28,44 @@
             android:textStyle="bold"
             android:textColor="#ffff4f45" />
 
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="הכי חדש"
-            android:id="@+id/CBnew"
+        <RadioGroup
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_below="@+id/textView8"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:layout_alignParentEnd="false"
+            android:gravity="right"
+            android:id="@+id/RBgroup">
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="הכי חדש"
+                    android:id="@+id/RBnew"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_below="@+id/textView8"
+                    android:checked="true" />
 
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="הכי אהוב"
-            android:id="@+id/CBloved"
-            android:layout_below="@+id/CBnew"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="הכי אהוב"
+                    android:id="@+id/RBloved"
+                    android:layout_below="@+id/RBnew"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" />
 
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Top 5"
-            android:id="@+id/CBtop5"
-            android:layout_below="@+id/CBloved"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Top 5"
+                    android:id="@+id/RBtop5"
+                    android:layout_below="@+id/RBloved"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" />
+            </RadioGroup>
     </RelativeLayout>
 
     <RelativeLayout
@@ -82,7 +94,7 @@
             android:inputType="textAutoComplete|text" />
     </RelativeLayout>
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"  
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:fillViewport="false"

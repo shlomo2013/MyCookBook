@@ -3,12 +3,17 @@ package com.MyCookBook.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.app.Fragment;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TableLayout;
@@ -21,6 +26,7 @@ public class FeedFragment extends Fragment {
 
     AutoCompleteTextView myAutoComplete;
     TableLayout tbLayout;
+    private RadioGroup rgpFilter;
 
     public FeedFragment() {
 
@@ -45,6 +51,26 @@ public class FeedFragment extends Fragment {
                 android.R.layout.simple_list_item_1);
         myAutoComplete.setAdapter(adapter);
 
+        rgpFilter = (RadioGroup) rootView.findViewById(R.id.RBgroup);
+
+        rgpFilter.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                RadioButton rb = (RadioButton) group.findViewById(checkedId);
+                if(null!=rb && checkedId > -1){
+                    switch (rb.getId())
+                    {
+                        case R.id.RBnew:
+                            break;
+                        case R.id.RBloved:
+                            break;
+                        case R.id.RBtop5:
+                            break;
+                    }
+                }
+            }
+        });
+
         tbLayout = (TableLayout) rootView.findViewById(R.id.tbFeed);
         //tbLayout.setTextDirection(View.LAYOUT_DIRECTION_RTL);
         //tbLayout.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
@@ -53,11 +79,14 @@ public class FeedFragment extends Fragment {
 
             TextView tvRecipe = new TextView(getActivity().getBaseContext());
             ImageView ivRecipePhoto = new ImageView(getActivity().getBaseContext());
+            ImageButton btLike =  new ImageButton(getActivity().getBaseContext());
 
             TableRow tr = new TableRow(getActivity().getBaseContext());
             TableRow.LayoutParams trLP = new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT,
                     TableRow.LayoutParams.WRAP_CONTENT);
             tr.setLayoutParams(trLP);
+            //tr.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+            tr.setGravity(Gravity.RIGHT);
 
             // Handle recipe text
             tvRecipe.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
@@ -72,11 +101,36 @@ public class FeedFragment extends Fragment {
             ivRecipePhoto.setAdjustViewBounds(true);
             ivRecipePhoto.setImageResource(R.drawable.com_facebook_profile_picture_blank_square);
 
+            // Handle like button
+            btLike.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+            //btLike.setMaxWidth(350);
+            //btLike.setMaxHeight(150);
+            //btLike.setAdjustViewBounds(true);
+            btLike.setImageResource(R.mipmap.red_like_icon);
+            btLike.setClickable(true);
+
             // Add to layOut
             tr.addView(tvRecipe);
             tr.addView(ivRecipePhoto);
+           // tr.addView(btLike);
 
             tbLayout.addView(tr);
+
+            TableRow tr2 = new TableRow(getActivity().getBaseContext());
+            TableRow.LayoutParams trLP2 = new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT,
+                    TableRow.LayoutParams.WRAP_CONTENT);
+            tr2.setLayoutParams(trLP2);
+            tr2.setGravity(Gravity.RIGHT);
+
+            // Handle like button
+            /*btLike.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+           // btLike.setMinimumWidth(350);
+            btLike.setText("אהבתי");
+            btLike.setBackgroundResource(R.drawable.abc_btn_rating_star_off_mtrl_alpha); */
+
+            // Add to layOut
+            tr2.addView(btLike);
+            tbLayout.addView(tr2);
         }
 
         /*TextView tvIngredients = new TextView(getActivity().getBaseContext());
