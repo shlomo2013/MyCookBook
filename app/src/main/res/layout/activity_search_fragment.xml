@@ -13,7 +13,7 @@
     tools:context="com.MyCookBook.Fragment.SearchFragment"
     android:id="@+id/search"
     android:textDirection="rtl"
-    android:minHeight="1050dp">
+    android:minHeight="1080dp">
 
     <CheckBox
         android:layout_width="wrap_content"
@@ -390,6 +390,14 @@
         android:layout_below="@+id/textView7"
         android:layout_toLeftOf="@+id/CBvegan"
         android:layout_toStartOf="@+id/CBvegan" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="חפש"
+        android:id="@+id/btSearch"
+        android:layout_below="@+id/CBvegan"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>
 </ScrollView>
 
