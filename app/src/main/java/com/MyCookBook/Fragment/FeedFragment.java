@@ -1,21 +1,18 @@
 package com.MyCookBook.Fragment;
 
+import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.app.Fragment;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.ScrollView;
-import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -35,12 +32,12 @@ public class FeedFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.activity_feed_fregment , container , false);
+        View rootView = inflater.inflate(R.layout.activity_feed_fregment, container, false);
 
-      //  Spinner dropdown = (Spinner)rootView.findViewById(R.id.spinner1);
-     //   String[] items = new String[]{"1", "2", "three"};
-      //  ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
-     //   dropdown.setAdapter(adapter);
+        //  Spinner dropdown = (Spinner)rootView.findViewById(R.id.spinner1);
+        //   String[] items = new String[]{"1", "2", "three"};
+        //  ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
+        //   dropdown.setAdapter(adapter);
 
         myAutoComplete = (AutoCompleteTextView) rootView.findViewById(R.id.autoCompleteTextView);
 
@@ -57,9 +54,8 @@ public class FeedFragment extends Fragment {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 RadioButton rb = (RadioButton) group.findViewById(checkedId);
-                if(null!=rb && checkedId > -1){
-                    switch (rb.getId())
-                    {
+                if (null != rb && checkedId > -1) {
+                    switch (rb.getId()) {
                         case R.id.RBnew:
                             break;
                         case R.id.RBloved:
@@ -79,7 +75,7 @@ public class FeedFragment extends Fragment {
 
             TextView tvRecipe = new TextView(getActivity().getBaseContext());
             ImageView ivRecipePhoto = new ImageView(getActivity().getBaseContext());
-            ImageButton btLike =  new ImageButton(getActivity().getBaseContext());
+            ImageButton btLike = new ImageButton(getActivity().getBaseContext());
 
             TableRow tr = new TableRow(getActivity().getBaseContext());
             TableRow.LayoutParams trLP = new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT,
@@ -112,7 +108,7 @@ public class FeedFragment extends Fragment {
             // Add to layOut
             tr.addView(tvRecipe);
             tr.addView(ivRecipePhoto);
-           // tr.addView(btLike);
+            // tr.addView(btLike);
 
             tbLayout.addView(tr);
 

@@ -1,55 +1,103 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:id="@+id/scrollView"
-    android:layout_marginBottom="56dp"
-    android:fillViewport="true"
-    android:layout_row="0"
-    android:layout_column="0">
-
+<!--<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--xmlns:tools="http://schemas.android.com/tools"-->
+<!--android:layout_width="fill_parent"-->
+<!--android:layout_height="fill_parent"-->
+<!--android:id="@+id/scrollView"-->
+<!--android:layout_marginBottom="56dp"-->
+<!--android:fillViewport="true"-->
+<!--android:layout_row="0"-->
+<!--android:layout_column="0">-->
 <RelativeLayout
-    android:id="@+id/personalfragRelativelayout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.MyCookBook.Fragment.MainActivity">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:baselineAligned="false"
         android:id="@+id/linearLayout1"
-        android:orientation="vertical">
+        android:weightSum="1"
+        android:baselineAligned="false">
 
         <Button
             android:id="@+id/btnDropDownPersonalCategories"
-            android:layout_width="match_parent"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:background="@android:drawable/btn_dropdown"
-            android:text="קטגוריות מועדפות" />
+            android:background="@android:drawable/bottom_bar"
+            android:text="קטגוריות מועדםות"
+            android:layout_below="@+id/btnDropDownPersonalCategories"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_gravity="top"
+            android:layout_weight="0.25"
+            android:clickable="false"
+            android:elegantTextHeight="false"
+            android:ellipsize="middle" />
+        <Button
+            android:id="@+id/btnDropDownPersonalCategoriesNOT"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/bottom_bar"
+            android:text="רכיבים להסתרה "
+            android:layout_below="@+id/btnDropDownPersonalCategories"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_gravity="top"
+            android:layout_weight="0.25"
+            android:clickable="false"
+            android:elegantTextHeight="false"
+            android:ellipsize="middle" />
 
-    <Button
-               android:id="@+id/btnDropDownPersonalCategoriesNOT"
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content"
-               android:background="@android:drawable/btn_dropdown"
-               android:text="רכיבים להסתרה "
-        android:layout_below="@+id/btnDropDownPersonalCategories"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        <Button
+            android:id="@+id/button"
+            android:layout_width="88dp"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/bottom_bar"
+            android:text="הגדרות אשיות"
+            android:layout_below="@+id/btnDropDownPersonalCategories"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_gravity="top"
+            android:layout_weight="0.25" />
 
-</LinearLayout>
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="80dp"
+            android:textSize="@dimen/abc_text_size_button_material"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/bottom_bar"
+            android:text="ספר מתכונים"
+            android:layout_below="@+id/btnDropDownPersonalCategories"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_gravity="top"
+            android:layout_weight="0.25" />
 
-    <TableLayout
-        android:id="@+id/tbPersonalLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+    </LinearLayout>
 
 
-    </TableLayout>
+    <ListView
+    android:id="@+id/listView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+        android:layout_below="@id/linearLayout1"
+        android:layout_gravity="bottom"
+        android:layout_weight="1">
+    </ListView>
+
+    <!--<GridView-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/albumGrid"-->
+        <!--android:layout_below="@+id/linearLayout1"-->
+        <!--android:layout_centerVertical="true"-->
+        <!--android:numColumns="auto_fit"-->
+        <!--android:columnWidth="100dp"-->
+        <!--android:verticalSpacing="5dp"-->
+        <!--android:stretchMode="spacingWidthUniform"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_marginTop="48dp"-->
+        <!--android:layout_gravity="top|center" />-->
 </RelativeLayout>
-</ScrollView>
+    <!--</ScrollView>-->

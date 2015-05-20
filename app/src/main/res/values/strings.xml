@@ -111,6 +111,7 @@
         <item>לחם ומאפים</item>
         <item>פסטה ואורז</item>
     </string-array>
+    <string name="title_activity_cook_book_gallery">CookBookGallery</string>
 
 </resources>
 

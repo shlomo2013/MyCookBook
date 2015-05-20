@@ -16,6 +16,6 @@
         android:id="@+id/fragContainer"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="#ea272626" />
+        android:background="#ae222222" />
 
     </LinearLayout>
