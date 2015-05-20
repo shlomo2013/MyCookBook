@@ -57,4 +57,17 @@ public class Queries {
                         a.saveInBackground();
                     }
     }
+
+    /* Returns the recipies in ParseObject List*/
+    public static List<ParseObject> getUserRecipies(User user){
+        ParseQuery<ParseObject> recQuery = ParseQuery.getQuery("Recipe");
+        recQuery.whereEqualTo("createdBy", user);
+        List<ParseObject> recList = null;
+        try {
+            recList = recQuery.find();
+        }catch(Exception e) {
+            Log.d("Queries Exception","cannot find recipies for user");
+        }
+        return recList;
+    }
 }
