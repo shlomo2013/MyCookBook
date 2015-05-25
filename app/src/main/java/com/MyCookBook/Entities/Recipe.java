@@ -3,7 +3,6 @@ package com.MyCookBook.Entities;
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
-import com.parse.ParseRelation;
 
 import java.util.ArrayList;
 
@@ -30,10 +29,10 @@ public class Recipe  extends ParseObject {
     public Recipe() {
     }
 
-    public void initRecipe(String name,String category,String subCategory,String preparation,String dishType,
+    public void initRecipe(String name, ArrayList<String> categories,String subCategory,String preparation,String dishType,
                            String difficulty,String kitchenType,String diet,String vegetarian,String vegan){
         this.put(Name, name);
-        this.put(Category, category);
+        this.put(Category, categories);
         this.put(SubCategory, subCategory);
         this.put(Preparation, preparation);
         this.put(Groceries, groceries);

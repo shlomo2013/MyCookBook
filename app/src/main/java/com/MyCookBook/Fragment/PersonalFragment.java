@@ -29,6 +29,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.MyCookBook.Activity.CookBookGalleryActivity;
+import com.MyCookBook.CategoriesUtil.DropDownListAdapter;
 import com.example.mycookbook.mycookbook.R;
 
 import java.io.File;
@@ -85,6 +86,8 @@ public class PersonalFragment extends Fragment {
 
     public int thumb[] = { R.mipmap.red_camera_icon, R.mipmap.red_balloon_2_icon,
             R.mipmap.red_balloon_plus_icon , R.mipmap.red_cross_icon ,
+            R.mipmap.red_like_icon ,R.mipmap.red_lock_icon ,
+            R.mipmap.red_like_icon ,R.mipmap.red_lock_icon ,
             R.mipmap.red_like_icon ,R.mipmap.red_lock_icon ,
             R.mipmap.red_unlock_icon , R.mipmap.red_home_icon, };
 

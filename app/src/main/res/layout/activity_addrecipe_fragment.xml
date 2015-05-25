@@ -21,8 +21,8 @@
     <GridLayout   android:id="@+id/GridLayout1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="10dp">
 
         <TableLayout
             android:layout_width="366dp"
@@ -32,6 +32,44 @@
             android:id="@+id/tbIngredients"
             android:layout_weight="0.12"
             android:baselineAligned="false">
+
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="שם מתכון"
+                    android:textDirection="rtl"
+                    android:paddingRight="20dp"
+                    android:id="@+id/tvrRcipeName"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:textStyle="bold"
+                    android:textColor="#ffff4f45"
+                    android:layout_weight="1" />
+
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+                <EditText
+                    android:textDirection="rtl"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
+                    android:ems="10"
+                    android:id="@+id/etRecName"
+                    android:layout_column="0"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1" />
+
+            </TableRow>
 
 
             <TableRow
@@ -69,19 +107,19 @@
                     android:layout_column="0" />
             </TableRow>
 
-        </TableLayout>
+            <!--</TableLayout>-->
 
 
-        <TableLayout
-            android:layout_width="366dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:paddingTop="3dp"
-            android:paddingRight="20dp"
-            android:paddingLeft="20dp"
-            android:id="@+id/tbPicForRecipe"
-            android:layout_weight="0.12"
-            android:baselineAligned="false">
+            <!--<TableLayout-->
+            <!--android:layout_width="366dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:gravity="center"-->
+            <!--android:paddingTop="3dp"-->
+            <!--android:paddingRight="20dp"-->
+            <!--android:paddingLeft="20dp"-->
+            <!--android:id="@+id/tbPicForRecipe"-->
+            <!--android:layout_weight="0.12"-->
+            <!--android:baselineAligned="false">-->
 
             <TableRow
                 android:layout_width="fill_parent"
@@ -119,27 +157,170 @@
                     android:layout_weight="1" />
             </TableRow>
 
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textDirection="rtl"
+                    android:paddingRight="20dp"
+                    android:text="בחר קטגוריה "
+                    android:id="@+id/tvCategory"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:textStyle="bold"
+                    android:textColor="#ffff4f45"
+                    android:layout_weight="1" />
 
+            </TableRow>
+            <!--</TableLayout>-->
 
             <TableRow
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent">
 
-                <Button
-                    android:id="@+id/btnAddCategoryToRecipe"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="בחר קטגוריה"
-                    android:layout_gravity="center_vertical"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_weight="1"
-                    android:layout_column="0"/>
-
-
+                <!--<Button-->
+                <!--android:id="@+id/btnAddCategoryToRecipe"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="בחר קטגוריה"-->
+                <!--android:layout_gravity="center_vertical"-->
+                <!--android:layout_alignParentBottom="true"-->
+                <!--android:layout_alignParentLeft="true"-->
+                <!--android:layout_alignParentStart="true"-->
+                <!--android:layout_weight="1"-->
+                <!--android:layout_column="0"/>-->
             </TableRow>
+        </TableLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="20dp"
+            android:layoutDirection="rtl">
+
+            <ExpandableListView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:id="@+id/elvCategoriess"
+                android:layout_below="@+id/textView4"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:choiceMode="multipleChoice"
+                android:background="@android:drawable/bottom_bar" />
+            <!--</TableRow>-->
+
+            <!--<TableLayout   android:layout_width="366dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:gravity="center"-->
+            <!--android:padding="20dp"-->
+            <!--android:id="@+id/tbIngredients"-->
+            <!--android:layout_weight="0.12"-->
+            <!--android:baselineAligned="false">-->
+
+            <!--<TableRow-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="fill_parent">-->
+
+            <!--</TableRow>-->
+
+            <!--<TableRow-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="fill_parent">-->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="רמת קושי"
+                android:id="@+id/textView5"
+                android:textStyle="bold"
+                android:textColor="#ffff4f45"
+                android:layout_below="@+id/listViewNo"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="right" />
+            <!--</TableRow>-->
+
+            <!--<TableRow-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="fill_parent">-->
+
+            <ExpandableListView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/lvDifficolty"
+                android:layout_below="@+id/textView4"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:choiceMode="multipleChoice"
+                android:clickable="false"
+                android:background="@android:drawable/bottom_bar" />
+            <!--</TableRow>-->
+
+            <!--<TableRow-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="fill_parent">-->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="הגבלות תזונתיות"
+                android:id="@+id/tvVegan"
+                android:paddingBottom="5dp"
+                android:textStyle="bold"
+                android:textColor="#ffff4f45"
+                android:layout_below="@+id/KitchenType"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_weight="1"
+                android:layout_gravity="right" />
+            <!--</TableRow>-->
+            <!--</TableLayout>-->
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:paddingRight="20dp"
+            android:layoutDirection="rtl"
+            android:layout_gravity="center_horizontal">
+            <CheckBox
+                android:layoutDirection="rtl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="צמחוני"
+                android:id="@+id/cbVeg"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="false"
+
+                android:layout_weight="1" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="טבעוני"
+                android:id="@+id/cbVegan"/>
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="דיאטטי"
+                android:id="@+id/cbDiet" />
+        </LinearLayout>
+        <TableLayout
+            android:layout_width="366dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="20dp"
+            android:id="@+id/tbAddRec"
+            android:layout_weight="0.12"
+            android:baselineAligned="false">
             <TableRow
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent">
@@ -156,7 +337,6 @@
                     android:layout_weight="1"
                     android:layout_column="0"/>
             </TableRow>
-
             <TableRow
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent">
@@ -171,9 +351,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
                     android:layout_column="0" />
-
             </TableRow>
-
             <TableRow
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent">
@@ -191,58 +369,9 @@
                     android:layout_column="0"
                     android:text="שמור מתכון" />
 
+
             </TableRow>
-            <TableRow
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="הגבלות תזונתיות"
-                    android:id="@+id/tvVegan"
-                    android:paddingRight="20dp"
-                    android:paddingBottom="5dp"
-                    android:textStyle="bold"
-                    android:textColor="#ffff4f45"
-                    android:layout_below="@+id/KitchenType"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_weight="1" />
-            </TableRow>
-            </TableLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:paddingRight="20dp"
-            android:layoutDirection="rtl"
-            android:layout_gravity="center_horizontal">
-                <CheckBox
-                    android:layoutDirection="rtl"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="צמחוני"
-                    android:id="@+id/cbVeg"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="false"
-
-                    android:layout_weight="1" />
-
-                <CheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="טבעוני"
-                    android:id="@+id/cbVegan"/>
-
-                <CheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="דיאטטי"
-                    android:id="@+id/cbDiet" />
-        </LinearLayout>
+        </TableLayout>
     </GridLayout>
 
 </ScrollView>

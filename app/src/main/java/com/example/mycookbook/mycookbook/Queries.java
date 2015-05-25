@@ -2,7 +2,6 @@ package com.example.mycookbook.mycookbook;
 
 import android.util.Log;
 
-import com.MyCookBook.Entities.Recipe;
 import com.MyCookBook.Entities.User;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -20,19 +19,22 @@ public class Queries {
 
     public static void updateMyUser(String userId){
         ParseQuery<ParseObject> query = ParseQuery.getQuery("User");
-        query.whereEqualTo("UserId", userId);
-        query.findInBackground(new FindCallback<ParseObject>() {
-            public void done(List<ParseObject> userList, ParseException e) {
-                if (e == null) {
-                    myUser = (User)userList.get(0);
-                    Log.d("User", "Retrieved " + myUser.getObjectId() + " scores");
-                    //success = true;
-                } else {
-                    myUser = null;
-                    Log.d("score", "Error: " + e.getMessage());
+        if(userId != null) {
+            query.whereEqualTo("UserId", userId);
+
+            query.findInBackground(new FindCallback<ParseObject>() {
+                public void done(List<ParseObject> userList, ParseException e) {
+                    if (e == null) {
+                        myUser = (User) userList.get(0);
+                        Log.d("User", "Retrieved " + myUser.getObjectId() + " scores");
+                        //success = true;
+                    } else {
+                        myUser = null;
+                        Log.d("score", "Error: " + e.getMessage());
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     public static User getMyUser(){
@@ -47,6 +49,7 @@ public class Queries {
         ParseQuery<ParseObject> recQuery = ParseQuery.getQuery("Recipe");
         recQuery.whereEqualTo("createdBy", user);
         List<ParseObject> recList = null;
+
         try {
             recList = recQuery.find();
         }catch(Exception e) {
