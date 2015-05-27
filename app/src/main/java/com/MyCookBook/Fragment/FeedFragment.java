@@ -17,6 +17,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.MyCookBook.Entities.Recipe;
 import com.example.mycookbook.mycookbook.R;
 
 public class FeedFragment extends Fragment {
@@ -83,6 +84,14 @@ public class FeedFragment extends Fragment {
             tr.setLayoutParams(trLP);
             //tr.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
             tr.setGravity(Gravity.RIGHT);
+            tr.setClickable(true);
+            Recipe r = new Recipe();
+            tr.setId(Integer.parseInt(r.getObjectId()));
+//            tr.setOnClickListener(new rowOnClickListener() {
+//                public void onClick(View v) {
+//
+//                }
+//            });
 
             // Handle recipe text
             tvRecipe.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
@@ -96,6 +105,8 @@ public class FeedFragment extends Fragment {
             ivRecipePhoto.setMaxHeight(350);
             ivRecipePhoto.setAdjustViewBounds(true);
             ivRecipePhoto.setImageResource(R.drawable.com_facebook_profile_picture_blank_square);
+            ivRecipePhoto.setClickable(true);
+            ivRecipePhoto.setOnClickListener(photoOnClickListener);
 
             // Handle like button
             btLike.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
@@ -129,6 +140,26 @@ public class FeedFragment extends Fragment {
             tbLayout.addView(tr2);
         }
 
+        int rowNumCount = tbLayout.getChildCount();
+        for(int count = 1; count < rowNumCount; count++) {
+            View v = tbLayout.getChildAt(count);
+            if(v instanceof TableRow) {
+                final TableRow clickRow = (TableRow)v;
+                int rowCount = clickRow.getChildCount();
+                v.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+
+//                        Context context = getTabHost().getContext();
+//                        TableRow row = (TableRow)v;
+//                        TextView tv = (TextView)row.getChildAt(0);
+//                        CharSequence text = "Lot VALUE Selected: " + tv.getText();
+//                        int duration = Toast.LENGTH_SHORT;
+//                        Toast.makeText(context, text, duration).show();
+                    }
+                });
+            }
+        }
+
         /*TextView tvIngredients = new TextView(getActivity().getBaseContext());
         TableRow tr2 = new TableRow(getActivity().getBaseContext());
         TableRow.LayoutParams trLP2 = new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT,
@@ -145,8 +176,20 @@ public class FeedFragment extends Fragment {
         tr2.addView(tvIngredients);
         tbLayout.addView(tr2); */
 
+
+
         return rootView;
     }
+
+
+    View.OnClickListener photoOnClickListener = new View.OnClickListener(){
+        @Override
+        public void onClick(View v){
+            tbLayout = (TableLayout) v.findViewById(R.id.tbFeed);
+            //tbLayout.setOnClickListener();
+        }
+
+    };
 
 
 }

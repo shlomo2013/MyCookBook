@@ -19,20 +19,20 @@ public class Queries {
     static boolean success;
 
     public static void updateMyUser(String userId){
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("User");
-        query.whereEqualTo("UserId", userId);
-        query.findInBackground(new FindCallback<ParseObject>() {
-            public void done(List<ParseObject> userList, ParseException e) {
-                if (e == null) {
-                    myUser = (User)userList.get(0);
-                    Log.d("User", "Retrieved " + myUser.getObjectId() + " scores");
-                    //success = true;
-                } else {
-                    myUser = null;
-                    Log.d("score", "Error: " + e.getMessage());
-                }
-            }
-        });
+//        ParseQuery<ParseObject> query = ParseQuery.getQuery("User");
+//        query.whereEqualTo("UserId", userId);
+//        query.findInBackground(new FindCallback<ParseObject>() {
+//            public void done(List<ParseObject> userList, ParseException e) {
+//                if (e == null) {
+//                    myUser = (User)userList.get(0);
+//                    Log.d("User", "Retrieved " + myUser.getObjectId() + " scores");
+//                    //success = true;
+//                } else {
+//                    myUser = null;
+//                    Log.d("score", "Error: " + e.getMessage());
+//                }
+//            }
+//        });
     }
 
     public static User getMyUser(){

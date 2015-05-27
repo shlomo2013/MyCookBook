@@ -162,8 +162,8 @@ import java.util.ArrayList;
 
         private void SaveRecipe() {
             Recipe r = new Recipe();
-            r.initRecipe("Dana's recipe","baking","cakes","you take the egges..");
-            r.addRecipe(Queries.getMyUser());
+            //r.initRecipe("Dana's recipe","baking","cakes","you take the egges..");
+            //r.addRecipe(Queries.getMyUser());
         }
 
         private void selectImage() {
