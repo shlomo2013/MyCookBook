@@ -9,6 +9,5 @@
     android:paddingTop="8dp"
     android:text="Test"
     android:textSize="14sp"
-    android:textStyle="bold"
-    android:drawableRight="@mipmap/ic_launcher"/>
+    android:textStyle="bold"/>
     <!--android:textAlignment="textEnd"/>-->

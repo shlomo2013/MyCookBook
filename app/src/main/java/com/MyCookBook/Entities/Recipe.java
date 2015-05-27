@@ -19,20 +19,76 @@ public class Recipe  extends ParseObject {
     public static final String DishType = "DishType";
     public static final String Difficulty = "Difficulty";
     public static final String KitchenType = "KitchenType";
+    // TODO Should be boolean
     public static final String Diet = "Diet";
+    // TODO Should be boolean
     public static final String Vegetarian = "Vegetarian";
+    // TODO Should be boolean
     public static final String Vegan = "Vegan";
     public static final String RecipePic = "RecipePic.jpg";
     ArrayList<Grocery> groceries = new ArrayList<Grocery>();
 
+    // TODO מתכון ע״פ קוד מתכון
 
     public Recipe() {
     }
 
-    public void initRecipe(String name, ArrayList<String> categories,String subCategory,String preparation,String dishType,
+    public static String getName() {
+        return Name;
+    }
+
+    public static String getCategory() {
+        return Category;
+    }
+
+    public static String getSubCategory() {
+        return SubCategory;
+    }
+
+    public static String getPreparation() {
+        return Preparation;
+    }
+
+    public static String getGroceries() {
+        return Groceries;
+    }
+
+    public void setGroceries(ArrayList<Grocery> groceries) {
+        this.groceries = groceries;
+    }
+
+    public static String getDishType() {
+        return DishType;
+    }
+
+    public static String getDifficulty() {
+        return Difficulty;
+    }
+
+    public static String getKitchenType() {
+        return KitchenType;
+    }
+
+    public static String getDiet() {
+        return Diet;
+    }
+
+    public static String getVegetarian() {
+        return Vegetarian;
+    }
+
+    public static String getVegan() {
+        return Vegan;
+    }
+
+    public static String getRecipePic() {
+        return RecipePic;
+    }
+
+    public void initRecipe(String name, String category ,String subCategory,String preparation,String dishType,
                            String difficulty,String kitchenType,String diet,String vegetarian,String vegan){
         this.put(Name, name);
-        this.put(Category, categories);
+        this.put(Category, category);
         this.put(SubCategory, subCategory);
         this.put(Preparation, preparation);
         this.put(Groceries, groceries);
@@ -46,6 +102,12 @@ public class Recipe  extends ParseObject {
     }
 
     public void addRecipe(User user) {
+        this.put("createdBy", user);
+        this.saveInBackground();
+    }
+
+        // TODO delete after user is fixed
+    public void addRecipe(String user) {
         this.put("createdBy", user);
         this.saveInBackground();
     }

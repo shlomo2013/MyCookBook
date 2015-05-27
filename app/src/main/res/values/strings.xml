@@ -21,7 +21,7 @@
           <item>חופן</item>
       </string-array>
 
-    <string-array name="personal_pref_array">
+    <string-array name="recipie_category">
               <item>איטלקי</item>
               <item>סיני</item>
               <item>תאילנדי</item>
@@ -58,27 +58,27 @@
     </string-array>
 
     <string-array name="subCategorySweets">
-        <item></item>
+        <item>בחר</item>
         <item>עוגות</item>
         <item>עוגיות</item>
         <item>שוקולדים</item>
     </string-array>
 
     <string-array name="subCategorySoop">
-        <item></item>
+        <item>בחר</item>
         <item>צח</item>
         <item>סמיך</item>
         <item>חלבי</item>
     </string-array>
 
     <string-array name="subCategoryBreakfest">
-        <item></item>
+        <item>בחר</item>
         <item>ישראלית</item>
         <item>שקשוקה</item>
     </string-array>
 
     <string-array name="subCategoryBread">
-        <item></item>
+        <item>בחר</item>
         <item>לבן</item>
         <item>כפרי</item>
         <item>קמח מלא</item>
@@ -87,14 +87,14 @@
     </string-array>
 
     <string-array name="subCategoryDrinks">
-        <item></item>
+        <item>בחר</item>
         <item>מיצים</item>
         <item>שייקים</item>
         <item>אלכוהולי</item>
     </string-array>
 
     <string-array name="Levels">
-        <item></item>
+        <item>בחר</item>
         <item>מתחיל</item>
         <item>במתקדם</item>
         <item>מומחה</item>
@@ -102,7 +102,7 @@
     </string-array>
 
     <string-array name="categories">
-        <item></item>
+        <item>בחר</item>
         <item>מתוקים</item>
         <item>מרקים</item>
         <item>סלטים</item>

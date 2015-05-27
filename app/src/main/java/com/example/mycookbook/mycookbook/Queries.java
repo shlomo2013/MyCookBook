@@ -73,4 +73,18 @@ public class Queries {
         }
         return recList;
     }
+
+
+    // TODO delete after user is fixed
+    public static List<ParseObject> getUserRecipies(String user){
+            ParseQuery<ParseObject> recQuery = ParseQuery.getQuery("Recipe");
+            recQuery.whereEqualTo("createdBy", user);
+            List<ParseObject> recList = null;
+            try {
+                recList = recQuery.find();
+            }catch(Exception e) {
+                Log.d("Queries Exception","cannot find recipies for user");
+            }
+            return recList;
+        }
 }

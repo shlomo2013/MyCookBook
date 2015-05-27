@@ -31,9 +31,11 @@ import android.widget.TextView;
 import com.MyCookBook.Activity.CookBookGalleryActivity;
 import com.MyCookBook.CategoriesUtil.DropDownListAdapter;
 import com.example.mycookbook.mycookbook.R;
+import com.parse.ParseObject;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by nirgadasi on 4/29/15.
@@ -54,7 +56,7 @@ public class PersonalFragment extends Fragment {
     ArrayList<CheckBox> alFoodCategory;
     ArrayList<CheckBox> alNoFoodCategory;
     DropDownListAdapter mAdapter;
-
+    List<ParseObject> lrecipieList;
     Integer[] pics = {R.mipmap.cookbook_poster,
             R.mipmap.ic_launcher,
             R.mipmap.red_address_book_icon,
@@ -72,28 +74,33 @@ public class PersonalFragment extends Fragment {
     //////////******************************************************************//////
     //////////******************************************************************//////
 
-   public ListView lv;
+   public ListView lvMyAlbums;
+   public ListView lvAllAlbums;
 
     // Create Array's of titles, descriptions and thumbs resource id's:
-    public String title[] = { "Cup Cake", "Donut", "Eclair", "Froyo",
-            "Ginger Bread", "Honey Comb", "Icecream Sandwich", "Jelly Bean",
-            "Lazania", "Pizza", "Icecream", "Yolo" };
+    public String myTitle[] = { "Cup Cake", "Donut", "Eclair", "Froyo",
+            "Ginger Bread", "Honey Comb", "Icecream Sandwich", "Jelly Bean"};
 
-    public String desc[] = { "משפחה", "חברים",
+    public String myDesc[] = { "משפחה", "חברים",
             "מרוקאי", "תמני", "קינוחים",
-            "פייסבוק", "צבא", "פומבי", "איטלקי",
-            "בשר", "צמחוני", "טבעוני" };
+            "פייסבוק", "צבא", "פומבי"};
 
-    public int thumb[] = { R.mipmap.red_camera_icon, R.mipmap.red_balloon_2_icon,
+    public int MyAlbumesPics[] = { R.mipmap.red_camera_icon, R.mipmap.red_balloon_2_icon,
             R.mipmap.red_balloon_plus_icon , R.mipmap.red_cross_icon ,
             R.mipmap.red_like_icon ,R.mipmap.red_lock_icon ,
-            R.mipmap.red_like_icon ,R.mipmap.red_lock_icon ,
-            R.mipmap.red_like_icon ,R.mipmap.red_lock_icon ,
-            R.mipmap.red_unlock_icon , R.mipmap.red_home_icon, };
+            R.mipmap.red_like_icon ,R.mipmap.red_lock_icon };
 
+    public int AllAlbumesPics[] = { 
+               R.mipmap.red_like_icon ,R.mipmap.red_lock_icon ,
+               R.mipmap.red_unlock_icon , R.mipmap.red_home_icon, };
 
+    public String allTitle[] = {  "Lazania", "Pizza", "Icecream", "Yolo" };
+    public String allDesc[] = { "איטלקי", "בשר", "צמחוני", "טבעוני" };
     //////////******************************************************************//////
     //////////******************************************************************//////
+
+
+
     public PersonalFragment() {
 
     }
@@ -116,10 +123,11 @@ public class PersonalFragment extends Fragment {
         //////////******************************************************************//////
         //////////******************************************************************//////
         // Initialize the variables:
-        lv = (ListView) rootView.findViewById(R.id.listView);
+        lvMyAlbums = (ListView) rootView.findViewById(R.id.lvMyAlbumes);
+        lvAllAlbums = (ListView) rootView.findViewById(R.id.lvAllAlbumes);
 
         // Set an Adapter to the ListView
-        lv.setAdapter(new VersionAdapter(inflater));
+        lvMyAlbums.setAdapter(new VersionAdapter(inflater, MyAlbumesPics, myDesc, myTitle));
 
         // Set on item click listener to the ListView
 
@@ -146,18 +154,40 @@ public class PersonalFragment extends Fragment {
 //            }
 //        });
 
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+        lvMyAlbums.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
                 Intent i = new Intent(getActivity().getApplicationContext(), CookBookGalleryActivity.class);
+                // TODO dana :  שליחה של המזהה עאלבום על מנת לשלוף את כל המתכונים במתכון
+                i.putExtra("AlbumID", "paramValue");
                 startActivity(i);
             }
         });
 
+//        lvAllAlbums.setAdapter(new VersionAdapter(inflater, AllAlbumesPics, allDesc, allTitle));
+//        lvAllAlbums.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//
+//                  @Override
+//                  public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//
+//                      Intent i = new Intent(getActivity().getApplicationContext(), CookBookGalleryActivity.class);
+//                      // TODO dana :  שליחה של המזהה עאלבום על מנת לשלוף את כל המתכונים במתכון
+//                      i.putExtra("AlbumID", "paramValue");
+//                      startActivity(i);
+//                  }
+//              });
+
         //////////******************************************************************//////
         //////////******************************************************************//////
 
+
+        // TODO getUserRecipies throws exeption
+//        lrecipieList = Queries.getUserRecipies("qbGQkwsX8G");
+//        ParseObject po = (ParseObject)lrecipieList.get(0);
+//        Recipe r = (Recipe)lrecipieList.get(0);
+//        po.getObjectId();
 
 
 
@@ -246,7 +276,6 @@ public class PersonalFragment extends Fragment {
         pw.setTouchInterceptor(new OnTouchListener() {
 
             public boolean onTouch(View v, MotionEvent event) {
-                // TODO Auto-generated method stub
                 if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
                     pw.dismiss();
                     return true;
@@ -315,7 +344,6 @@ public class PersonalFragment extends Fragment {
                 btnDismiss.setOnClickListener(new Button.OnClickListener(){
                     @Override
                     public void onClick(View v) {
-                        // TODO Auto-generated method stub
                         pw.dismiss();
                     }});
 
@@ -332,7 +360,7 @@ public class PersonalFragment extends Fragment {
             public void onClick(View arg0) {
 
                 // get all of the categories
-                initCategories(lvDropDownList , alFoodCategory, R.array.personal_pref_array);
+                initCategories(lvDropDownList , alFoodCategory, R.array.recipie_category);
 
                 // set the pop up window
                 initiatePopUp();
@@ -342,7 +370,6 @@ public class PersonalFragment extends Fragment {
                 btnDismiss.setOnClickListener(new Button.OnClickListener(){
                     @Override
                     public void onClick(View v) {
-                        // TODO Auto-generated method stub
                         pw.dismiss();
                     }});
 
@@ -353,31 +380,43 @@ public class PersonalFragment extends Fragment {
 
     }
 
+
+
+
+
+
+
+
+
+
 // Create an Adapter Class extending the BaseAdapter
 class VersionAdapter extends BaseAdapter {
 
     private LayoutInflater layoutInflater;
+    private int[] picItems;
+    private String[] itemsDesc;
+    private String[] itemsTitle;
 
-    public VersionAdapter(LayoutInflater inflater) {
-// TODO Auto-generated constructor stub
-        layoutInflater = inflater;
+    public VersionAdapter(LayoutInflater inflater, int[] itemsPIc ,String[] itemsDesc ,String[] itemsTitle) {
+        this.layoutInflater = inflater;
+        this.picItems = itemsPIc;
+        this.itemsDesc = itemsDesc;
+        this.itemsTitle = itemsTitle;
     }
 
     @Override
     public int getCount() {
 // Set the count value to the total number of items in the Array
-        return title.length;
+        return myTitle.length;
     }
 
     @Override
     public Object getItem(int position) {
-// TODO Auto-generated method stub
         return position;
     }
 
     @Override
     public long getItemId(int position) {
-// TODO Auto-generated method stub
         return position;
     }
 
@@ -397,9 +436,9 @@ class VersionAdapter extends BaseAdapter {
         TextView tvDesc = (TextView) listItem.findViewById(R.id.desc);
 
 // Set the views in the layout
-        iv.setBackgroundResource(thumb[pos]);
-        tvTitle.setText(title[pos]);
-        tvDesc.setText(desc[pos]);
+        iv.setBackgroundResource(picItems[pos]);
+        tvTitle.setText(itemsTitle[pos]);
+        tvDesc.setText(itemsDesc[pos]);
 
         return listItem;
     }

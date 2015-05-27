@@ -32,13 +32,31 @@ public class CookBookGalleryActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cook_book_gallery);
 
+        Bundle extras = getIntent().getExtras();
+        if (extras != null)
+        {
+            if(extras.getString("strName")!= null)
+            {
+                // TODO dana: להשתמש בפונקציה ששולפת את המתכומנים לפי אלבום
+
+            }
+        }
+        else
+        {
+            //..oops!
+        }
+
+
         Gallery g = (Gallery)findViewById(R.id.gallery);
+        iv = (ImageView)findViewById(R.id.tempImageView);
+
         // Create adapter gallery
         g.setAdapter( new ImageAdapter(this));
-        iv = (ImageView)findViewById(R.id.tempImageView);
+
         g.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // TODO dana: לקחת את המתכון עלפי התמונה שלחצה ולהקפיץ מסף של מתכון
                 Toast.makeText(getApplicationContext(), "מתכון:" , Toast.LENGTH_SHORT);
                 iv.setImageResource(thumb[position]);
             }
