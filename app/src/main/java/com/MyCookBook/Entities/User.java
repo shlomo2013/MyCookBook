@@ -1,16 +1,10 @@
 package com.MyCookBook.Entities;
 
-import android.util.Log;
-
-import com.parse.FindCallback;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.ParseRelation;
 import com.parse.SaveCallback;
-
-import java.util.List;
 
 /**
  * Created by shirabd on 09/05/2015.
@@ -22,6 +16,10 @@ public class User extends ParseObject {
     public static final String RECIPES="Recipes";
 
     //ParseRelation<ParseObject> recipesRel = this.getRelation(RECIPES);
+    // TODO הוספה של פונקציה אשר שניגש לקווריז ומחזיר:  Arraylisr<Recipies>
+    // TODO פונקציה שמחזירה רשימה של אלבומים באותה צורה
+    // TODO פונקציה שמחזירה רשימה של מתכונים המשוייכים לאלבום מסויים באותה צורה
+    // TODO פונקציה שמחזירה רשימה של יוזרים המורשים לאלבום מסויים באותה צורה
 
     public User() {
     }

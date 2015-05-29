@@ -1,36 +1,24 @@
 package com.MyCookBook.Fragment;
 
-import android.app.LauncherActivity;
-import android.content.ClipData;
-import android.content.DialogInterface;
+import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.ArrayRes;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.app.Fragment;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
-import android.widget.ExpandableListView;
 import android.widget.Toast;
 
 import com.example.mycookbook.mycookbook.R;
 
-import java.sql.Array;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
 
 import static com.example.mycookbook.mycookbook.R.array.personal_no_pref_array;
 
@@ -111,11 +99,11 @@ public class SearchFragment extends Fragment {
 
         final Spinner dropdownKitchenType = (Spinner) rootView.findViewById(R.id.KitchenType);
         KitchenTypeId = dropdownKitchenType.getId();
-        createSpinner((dropdownKitchenType), R.array.personal_pref_array);
+        createSpinner((dropdownKitchenType), R.array.recipie_category);
 
         //String[] dataList = R.array.personal_no_pref_array;
 
-        myListView = (ListView) rootView.findViewById(R.id.listView);
+        myListView = (ListView) rootView.findViewById(R.id.lvMyAlbumes);
         final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity().getBaseContext(),
                 personal_no_pref_array,
                 android.R.layout.simple_list_item_multiple_choice);

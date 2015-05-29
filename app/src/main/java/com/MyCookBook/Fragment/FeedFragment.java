@@ -86,7 +86,7 @@ public class FeedFragment extends Fragment {
             tr.setGravity(Gravity.RIGHT);
             tr.setClickable(true);
             Recipe r = new Recipe();
-            tr.setId(Integer.parseInt(r.getObjectId()));
+        //    tr.setId(Integer.parseInt(r.getObjectId()));
 //            tr.setOnClickListener(new rowOnClickListener() {
 //                public void onClick(View v) {
 //
