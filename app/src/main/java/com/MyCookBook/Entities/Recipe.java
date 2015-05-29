@@ -1,5 +1,7 @@
 package com.MyCookBook.Entities;
 
+import android.util.Log;
+
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
@@ -30,19 +32,26 @@ public class Recipe  extends ParseObject {
     public Recipe() {
     }
 
+    private void putOrDefault(String att,String value){
+        if(value==null){
+            this.put(att,"");
+        }else{
+            this.put(att,value);
+        }
+    }
     public void initRecipe(String name,String category,String subCategory,String preparation,String dishType,
                            String difficulty,String kitchenType,String diet,String vegetarian,String vegan){
-        this.put(Name, name);
-        this.put(Category, category);
-        this.put(SubCategory, subCategory);
-        this.put(Preparation, preparation);
-        this.put(Groceries, groceries);
-        this.put(DishType, dishType);
-        this.put(Difficulty, difficulty);
-        this.put(KitchenType, kitchenType);
-        this.put(Diet, diet);
-        this.put(Vegetarian, vegetarian);
-        this.put(Vegan, vegan);
+        this.putOrDefault(Name, name);
+        this.putOrDefault(Category, category);
+        this.putOrDefault(SubCategory, subCategory);
+        this.putOrDefault(Preparation, preparation);
+        //this.putOrDefault(Groceries, groceries);
+        this.putOrDefault(DishType, dishType);
+        this.putOrDefault(Difficulty, difficulty);
+        this.putOrDefault(KitchenType, kitchenType);
+        this.putOrDefault(Diet, diet);
+        this.putOrDefault(Vegetarian, vegetarian);
+        this.putOrDefault(Vegan, vegan);
         this.saveInBackground();
     }
 
@@ -67,5 +76,8 @@ public class Recipe  extends ParseObject {
         file.saveInBackground();
         this.put(RecipePic,file);
         this.saveInBackground();
+    }
+    public String getName(){
+        return this.getString(Name);
     }
 }

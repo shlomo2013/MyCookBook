@@ -162,32 +162,19 @@ public class connAct extends Activity {
         intent = new Intent(this, MainActivity.class);
         intent.putExtra("faceUser",accessToken);
 
-        myUser = new User();
+/*        myUser = new User();
         myUser.setUserId(accessToken.getUserId());
         myUser.saveInBackground();
-        Log.d("create User ", "after");
+        Log.d("create User ", "after");*/
 
-        Recipe r = new Recipe();
-        r.put("name","r First");
-        r.put("Type","r First");
-        r.saveInBackground();
-        r.addRecipe(myUser);
+        Queries.isUserAlreadyExists(accessToken.getUserId());
 
-
-        Recipe d = new Recipe();
-        d.put("name","d first");
-        d.put("Type","d first");
-        d.saveInBackground();
-        d.addRecipe(myUser);
-
-        myUser.saveInBackground();
-
-        intent.putExtra("myUserId",myUser.getUserId());
+        intent.putExtra("myUserId",Queries.getMyUser().getUserId());
 
 
 
 
-        ParseQuery<ParseObject> recQuery = ParseQuery.getQuery("Recipe");
+/*        ParseQuery<ParseObject> recQuery = ParseQuery.getQuery("Recipe");
         recQuery.whereEqualTo("createdBy", myUser);
 
         recQuery.findInBackground(new FindCallback<ParseObject>() {
@@ -205,7 +192,7 @@ public class connAct extends Activity {
                                 recipe.saveInBackground();
                                 Log.d("post", "retrieved a related post");
                             }
-*/
+
                 } else {
                     Log.d("score", "Error: " + e.getMessage());
                 }
@@ -213,7 +200,7 @@ public class connAct extends Activity {
 
             }
         });
-
+*/
         startActivity(intent);
     }
     @Override

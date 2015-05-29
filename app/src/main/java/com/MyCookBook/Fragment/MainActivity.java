@@ -28,6 +28,7 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static android.widget.ImageButton.*;
@@ -43,17 +44,17 @@ public class MainActivity extends ActionBarActivity {
     ImageButton btnLogOff;
     String myUserId;
 
-    private void setMyUserId(Bundle savedInstanceState){
+    private void setMyUserId(Bundle savedInstanceState) {
         String newString;
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
-            if(extras == null) {
-                newString= null;
+            if (extras == null) {
+                newString = null;
             } else {
-                newString= extras.getString("myUserId");
+                newString = extras.getString("myUserId");
             }
         } else {
-            newString= (String) savedInstanceState.getSerializable("myUserId");
+            newString = (String) savedInstanceState.getSerializable("myUserId");
         }
         myUserId = newString;
     }
@@ -64,8 +65,24 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
         setMyUserId(savedInstanceState);
         Queries.updateMyUser(myUserId);
+        Log.d("shay","n");
+        Log.d("User Object is:",Queries.getMyUser().getObjectId());
+        Log.d("shay","y");
 
-        Queries.updateTypeRecipes(Recipe.Category,"jjjjjjj",Queries.getMyUser());
+        Recipe r = new Recipe();
+        r.initRecipe("Shira Recipe",null,"italian","cook mother fucker","small","hard ptstsot"," "," "," "," ");
+        r.saveInBackground();
+        r.addRecipe(Queries.getMyUser());
+
+
+        ArrayList<Recipe> recipies = Queries.getUserRecipies(Queries.getMyUser());
+
+        for(Recipe rec:recipies){
+            Log.d("recipe namush new: ",rec.getString("Category"));
+        }
+
+    //Queries.updateTypeRecipes(Recipe.Category,"jjjjjjj",Queries.getMyUser());
+
 
         frag = new FeedFragment();
         fragTransaction = getFragmentManager().beginTransaction().add(R.id.fragContainer, frag);
@@ -74,12 +91,8 @@ public class MainActivity extends ActionBarActivity {
         frag = new MenuFragment();
         fragTransaction = getFragmentManager().beginTransaction().add(R.id.menuFrag, frag);
         fragTransaction.commit();
-
-    }
-
-
 }
-       // return view;//super.onCreateView(inflater, container, savedInstanceState);
+    // return view;//super.onCreateView(inflater, container, savedInstanceState);
 
 
 /*
@@ -129,3 +142,4 @@ public class MainActivity extends ActionBarActivity {
 */
 
 
+}

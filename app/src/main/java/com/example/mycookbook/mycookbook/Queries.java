@@ -9,6 +9,7 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,20 +20,38 @@ public class Queries {
     static boolean success;
 
     public static void updateMyUser(String userId){
-//        ParseQuery<ParseObject> query = ParseQuery.getQuery("User");
-//        query.whereEqualTo("UserId", userId);
-//        query.findInBackground(new FindCallback<ParseObject>() {
-//            public void done(List<ParseObject> userList, ParseException e) {
-//                if (e == null) {
-//                    myUser = (User)userList.get(0);
-//                    Log.d("User", "Retrieved " + myUser.getObjectId() + " scores");
-//                    //success = true;
-//                } else {
-//                    myUser = null;
-//                    Log.d("score", "Error: " + e.getMessage());
-//                }
-//            }
-//        });
+        List<ParseObject> userList = null;
+        Log.d("userId= " ,userId);
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("User");
+        query.whereEqualTo("UserId", userId);
+        try {
+            userList = query.find();
+        }catch (Exception e){
+            myUser = null;
+            Log.d("score", "Error: " + e.getMessage());
+        }
+        Log.d("search=","success");
+        myUser = (User)userList.get(userList.size()-1);
+        Log.d("User", "Retrieved " + myUser.getObjectId() + " name=" + myUser.getUserId());
+
+        /*
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> userList, ParseException e) {
+                Log.d("search Exception-",e.getMessage());
+                if (e == null) {
+                    Log.d("search=","success");
+                    myUser = (User)userList.get(userList.size()-1);
+                    Log.d("User", "Retrieved " + myUser.getObjectId() + " name=" + myUser.getUserId());
+                    //success = true;
+                } else {
+                    Log.d("search=","falied");
+                    myUser = null;
+                    Log.d("score", "Error: " + e.getMessage());
+                }
+            }
+        });
+*/
+        Log.e("search=","end");
     }
 
     public static User getMyUser(){
@@ -59,7 +78,8 @@ public class Queries {
     }
 
     /* Returns the recipies in ParseObject List*/
-    public static List<ParseObject> getUserRecipies(User user){
+    public static ArrayList<Recipe> getUserRecipies(User user){
+        ArrayList<Recipe> returnRec = new ArrayList<Recipe>();
         ParseQuery<ParseObject> recQuery = ParseQuery.getQuery("Recipe");
         recQuery.whereEqualTo("createdBy", user);
         List<ParseObject> recList = null;
@@ -68,6 +88,32 @@ public class Queries {
         }catch(Exception e) {
             Log.d("Queries Exception","cannot find recipies for user");
         }
-        return recList;
+        Log.d("Number of rec:",String.valueOf(recList.size()));
+
+        for (ParseObject rec:recList){
+            returnRec.add((Recipe)rec);
+        }
+        return returnRec;
+    }
+
+    public static void isUserAlreadyExists(String userId){
+        List<ParseObject> userList = null;
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("User");
+        query.whereEqualTo("UserId", userId);
+        try {
+            userList = query.find();
+        }catch (Exception e){
+            myUser = null;
+            Log.d("score", "Error: " + e.getMessage());
+        }
+        if(userList.size()!=0) {
+            myUser = (User) userList.get(userList.size() - 1);
+            Log.d("User", "already exists " + myUser.getObjectId() + " name=" + myUser.getUserId());
+        }else{
+            myUser = new User();
+            myUser.setUserId(userId);
+            myUser.saveInBackground();
+            Log.d("User", " new User was created " + myUser.getObjectId() + " name=" + myUser.getUserId());
+        }
     }
 }

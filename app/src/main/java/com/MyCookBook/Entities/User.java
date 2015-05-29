@@ -40,7 +40,13 @@ public class User extends ParseObject {
         return recQuery;
     }
 
-
+    private void putOrDefault(String att,String value){
+        if(value==null){
+            this.put(att,"");
+        }else{
+            this.put(att,value);
+        }
+    }
 
     //public ParseRelation getRecip
 
