@@ -39,19 +39,24 @@ public class Recipe  extends ParseObject {
             this.put(att,value);
         }
     }
+
+    private void putBoolean(String att,boolean value){
+        this.put(att,String.valueOf(value));
+    }
+
     public void initRecipe(String name,String category,String subCategory,String preparation,String dishType,
-                           String difficulty,String kitchenType,String diet,String vegetarian,String vegan){
-        this.putOrDefault(Name, name);
-        this.putOrDefault(Category, category);
-        this.putOrDefault(SubCategory, subCategory);
-        this.putOrDefault(Preparation, preparation);
+                           String difficulty,String kitchenType,boolean diet,boolean vegetarian,boolean vegan){
+        setName(name);
+        setCategory(category);
+        setSubCategory(subCategory);
+        setPreparation(preparation);
         //this.putOrDefault(Groceries, groceries);
-        this.putOrDefault(DishType, dishType);
-        this.putOrDefault(Difficulty, difficulty);
-        this.putOrDefault(KitchenType, kitchenType);
-        this.putOrDefault(Diet, diet);
-        this.putOrDefault(Vegetarian, vegetarian);
-        this.putOrDefault(Vegan, vegan);
+        setDishType(dishType);
+        setDifficulty(difficulty);
+        setKitchenType(kitchenType);
+        setDiet(diet);
+        setVegetarian(vegetarian);
+        setVegan(vegan);
         this.saveInBackground();
     }
 
@@ -77,7 +82,74 @@ public class Recipe  extends ParseObject {
         this.put(RecipePic,file);
         this.saveInBackground();
     }
+
     public String getName(){
         return this.getString(Name);
+    }
+
+    public String getCategory(){
+        return this.getString(Category);
+    }
+
+    public String getSubCategory(){
+        return this.getString(SubCategory);
+    }
+
+    public String getPreparation(){
+        return this.getString(Preparation);
+    }
+
+    public String getDishType(){
+        return this.getString(DishType);
+    }
+
+    public String getDifficulty(){
+        return this.getString(Difficulty);
+    }
+
+    public String getKitchenType(){
+        return this.getString(KitchenType);
+    }
+
+    public boolean getDiet(){
+        return Boolean.valueOf(this.getString(Diet));
+    }
+
+    public boolean getVegetarian(){
+        return Boolean.valueOf(this.getString(Vegetarian));
+    }
+    public boolean getVegan(){
+        return Boolean.valueOf(this.getString(Vegan));
+    }
+
+    public void setName(String param){
+        putOrDefault(Name,param);
+    }
+    public void setCategory(String param){
+        putOrDefault(Category,param);
+    }
+    public void setSubCategory(String param){
+        putOrDefault(SubCategory,param);
+    }
+    public void setPreparation(String param){
+        putOrDefault(Preparation,param);
+    }
+    public void setDishType(String param){
+        putOrDefault(DishType,param);
+    }
+    public void setDifficulty(String param){
+        putOrDefault(Difficulty,param);
+    }
+    public void setKitchenType(String param){
+        putOrDefault(KitchenType,param);
+    }
+    public void setDiet(boolean param){
+        putBoolean(Diet,param);
+    }
+    public void setVegetarian(boolean param){
+        putBoolean(Vegetarian,param);
+    }
+    public void setVegan(boolean param){
+        putBoolean(Vegan,param);
     }
 }

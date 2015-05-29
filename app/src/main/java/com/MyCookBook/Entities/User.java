@@ -24,12 +24,6 @@ public class User extends ParseObject {
     public User() {
     }
 
-    public String getUserId() {
-        return getString(USER_ID);
-    }
-    public void setUserId(String value) {
-        put(USER_ID, value);
-    }
 
     public ParseQuery<ParseObject> findMyRecipies(User user){
         ParseQuery<ParseObject> recQuery = ParseQuery.getQuery("Recipe");
@@ -45,8 +39,6 @@ public class User extends ParseObject {
             this.put(att,value);
         }
     }
-
-    //public ParseRelation getRecip
 
     public boolean updateStrValue(String entityType,String entityId, String valId ,String value){
         boolean returnVal;
@@ -68,5 +60,13 @@ public class User extends ParseObject {
         });
 
         return true;
+    }
+
+
+    public String getUserId() {
+        return getString(USER_ID);
+    }
+    public void setUserId(String value) {
+        putOrDefault(USER_ID,value);
     }
 }

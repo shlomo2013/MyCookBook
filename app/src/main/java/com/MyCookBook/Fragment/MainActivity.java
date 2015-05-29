@@ -2,36 +2,18 @@ package com.MyCookBook.Fragment;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.database.Cursor;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.os.Build;
-import android.widget.Button;
 import android.widget.ImageButton;
 
+import com.MyCookBook.Entities.Album;
 import com.MyCookBook.Entities.Recipe;
-import com.MyCookBook.Entities.User;
-import com.example.mycookbook.mycookbook.ParseApplication;
 import com.example.mycookbook.mycookbook.Queries;
 import com.example.mycookbook.mycookbook.R;
-import com.parse.FindCallback;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
 
+import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.List;
-
-import static android.widget.ImageButton.*;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -70,15 +52,35 @@ public class MainActivity extends ActionBarActivity {
         Log.d("shay","y");
 
         Recipe r = new Recipe();
-        r.initRecipe("Shira Recipe",null,"italian","cook mother fucker","small","hard ptstsot"," "," "," "," ");
+        r.initRecipe("Jahnun","Yamen","italian new","cook etc","small","hard ptstsot"," ",true,false,false);
         r.saveInBackground();
         r.addRecipe(Queries.getMyUser());
 
+        Recipe d = new Recipe();
+        d.initRecipe("Lahchuch","Yamen","italian new","cook etc","small","hard ptstsot"," ",true,false,false);
+        d.saveInBackground();
+        d.addRecipe(Queries.getMyUser());
 
-        ArrayList<Recipe> recipies = Queries.getUserRecipies(Queries.getMyUser());
+        Album newAlbum = new Album();
+        newAlbum.setAlbumName("Yaman");
 
-        for(Recipe rec:recipies){
-            Log.d("recipe namush new: ",rec.getString("Category"));
+        newAlbum.addRecipe(r);
+        newAlbum.addRecipe(d);
+
+        try {
+            newAlbum.save();
+        }catch(com.parse.ParseException e){
+            Log.d("save bug",e.getMessage());
+        }
+
+        ArrayList<Recipe> recipes = newAlbum.getAlbumRecipes();
+
+
+        //ArrayList<Recipe> recipies = Queries.getUserRecipes(Queries.getMyUser());
+
+        for(Recipe rec:recipes){
+            Log.d("recipe related: ",rec.getName());
+            Log.d("recipe is Diet?: ",String.valueOf(rec.getDiet()));
         }
 
     //Queries.updateTypeRecipes(Recipe.Category,"jjjjjjj",Queries.getMyUser());

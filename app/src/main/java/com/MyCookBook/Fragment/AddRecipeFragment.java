@@ -39,6 +39,7 @@ import com.MyCookBook.CategoriesUtil.Group;
 import com.MyCookBook.CategoriesUtil.MyExpandableListAdapter;
 import com.MyCookBook.Entities.Grocery;
 import com.MyCookBook.Entities.Recipe;
+import com.example.mycookbook.mycookbook.Queries;
 import com.example.mycookbook.mycookbook.R;
 
 import java.io.File;
@@ -161,18 +162,18 @@ public class AddRecipeFragment extends Fragment {
         String category = "מרקים";
         String subCategory = "חמים";
         String preparation = "דנהדנה דנהדנדהנדהדנדה";
-        String dishType = "k";
+        String dishType = "lg";
         String difficulty = "df";
         String kitchenType = "df";
-        String diet = "כן";
-        String vegetarian = "כן";
-        String vegan = "כן";
+        boolean diet = true;
+        boolean vegetarian = false;
+        boolean vegan = false;
         String name = "דניאל נחמיאס המעפנה!";
 
         //EditText name = (EditText) v.findViewById(R.id.etRecName);
             r.initRecipe(name.toString(), category , subCategory, preparation,  dishType,
                                         difficulty, kitchenType, diet, vegetarian, vegan);
-            r.addRecipe("10153329758089662");
+            r.addRecipe(Queries.getMyUser());
     }
 
     private void selectImage() {
@@ -184,20 +185,16 @@ public class AddRecipeFragment extends Fragment {
         builder.setItems(options, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
-                if (options[item].equals("Take Photo"))
-                {
+                if (options[item].equals("Take Photo")) {
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
                     startActivityForResult(intent, 1);
-                }
-                else if (options[item].equals("Choose from Gallery"))
-                {
-                    Intent intent = new   Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                } else if (options[item].equals("Choose from Gallery")) {
+                    Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     startActivityForResult(intent, 2);
 
-                }
-                else if (options[item].equals("Cancel")) {
+                } else if (options[item].equals("Cancel")) {
                     dialog.dismiss();
                 }
             }
