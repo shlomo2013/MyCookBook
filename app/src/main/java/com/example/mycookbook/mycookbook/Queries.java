@@ -2,6 +2,7 @@ package com.example.mycookbook.mycookbook;
 
 import android.util.Log;
 
+import com.MyCookBook.Entities.Album;
 import com.MyCookBook.Entities.Recipe;
 import com.MyCookBook.Entities.User;
 import com.parse.ParseObject;
@@ -67,8 +68,10 @@ public class Queries {
         }
         Log.d("Number of rec:",String.valueOf(recList.size()));
 
-        for (ParseObject rec:recList){
-            returnRec.add((Recipe)rec);
+        if (recList != null) {
+            for (ParseObject rec : recList) {
+                returnRec.add((Recipe) rec);
+            }
         }
         return returnRec;
     }
@@ -119,6 +122,7 @@ public class Queries {
         return retRecipe;
     }
 
+    /*Gets the last amount new recipes to present on the feed */
     public static ArrayList<Recipe> getLastRecipes(int amount){
         ArrayList<Recipe> returnRec = new ArrayList<Recipe>();
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Recipe");
@@ -135,13 +139,35 @@ public class Queries {
         }catch(Exception e) {
             Log.d("Queries Exception","cannot find recipies for user");
         }
-
-        for (ParseObject rec:recList){
-            returnRec.add((Recipe)rec);
+        if (recList != null) {
+            for (ParseObject rec : recList) {
+                returnRec.add((Recipe) rec);
+            }
         }
         return returnRec;
     }
 
+    /*This function return list of albums that the user is related to*/
+    public static ArrayList<Album> getUserAlbum(User user){
+        ArrayList<Album> returnAlbum = new ArrayList<Album>();
+        ParseQuery<ParseObject> recQuery = ParseQuery.getQuery("Album");
+
+        recQuery.whereEqualTo(Album.Users, user);
+        List<ParseObject> recList = null;
+        try {
+            recList = recQuery.find();
+        }catch(Exception e) {
+            Log.d("Queries Exception","cannot find albums for user");
+        }
+        Log.d("Number of rec:",String.valueOf(recList.size()));
+        if (recList != null){
+            for (ParseObject rec:recList){
+                returnAlbum.add((Album)rec);
+            }
+        }
+
+        return returnAlbum;
+    }
     public static User getMyUser(){
         return myUser;
     }
