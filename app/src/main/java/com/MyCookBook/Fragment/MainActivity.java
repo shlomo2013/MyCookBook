@@ -62,12 +62,12 @@ public class MainActivity extends ActionBarActivity {
         d.saveInBackground();
         d.addRecipe(Queries.getMyUser());
 
-        Album newAlbum = new Album();
-        newAlbum.setAlbumName("Temoni");
+        Album newAlbum = new Album("Temoni",Queries.getMyUser());
+        //newAlbum.setAlbumName("Temoni");
         newAlbum.addUser(Queries.getMyUser());
 
-        Album newAlbum2 = new Album();
-        newAlbum2.setAlbumName("Temoni2");
+        Album newAlbum2 = new Album("Temoni2",Queries.getMyUser());
+        //newAlbum2.setAlbumName("Temoni2");
         newAlbum2.addUser(Queries.getMyUser());
 
         newAlbum.addRecipe(r);
@@ -85,6 +85,12 @@ public class MainActivity extends ActionBarActivity {
         ArrayList<Album> myalbums = Queries.getUserAlbum(Queries.getMyUser());
         for(Album alb:myalbums){
             Log.d("Album related: ",alb.getAlbumName());
+        }
+
+
+        ArrayList<Album> myCreatedalbums = Queries.getAlbumUserCreated(Queries.getMyUser());
+        for(Album alb:myCreatedalbums){
+            Log.d("Album Created: ",alb.getAlbumName());
         }
         //ArrayList<Recipe> recipies = Queries.getUserRecipes(Queries.getMyUser());
 

@@ -21,20 +21,24 @@ public class Album  extends ParseObject {
     public static final String Pic="Pic";
     public static final String Recipes="Recipes";
     public static final String Users="Users";
+    public static final String CreatedBy="CreatedBy";
 
 
+    /*Add recipe to album*/
     public void addRecipe(Recipe recipe){
         ParseRelation<ParseObject> relation = this.getRelation(Recipes);
         relation.add(recipe);
         this.saveInBackground();
     }
 
+    /*Add user to album*/
     public void addUser(User user){
         ParseRelation<ParseObject> relation = this.getRelation(Users);
         relation.add(user);
         this.saveInBackground();
     }
 
+    // Get all the recipes of this album
     public ArrayList<Recipe> getAlbumRecipes(){
         ArrayList<Recipe> returnRec = new ArrayList<Recipe>();
         List<ParseObject> recList = null;
@@ -60,7 +64,7 @@ public class Album  extends ParseObject {
         return returnRec;
     }
 
-
+    /* Get all the users that related to this album*/
     public ArrayList<User> getAlbumUsers(){
         ArrayList<User> returnUsers = new ArrayList<User>();
         List<ParseObject> foundList = null;
@@ -82,11 +86,29 @@ public class Album  extends ParseObject {
 
     public Album(){
     }
-    public String getAlbumName() {
+
+    /*Ctor- Use This to do a new album - get album name and the user that create it*/
+    public Album(String AlbumName, User userCreated)
+    {
+        this.setAlbumName(AlbumName);
+        this.setUserCreatedBy(userCreated);
+    }
+    public String getAlbumName()
+    {
         return getString(Name);
     }
     public void setAlbumName(String value) {
         putOrDefault(Name,value);
+        this.saveInBackground();
+    }
+
+    public String getUserCreatedBy()
+    {
+        return getString(CreatedBy);
+    }
+
+    public void setUserCreatedBy(User userCraeted) {
+        this.put("CreatedBy",userCraeted);
         this.saveInBackground();
     }
 

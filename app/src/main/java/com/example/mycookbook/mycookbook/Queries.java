@@ -147,6 +147,13 @@ public class Queries {
         return returnRec;
     }
 
+    public static User getMyUser(){
+        return myUser;
+    }
+    public static void eraseCurrentUser(){
+        myUser = null;
+    }
+
     /*This function return list of albums that the user is related to*/
     public static ArrayList<Album> getUserAlbum(User user){
         ArrayList<Album> returnAlbum = new ArrayList<Album>();
@@ -168,11 +175,26 @@ public class Queries {
 
         return returnAlbum;
     }
-    public static User getMyUser(){
-        return myUser;
-    }
 
-    public static void eraseCurrentUser(){
-        myUser = null;
+    /*This function return list of albums that the user created by himself*/
+    public static ArrayList<Album> getAlbumUserCreated(User user){
+        ArrayList<Album> returnAlbum = new ArrayList<Album>();
+        ParseQuery<ParseObject> recQuery = ParseQuery.getQuery("Album");
+
+        recQuery.whereEqualTo("CreatedBy", user);
+        List<ParseObject> recList = null;
+        try {
+            recList = recQuery.find();
+        }catch(Exception e) {
+            Log.d("Queries Exception","cannot find albums for user");
+        }
+        Log.d("Number of rec:",String.valueOf(recList.size()));
+        if (recList != null){
+            for (ParseObject rec:recList){
+                returnAlbum.add((Album)rec);
+            }
+        }
+
+        return returnAlbum;
     }
 }
