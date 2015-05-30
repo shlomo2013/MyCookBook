@@ -8,6 +8,7 @@ import com.parse.ParseObject;
 import com.parse.ParseRelation;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by shirabd on 09/05/2015.
@@ -25,8 +26,8 @@ public class Recipe  extends ParseObject {
     public static final String Diet = "Diet";
     public static final String Vegetarian = "Vegetarian";
     public static final String Vegan = "Vegan";
-    public static final String RecipePic = "RecipePic.jpg";
-    ArrayList<Grocery> groceries = new ArrayList<Grocery>();
+    public static final String RecipePic = "RecipePic";
+    //ArrayList<Grocery> groceries = new ArrayList<Grocery>();
 
 
     public Recipe() {
@@ -50,7 +51,6 @@ public class Recipe  extends ParseObject {
         setCategory(category);
         setSubCategory(subCategory);
         setPreparation(preparation);
-        //this.putOrDefault(Groceries, groceries);
         setDishType(dishType);
         setDifficulty(difficulty);
         setKitchenType(kitchenType);
@@ -77,8 +77,9 @@ public class Recipe  extends ParseObject {
         this.saveInBackground();
     }
     public void addGrocery(Grocery grocery){
-        groceries.add(grocery);
-        this.put(Groceries, groceries);
+        if(grocery!=null) {
+            this.put(Groceries, grocery);
+        }
         this.saveInBackground();
     }
 
@@ -88,6 +89,18 @@ public class Recipe  extends ParseObject {
         file.saveInBackground();
         this.put(RecipePic,file);
         this.saveInBackground();
+    }
+
+    public ArrayList<Grocery> getRecipeGroceries(){
+        List<ParseObject> groceriesList = this.getList(Groceries);
+        ArrayList<Grocery> returnList = new ArrayList<Grocery>();
+
+        if(groceriesList!=null){
+            for(ParseObject obj:groceriesList){
+                returnList.add((Grocery)obj);
+            }
+        }
+        return returnList;
     }
 
     public String getName(){
@@ -128,6 +141,9 @@ public class Recipe  extends ParseObject {
     public boolean getVegan(){
         return Boolean.valueOf(this.getString(Vegan));
     }
+    public String getRecipePic(){
+        return this.getString(RecipePic);
+    }
 
     public void setName(String param){
         putOrDefault(Name,param);
@@ -158,5 +174,8 @@ public class Recipe  extends ParseObject {
     }
     public void setVegan(boolean param){
         putBoolean(Vegan,param);
+    }
+    public void setRecipePic(String param){
+        putOrDefault(RecipePic,param);
     }
 }
