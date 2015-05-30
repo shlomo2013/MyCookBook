@@ -148,7 +148,7 @@ public class AddRecipeFragment extends Fragment {
         bSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getInputIngridients();
+                getInputIngredients();
                 SaveRecipe(rootView);
             }
         });
@@ -157,8 +157,6 @@ public class AddRecipeFragment extends Fragment {
     }
 
     private void SaveRecipe(View v) {
-        Recipe r = new Recipe();
-
         String category = "מרקים";
         String subCategory = "חמים";
         String preparation = "דנהדנה דנהדנדהנדהדנדה";
@@ -171,9 +169,9 @@ public class AddRecipeFragment extends Fragment {
         String name = "דניאל נחמיאס המעפנה!";
 
         //EditText name = (EditText) v.findViewById(R.id.etRecName);
-            r.initRecipe(name.toString(), category , subCategory, preparation,  dishType,
-                                        difficulty, kitchenType, diet, vegetarian, vegan);
-            r.addRecipe(Queries.getMyUser());
+        Recipe r = new Recipe(name.toString(), category , subCategory, preparation,  dishType,
+                                    difficulty, kitchenType, diet, vegetarian, vegan);
+        r.addRecipe(Queries.getMyUser());
     }
 
     private void selectImage() {
@@ -304,6 +302,7 @@ public class AddRecipeFragment extends Fragment {
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == 1) {
                 File f = new File(Environment.getExternalStorageDirectory().toString());
+
                 for (File temp : f.listFiles()) {
                     if (temp.getName().equals("temp.jpg")) {
                         f = temp;
@@ -488,7 +487,7 @@ public class AddRecipeFragment extends Fragment {
 
     }
 
-    private void getInputIngridients(){
+    private void getInputIngredients(){
 
         int nid = 1;
 
@@ -496,13 +495,11 @@ public class AddRecipeFragment extends Fragment {
             nid = i;
             nid *= 10;
 
-            Grocery g = new Grocery();
+            AutoCompleteTextView  matirial    = (AutoCompleteTextView)   rootView.findViewById(nid+1);
+            Spinner               form        = (Spinner)                rootView.findViewById(nid+2);
+            EditText              amount      = (EditText)               rootView.findViewById(nid+3);
 
-             AutoCompleteTextView  matirial    = (AutoCompleteTextView)   rootView.findViewById(nid+1);
-             Spinner               form        = (Spinner)                rootView.findViewById(nid+2);
-             EditText              amount      = (EditText)               rootView.findViewById(nid+3);
-
-            g.initGrocery(matirial.getText().toString() , form.toString(), amount.getText().toString());
+            Grocery g = new Grocery(matirial.getText().toString() , form.toString(), amount.getText().toString());
             groceries.add(g);
         }
     }
