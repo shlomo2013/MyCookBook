@@ -1,4 +1,4 @@
-package com.MyCookBook.Fragment;
+package com.MyCookBook.CategoriesUtil;
 
 import android.content.Context;
 import android.view.LayoutInflater;

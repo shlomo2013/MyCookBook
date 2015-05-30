@@ -1,17 +1,10 @@
 package com.MyCookBook.Entities;
 
-import android.util.Log;
-
-import com.parse.FindCallback;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.ParseRelation;
 import com.parse.SaveCallback;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by shirabd on 09/05/2015.
@@ -21,25 +14,16 @@ public class User extends ParseObject {
 
     public static final String USER_ID="UserId";
     public static final String RECIPES="Recipes";
-    public static ArrayList<Recipe> my_recipes_list = new ArrayList<Recipe>();
-
 
     //ParseRelation<ParseObject> recipesRel = this.getRelation(RECIPES);
+    // TODO הוספה של פונקציה אשר שניגש לקווריז ומחזיר:  Arraylisr<Recipies>
+    // TODO פונקציה שמחזירה רשימה של אלבומים באותה צורה
+    // TODO פונקציה שמחזירה רשימה של מתכונים המשוייכים לאלבום מסויים באותה צורה
+    // TODO פונקציה שמחזירה רשימה של יוזרים המורשים לאלבום מסויים באותה צורה
 
     public User() {
     }
 
-    public String getUserId() {
-        return getString(USER_ID);
-    }
-    public void setUserId(String value) {
-        put(USER_ID, value);
-    }
-
-    // TODO: recepi list - select the resepies
-    public ArrayList<Recipe> getMy_recipes_list() {
-        return my_recipes_list;
-    }
 
     public ParseQuery<ParseObject> findMyRecipies(User user){
         ParseQuery<ParseObject> recQuery = ParseQuery.getQuery("Recipe");
@@ -48,9 +32,13 @@ public class User extends ParseObject {
         return recQuery;
     }
 
-
-
-    //public ParseRelation getRecip
+    private void putOrDefault(String att,String value){
+        if(value==null){
+            this.put(att,"");
+        }else{
+            this.put(att,value);
+        }
+    }
 
     public boolean updateStrValue(String entityType,String entityId, String valId ,String value){
         boolean returnVal;
@@ -72,5 +60,13 @@ public class User extends ParseObject {
         });
 
         return true;
+    }
+
+
+    public String getUserId() {
+        return getString(USER_ID);
+    }
+    public void setUserId(String value) {
+        putOrDefault(USER_ID,value);
     }
 }

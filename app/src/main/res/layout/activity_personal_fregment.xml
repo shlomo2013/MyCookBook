@@ -1,92 +1,111 @@
-<!--<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--xmlns:tools="http://schemas.android.com/tools"-->
-<!--android:layout_width="fill_parent"-->
-<!--android:layout_height="fill_parent"-->
-<!--android:id="@+id/scrollView"-->
-<!--android:layout_marginBottom="56dp"-->
-<!--android:fillViewport="true"-->
-<!--android:layout_row="0"-->
-<!--android:layout_column="0">-->
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="fill_parent"
+    android:id="@+id/scrollView"
+    android:layout_marginBottom="56dp"
+    android:fillViewport="true"
+    android:layout_row="0"
+    android:layout_column="0">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/linearLayout1"
-        android:weightSum="1"
-        android:baselineAligned="false">
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
 
-        <Button
-            android:id="@+id/btnDropDownPersonalCategories"
+        <RelativeLayout
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:background="@android:drawable/bottom_bar"
-            android:text="קטגוריות מועדםות"
-            android:layout_below="@+id/btnDropDownPersonalCategories"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_gravity="top"
-            android:layout_weight="0.25"
-            android:clickable="false"
-            android:elegantTextHeight="false"
-            android:ellipsize="middle" />
-        <Button
-            android:id="@+id/btnDropDownPersonalCategoriesNOT"
-            android:layout_width="100dp"
+            android:id="@+id/rlButtons"
+            android:weightSum="1"
+            android:orientation="vertical"
+            android:baselineAligned="false"
+            android:layout_gravity="right">
+
+            <Button
+                android:id="@+id/btnDropDownPersonalCategories"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:drawable/bottom_bar"
+                android:text="קטגוריות מועדםות"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_gravity="top"
+                android:layout_weight="0.25"
+                android:clickable="false"
+                android:elegantTextHeight="false"
+                android:ellipsize="middle" />
+            <Button
+                android:id="@+id/btnDropDownPersonalCategoriesNOT"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:drawable/bottom_bar"
+                android:text="רכיבים להסתרה "
+                android:layout_below="@+id/btnDropDownPersonalCategories"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_gravity="top"
+                android:layout_weight="0.25"
+                android:clickable="false"
+                android:elegantTextHeight="false"
+                android:ellipsize="middle" />
+
+            <Button
+                android:id="@+id/btnSettings"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:drawable/bottom_bar"
+                android:text="הגדרות אשיות"
+                android:layout_below="@+id/btnDropDownPersonalCategoriesNOT"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_gravity="top"
+                android:layout_weight="0.25" />
+
+            <Button
+                android:id="@+id/btnAlbums"
+                android:layout_width="fill_parent"
+                android:textSize="@dimen/abc_text_size_button_material"
+                android:layout_height="wrap_content"
+                android:background="@android:drawable/bottom_bar"
+                android:text="ספר מתכונים"
+                android:layout_below="@+id/btnSettings"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_gravity="top"
+                android:layout_weight="0.25" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@android:drawable/bottom_bar"
-            android:text="רכיבים להסתרה "
-            android:layout_below="@+id/btnDropDownPersonalCategories"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_gravity="top"
-            android:layout_weight="0.25"
-            android:clickable="false"
-            android:elegantTextHeight="false"
-            android:ellipsize="middle" />
+            android:id="@+id/contentLayout"
+            android:weightSum="1"
+            android:orientation="vertical"
+            android:layout_toLeftOf="@id/rlButtons"
+            android:baselineAligned="false">
 
-        <Button
-            android:id="@+id/button"
-            android:layout_width="88dp"
-            android:layout_height="wrap_content"
-            android:background="@android:drawable/bottom_bar"
-            android:text="הגדרות אשיות"
-            android:layout_below="@+id/btnDropDownPersonalCategories"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_gravity="top"
-            android:layout_weight="0.25" />
+            <ListView
+                android:id="@+id/lvMyAlbumes"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.50">
+            </ListView>
 
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="80dp"
-            android:textSize="@dimen/abc_text_size_button_material"
-            android:layout_height="wrap_content"
-            android:background="@android:drawable/bottom_bar"
-            android:text="ספר מתכונים"
-            android:layout_below="@+id/btnDropDownPersonalCategories"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_gravity="top"
-            android:layout_weight="0.25" />
-
-    </LinearLayout>
-
-
-    <ListView
-    android:id="@+id/listView"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-        android:layout_below="@id/linearLayout1"
-        android:layout_gravity="bottom"
-        android:layout_weight="1">
-    </ListView>
-
-    <!--<GridView-->
+            <ListView
+                android:id="@+id/lvAllAlbumes"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="bottom"
+                android:layout_below="@id/lvMyAlbumes"
+                android:layout_weight="0.50">
+            </ListView>
+        </LinearLayout>
+        <!--<GridView-->
         <!--android:layout_width="fill_parent"-->
         <!--android:layout_height="wrap_content"-->
         <!--android:id="@+id/albumGrid"-->
@@ -99,5 +118,5 @@
         <!--android:layout_centerHorizontal="true"-->
         <!--android:layout_marginTop="48dp"-->
         <!--android:layout_gravity="top|center" />-->
-</RelativeLayout>
-    <!--</ScrollView>-->
+    </RelativeLayout>
+</ScrollView>

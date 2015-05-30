@@ -1,5 +1,7 @@
 package com.MyCookBook.Entities;
 
+import android.util.Log;
+
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
@@ -30,19 +32,31 @@ public class Recipe  extends ParseObject {
     public Recipe() {
     }
 
+    private void putOrDefault(String att,String value){
+        if(value==null){
+            this.put(att,"");
+        }else{
+            this.put(att,value);
+        }
+    }
+
+    private void putBoolean(String att,boolean value){
+        this.put(att,String.valueOf(value));
+    }
+
     public void initRecipe(String name,String category,String subCategory,String preparation,String dishType,
-                           String difficulty,String kitchenType,String diet,String vegetarian,String vegan){
-        this.put(Name, name);
-        this.put(Category, category);
-        this.put(SubCategory, subCategory);
-        this.put(Preparation, preparation);
-        this.put(Groceries, groceries);
-        this.put(DishType, dishType);
-        this.put(Difficulty, difficulty);
-        this.put(KitchenType, kitchenType);
-        this.put(Diet, diet);
-        this.put(Vegetarian, vegetarian);
-        this.put(Vegan, vegan);
+                           String difficulty,String kitchenType,boolean diet,boolean vegetarian,boolean vegan){
+        setName(name);
+        setCategory(category);
+        setSubCategory(subCategory);
+        setPreparation(preparation);
+        //this.putOrDefault(Groceries, groceries);
+        setDishType(dishType);
+        setDifficulty(difficulty);
+        setKitchenType(kitchenType);
+        setDiet(diet);
+        setVegetarian(vegetarian);
+        setVegan(vegan);
         this.saveInBackground();
     }
 
@@ -74,5 +88,75 @@ public class Recipe  extends ParseObject {
         file.saveInBackground();
         this.put(RecipePic,file);
         this.saveInBackground();
+    }
+
+    public String getName(){
+        return this.getString(Name);
+    }
+
+    public String getCategory(){
+        return this.getString(Category);
+    }
+
+    public String getSubCategory(){
+        return this.getString(SubCategory);
+    }
+
+    public String getPreparation(){
+        return this.getString(Preparation);
+    }
+
+    public String getDishType(){
+        return this.getString(DishType);
+    }
+
+    public String getDifficulty(){
+        return this.getString(Difficulty);
+    }
+
+    public String getKitchenType(){
+        return this.getString(KitchenType);
+    }
+
+    public boolean getDiet(){
+        return Boolean.valueOf(this.getString(Diet));
+    }
+
+    public boolean getVegetarian(){
+        return Boolean.valueOf(this.getString(Vegetarian));
+    }
+    public boolean getVegan(){
+        return Boolean.valueOf(this.getString(Vegan));
+    }
+
+    public void setName(String param){
+        putOrDefault(Name,param);
+    }
+    public void setCategory(String param){
+        putOrDefault(Category,param);
+    }
+    public void setSubCategory(String param){
+        putOrDefault(SubCategory,param);
+    }
+    public void setPreparation(String param){
+        putOrDefault(Preparation,param);
+    }
+    public void setDishType(String param){
+        putOrDefault(DishType,param);
+    }
+    public void setDifficulty(String param){
+        putOrDefault(Difficulty,param);
+    }
+    public void setKitchenType(String param){
+        putOrDefault(KitchenType,param);
+    }
+    public void setDiet(boolean param){
+        putBoolean(Diet,param);
+    }
+    public void setVegetarian(boolean param){
+        putBoolean(Vegetarian,param);
+    }
+    public void setVegan(boolean param){
+        putBoolean(Vegan,param);
     }
 }
