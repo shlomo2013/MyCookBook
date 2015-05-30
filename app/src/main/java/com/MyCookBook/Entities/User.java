@@ -10,6 +10,7 @@ import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.SaveCallback;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,6 +21,8 @@ public class User extends ParseObject {
 
     public static final String USER_ID="UserId";
     public static final String RECIPES="Recipes";
+    public static ArrayList<Recipe> my_recipes_list = new ArrayList<Recipe>();
+
 
     //ParseRelation<ParseObject> recipesRel = this.getRelation(RECIPES);
 
@@ -31,6 +34,11 @@ public class User extends ParseObject {
     }
     public void setUserId(String value) {
         put(USER_ID, value);
+    }
+
+    // TODO: recepi list - select the resepies
+    public ArrayList<Recipe> getMy_recipes_list() {
+        return my_recipes_list;
     }
 
     public ParseQuery<ParseObject> findMyRecipies(User user){

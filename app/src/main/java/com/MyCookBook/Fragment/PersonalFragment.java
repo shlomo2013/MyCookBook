@@ -158,8 +158,6 @@ public class PersonalFragment extends Fragment {
         //////////******************************************************************//////
 
 
-
-
         handleCategories();
         handleNoCategories();
         return rootView;

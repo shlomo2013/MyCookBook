@@ -1,29 +1,40 @@
 package com.MyCookBook.Fragment;
 
 import android.app.Fragment;
+import android.content.Context;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.MyCookBook.Entities.Recipe;
 import com.example.mycookbook.mycookbook.R;
+
+import java.util.ArrayList;
 
 public class FeedFragment extends Fragment {
 
     AutoCompleteTextView myAutoComplete;
     TableLayout tbLayout;
+    ArrayList<Recipe> myRecepies;
+    private PopupWindow pw;
+
     private RadioGroup rgpFilter;
 
     public FeedFragment() {
@@ -72,8 +83,10 @@ public class FeedFragment extends Fragment {
         //tbLayout.setTextDirection(View.LAYOUT_DIRECTION_RTL);
         //tbLayout.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
 
-        for (int i = 0; i < 4; i++) {
+        myRecepies = MainActivity.myUser.getMy_recipes_list();
 
+        for (int i = 0; i < myRecepies.size() + 2; i++)
+        {
             TextView tvRecipe = new TextView(getActivity().getBaseContext());
             ImageView ivRecipePhoto = new ImageView(getActivity().getBaseContext());
             ImageButton btLike = new ImageButton(getActivity().getBaseContext());
@@ -84,9 +97,8 @@ public class FeedFragment extends Fragment {
             tr.setLayoutParams(trLP);
             //tr.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
             tr.setGravity(Gravity.RIGHT);
-            tr.setClickable(true);
-            Recipe r = new Recipe();
-            tr.setId(Integer.parseInt(r.getObjectId()));
+//            tr.setClickable(true);
+//            tr.setId(Integer.parseInt(myRecepies.get(i).getObjectId()));
 //            tr.setOnClickListener(new rowOnClickListener() {
 //                public void onClick(View v) {
 //
@@ -96,7 +108,7 @@ public class FeedFragment extends Fragment {
             // Handle recipe text
             tvRecipe.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
             tvRecipe.setMinimumWidth(350);
-            tvRecipe.setText("המתכון של טל\n\n" + i + "\n" + "רכיבים:\nשוקולד\nסוכר");
+            tvRecipe.setText("המתכון של טל\n\n" + "\n" + "רכיבים:\nשוקולד\nסוכר");
             //tvRecipe.setTextDirection(View.LAYOUT_DIRECTION_RTL);
 
             // Handle recipe image
@@ -107,6 +119,8 @@ public class FeedFragment extends Fragment {
             ivRecipePhoto.setImageResource(R.drawable.com_facebook_profile_picture_blank_square);
             ivRecipePhoto.setClickable(true);
             ivRecipePhoto.setOnClickListener(photoOnClickListener);
+            ivRecipePhoto.setClickable(true);
+            ivRecipePhoto.setId(Integer.parseInt(myRecepies.get(i).getObjectId()));
 
             // Handle like button
             btLike.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
@@ -148,7 +162,24 @@ public class FeedFragment extends Fragment {
                 int rowCount = clickRow.getChildCount();
                 v.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
-
+                        Recipe.getRecipeById(String.valueOf(clickRow.getId()));
+//                        Context context = getTabHost().getContext();
+//                        TableRow row = (TableRow)v;
+//                        TextView tv = (TextView)row.getChildAt(0);
+//                        CharSequence text = "Lot VALUE Selected: " + tv.getText();
+//                        int duration = Toast.LENGTH_SHORT;
+//                        Toast.makeText(context, text, duration).show();
+                    }
+                });
+            }
+            if(v instanceof ImageView) {
+                final ImageView clickImage = (ImageView)v;
+                //int rowCount = clickImage.getChildCount();
+                v.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        Recipe currRecipe = Recipe.getRecipeById(String.valueOf(clickImage.getId()));
+                        PopupWindow p = new PopupWindow();
+                        //initiatePopUp(currRecipe);
 //                        Context context = getTabHost().getContext();
 //                        TableRow row = (TableRow)v;
 //                        TextView tv = (TextView)row.getChildAt(0);
@@ -190,6 +221,38 @@ public class FeedFragment extends Fragment {
         }
 
     };
+
+    private void initiatePopUp(int resId){
+
+        LayoutInflater layoutInflater = (LayoutInflater) getActivity().getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View popupView = layoutInflater.inflate(R.layout.imagepopup, null);
+
+        pw = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        //Pop-up window background cannot be null if we want the pop-up to listen touch events outside its window
+        pw.setBackgroundDrawable(new BitmapDrawable());
+        pw.setTouchable(true);
+
+        //let pop-up be informed about touch events outside its window. This  should be done before setting the content of pop-up
+        pw.setOutsideTouchable(true);
+        //pw.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+        final ImageView RecipePhoto = (ImageView) popupView.findViewById(R.id.ImageRecipePhoto);
+        RecipePhoto.setImageResource(resId);
+
+        //dismiss the pop-up i.e. drop-down when touched anywhere outside the pop-up
+        pw.setTouchInterceptor(new View.OnTouchListener() {
+
+            public boolean onTouch(View v, MotionEvent event) {
+                // TODO Auto-generated method stub
+                if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+                    pw.dismiss();
+                    return true;
+                }
+                return false;
+            }
+        });
+
+    }
 
 
 }

@@ -42,6 +42,8 @@ public class MainActivity extends ActionBarActivity {
     ImageButton btnAddRecipe;
     ImageButton btnLogOff;
     String myUserId;
+    // TODO: user object - temp
+    public static User myUser = new User();
 
     private void setMyUserId(Bundle savedInstanceState){
         String newString;

@@ -28,6 +28,7 @@ import com.example.mycookbook.mycookbook.R;
 import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -122,6 +123,9 @@ public class SearchFragment extends Fragment {
 
         // Assign adapter to ListView
         myListView.setAdapter(adapter);
+
+        HashMap<String, String> my = new HashMap<>(7);
+        ArrayList<String> list = new ArrayList<String>(my.values());
 
         myListViewNo = (ListView) rootView.findViewById(R.id.listViewNo);
         final ArrayAdapter<CharSequence> adapterNo = ArrayAdapter.createFromResource(getActivity().getBaseContext(),

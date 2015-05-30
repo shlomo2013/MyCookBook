@@ -46,6 +46,13 @@ public class Recipe  extends ParseObject {
         this.saveInBackground();
     }
 
+    public static Recipe getRecipeById(String id)
+    {
+        Recipe myRecipe = new Recipe();
+        // TODO: select recipe
+        return myRecipe;
+    }
+
     public void addRecipe(User user) {
         this.put("createdBy", user);
         this.saveInBackground();
