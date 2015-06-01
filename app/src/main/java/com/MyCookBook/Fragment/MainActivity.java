@@ -8,6 +8,7 @@ import android.util.Log;
 import android.widget.ImageButton;
 
 import com.MyCookBook.Entities.Album;
+import com.MyCookBook.Entities.Grocery;
 import com.MyCookBook.Entities.Recipe;
 import com.MyCookBook.Entities.User;
 import com.example.mycookbook.mycookbook.Queries;
@@ -55,13 +56,15 @@ public class MainActivity extends ActionBarActivity {
         Log.d("User Object is:",Queries.getMyUser().getObjectId());
         Log.d("shay","y");
 
-        Recipe r = new Recipe();
-        r.initRecipe("Jahnun","Yamen","italian new","cook etc","small","hard ptstsot"," ",true,false,false);
+        Recipe r = new Recipe("Jahnun","Yamen","italian new","cook etc","small","hard ptstsot"," ",true,false,false);
+
+
+        r.addGrocery(new Grocery("חלב","כוס","2"));
+        r.addGrocery(new Grocery("יין","כף","3"));
         r.saveInBackground();
         r.addRecipe(Queries.getMyUser());
 
-        Recipe d = new Recipe();
-        d.initRecipe("Lahchuch","Yamen","italian new","cook etc","small","hard ptstsot"," ",true,false,false);
+        Recipe d = new Recipe("Lahchuch","Yamen","italian new","cook etc","small","hard ptstsot"," ",true,false,false);
         d.saveInBackground();
         d.addRecipe(Queries.getMyUser());
 
@@ -89,11 +92,22 @@ public class MainActivity extends ActionBarActivity {
         for(Album alb:myalbums){
             Log.d("Album related: ",alb.getAlbumName());
         }
+
+
+        ArrayList<Album> myCreatedalbums = Queries.getAlbumUserCreated(Queries.getMyUser());
+        for(Album alb:myCreatedalbums){
+            Log.d("Album Created: ",alb.getAlbumName());
+        }
         //ArrayList<Recipe> recipies = Queries.getUserRecipes(Queries.getMyUser());
 
         for(Recipe rec:recipes){
             Log.d("recipe related: ",rec.getName());
             Log.d("recipe is Diet?: ",String.valueOf(rec.getDiet()));
+        }
+
+        for(Grocery gro:r.getRecipeGroceries()){
+            Log.d("Grocery material: ",gro.getMaterialName());
+            Log.d("Grocery Amount: ",gro.getAmount());
         }
 
     //Queries.updateTypeRecipes(Recipe.Category,"jjjjjjj",Queries.getMyUser());

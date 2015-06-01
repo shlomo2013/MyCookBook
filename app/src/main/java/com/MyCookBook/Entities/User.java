@@ -12,18 +12,14 @@ import com.parse.SaveCallback;
 @ParseClassName("User")
 public class User extends ParseObject {
 
-    public static final String USER_ID="UserId";
-    public static final String RECIPES="Recipes";
-
-    //ParseRelation<ParseObject> recipesRel = this.getRelation(RECIPES);
-    // TODO הוספה של פונקציה אשר שניגש לקווריז ומחזיר:  Arraylisr<Recipies>
-    // TODO פונקציה שמחזירה רשימה של אלבומים באותה צורה
-    // TODO פונקציה שמחזירה רשימה של מתכונים המשוייכים לאלבום מסויים באותה צורה
-    // TODO פונקציה שמחזירה רשימה של יוזרים המורשים לאלבום מסויים באותה צורה
+    public static final String UserId ="UserId";
+    public static final String Name ="Name";
+    public static final String Email ="Email";
+    public static final String Gender ="Gender";
+    public static final String Birthday ="Birthday";
 
     public User() {
     }
-
 
     public ParseQuery<ParseObject> findMyRecipies(User user){
         ParseQuery<ParseObject> recQuery = ParseQuery.getQuery("Recipe");
@@ -62,11 +58,38 @@ public class User extends ParseObject {
         return true;
     }
 
-
     public String getUserId() {
-        return getString(USER_ID);
+        return getString(UserId);
     }
     public void setUserId(String value) {
-        putOrDefault(USER_ID,value);
+        putOrDefault(UserId,value);
+    }
+
+    public String getName() {
+        return getString(Name);
+    }
+    public void setName(String value) {
+        putOrDefault(Name,value);
+    }
+
+    public String getEmail() {
+        return getString(Email);
+    }
+    public void setEmail(String value) {
+        putOrDefault(Email,value);
+    }
+
+    public String getGender() {
+        return getString(Gender);
+    }
+    public void setGender(String value) {
+        putOrDefault(Gender,value);
+    }
+
+    public String getBirthday() {
+        return getString(Birthday);
+    }
+    public void setBirthday(String value) {
+        putOrDefault(Birthday,value);
     }
 }

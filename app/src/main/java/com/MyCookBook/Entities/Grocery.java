@@ -14,9 +14,21 @@ public class Grocery  extends ParseObject {
     public Grocery(){
 
     }
-    public void initGrocery(String materialName,String form,String amount){
+    public Grocery(String materialName,String form,String amount){
         this.put(MaterialName, materialName);
         this.put(Form, form);
         this.put(Amount, amount);
+    }
+
+    public String getMaterialName(){
+        return this.getString(MaterialName);
+    }
+
+    public String getForm(){
+        return this.getString(Form);
+    }
+
+    public String getAmount(){
+        return this.getString(Amount);
     }
 }

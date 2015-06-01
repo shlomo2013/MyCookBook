@@ -2,9 +2,11 @@ package com.MyCookBook.Entities;
 
 import android.util.Log;
 
+import com.example.mycookbook.mycookbook.Queries;
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 
 import java.util.ArrayList;
@@ -27,6 +29,8 @@ public class Recipe  extends ParseObject {
     public static final String Vegetarian = "Vegetarian";
     public static final String Vegan = "Vegan";
     public static final String RecipePic = "RecipePic";
+    public static final String Likes = "Likes";
+    public static final String LikesCounter = "LikesCounter";
     //ArrayList<Grocery> groceries = new ArrayList<Grocery>();
 
 
@@ -45,7 +49,7 @@ public class Recipe  extends ParseObject {
         this.put(att,String.valueOf(value));
     }
 
-    public void initRecipe(String name,String category,String subCategory,String preparation,String dishType,
+    public Recipe(String name,String category,String subCategory,String preparation,String dishType,
                            String difficulty,String kitchenType,boolean diet,boolean vegetarian,boolean vegan){
         setName(name);
         setCategory(category);
@@ -57,6 +61,7 @@ public class Recipe  extends ParseObject {
         setDiet(diet);
         setVegetarian(vegetarian);
         setVegan(vegan);
+        put(LikesCounter,0);
         this.saveInBackground();
     }
 
@@ -103,6 +108,35 @@ public class Recipe  extends ParseObject {
         return returnList;
     }
 
+
+    public void Like(){
+        ParseRelation<ParseObject> relation = this.getRelation(Likes);
+        relation.add(Queries.getMyUser());
+        this.increment(LikesCounter);
+        this.saveInBackground();
+    }
+
+    public void LikebyUser(User user){
+        ParseRelation<ParseObject> relation = this.getRelation(Likes);
+        relation.add(user);
+        this.increment(LikesCounter);
+        this.saveInBackground();
+    }
+
+    public void UnLike(){
+        ParseRelation<ParseObject> relation = this.getRelation(Likes);
+        relation.remove(Queries.getMyUser());
+        this.increment(LikesCounter,-1);
+        this.saveInBackground();
+    }
+
+    public void UnLikebyUser(User user){
+        ParseRelation<ParseObject> relation = this.getRelation(Likes);
+        relation.remove(user);
+        this.increment(LikesCounter,-1);
+        this.saveInBackground();
+    }
+
     public String getName(){
         return this.getString(Name);
     }
@@ -145,6 +179,35 @@ public class Recipe  extends ParseObject {
         return this.getString(RecipePic);
     }
 
+    public String getLikesCounter(){
+        return this.getString(LikesCounter);
+    }
+
+    public ArrayList<User>  getUsersWhoLikeThisRecipe(){
+        ArrayList<User> returnRec = new ArrayList<User>();
+        List<ParseObject> recList = null;
+
+        ParseRelation relation = this.getRelation(Likes);
+        ParseQuery query = relation.getQuery();
+
+        try {
+            recList = query.find();
+        }catch (Exception e){
+            Log.d("bug",e.getMessage());
+        }
+        if(recList==null)
+        {
+            Log.d("recList: ","is null");
+        }else {
+            for (ParseObject rec : recList) {
+                returnRec.add((User) rec);
+            }
+        }
+
+        return returnRec;
+    }
+
+
     public void setName(String param){
         putOrDefault(Name,param);
     }
@@ -173,7 +236,7 @@ public class Recipe  extends ParseObject {
         putBoolean(Vegetarian,param);
     }
     public void setVegan(boolean param){
-        putBoolean(Vegan,param);
+        putBoolean(Vegan, param);
     }
     public void setRecipePic(String param){
         putOrDefault(RecipePic,param);

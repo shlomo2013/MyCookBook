@@ -34,116 +34,72 @@ import org.json.JSONObject;
 
 import java.util.Arrays;
 import java.util.List;
-
-
 public class connAct extends Activity {
-
     CallbackManager callbackManager;
     private AccessToken accessToken;
-    User myUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        InitParse();
         FacebookSdk.sdkInitialize(getApplicationContext());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_conn);
 
-
-
-        /*ParseQuery<ParseObject> query = ParseQuery.getQuery("User");
-        query.whereEqualTo("UserId", "10206754341046177");
-        query.findInBackground(new FindCallback<ParseObject>() {
-            public void done(List<ParseObject> userList, ParseException e) {
-                if (e == null) {
-                    myUser = (User)userList.get(0);
-                    Log.d("User", "Retrieved " + d.getObjectId() + " scores");
-                    Log.d("User", "Retrieved " + userList.size() + " scores");
-                } else {
-                    Log.d("score", "Error: " + e.getMessage());
-                }
-            }
-        });*/
-
-
-
-
-/*
-        ParseQuery<ParseObject> query2 = ParseQuery.getQuery("User");
-        query.getInBackground("9d88sIXvy8", new GetCallback<ParseObject>() {
-            public void done(ParseObject object, ParseException e) {
-                if (e == null) {
-                    String d = ((User)object).getUserId();
-                    Recipe r = new Recipe();
-                    r.put("name",d);
-                    r.put("Type","bishul");
-                    r.saveInBackground();
-                    ((User)object).addRecipe(r);
-                    // object will be your game score
-                } else {
-                }
-            }
-        });
-*/
-        /*User s = new User();
-        s.setUserId("Shay");
-        s.saveInBackground();
-*/
-
-
-
-
-
-
-        //ParseQuery<ParseObject> query = s.recipesRel.getQuery();
-
-
-
-
-
         //callback Manager
         callbackManager = CallbackManager.Factory.create();
-        LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
+        final LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
 
+        if(AccessToken.getCurrentAccessToken()!=null){
+            accessToken = AccessToken.getCurrentAccessToken();
+            callMainActivity();
+        }
 
+        loginButton.setReadPermissions(Arrays.asList("public_profile, email, user_birthday"));
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 // App code
                 accessToken = loginResult.getAccessToken();
 
+                GraphRequest request = GraphRequest.newMeRequest(
+                        loginResult.getAccessToken(),
+                        new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted(
+                                    JSONObject object,
+                                    GraphResponse response) {
+                                // Application code
+                                Log.v("LoginActivity", response.toString());
+                                Queries.isUserAlreadyExists(accessToken.getUserId());
+                                try {
+                                    Log.v("user parameters set for: ", object.getString("name"));
 
-
-/*
-                ParseQuery<ParseObject> query = ParseQuery.getQuery("Comment");
-                // Retrieve the most recent ones
-                query.orderByDescending("createdAt");
-                // Only retrieve the last ten
-                //query.setLimit(10);
-                // Include the post data with each comment
-                query.include("User");*/
-                //
-                // myUser.findMyRecipies(myUser).findInBackground(new FindCallback<ParseObject>() {
-
-
-
-
-
-
-                Log.d("FB", "access token got.");
-
-                callMainActivity();
-                Log.d("FB", "access token got.");
-
+                                    User s = Queries.getMyUser();
+                                    s.setName(object.getString("name"));
+                                    s.setEmail(object.getString("email"));
+                                    s.setGender(object.getString("gender"));
+                                    s.setBirthday(object.getString("birthday"));
+                                    s.saveInBackground();
+                                    callMainActivityAfterLogin();
+                                }catch(Exception e){
+                                    Log.v("Shayyoz check= ", "Failed");
+                                }
+                            }
+                        });
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id,name,email,gender, birthday");
+                request.setParameters(parameters);
+                request.executeAsync();
+                //callMainActivity();
             }
 
             @Override
             public void onCancel() {
-                // App code
+                Log.v("LoginActivity", "cancel");
             }
 
             @Override
             public void onError(FacebookException exception) {
-                // App code
+                Log.v("LoginActivity", exception.getCause().toString());
             }
         });
 
@@ -151,7 +107,8 @@ public class connAct extends Activity {
 
             @Override
             public void onClick(View v) {
-                LoginManager.getInstance().logInWithReadPermissions(connAct.this, Arrays.asList("public_profile", "user_friends"));
+                if(accessToken.isExpired())
+                    LoginManager.getInstance().logInWithReadPermissions(connAct.this, Arrays.asList("public_profile", "user_friends"));
             }
         });
     }
@@ -161,48 +118,19 @@ public class connAct extends Activity {
         Intent intent;
         intent = new Intent(this, MainActivity.class);
         intent.putExtra("faceUser",accessToken);
-
-/*        myUser = new User();
-        myUser.setUserId(accessToken.getUserId());
-        myUser.saveInBackground();
-        Log.d("create User ", "after");*/
-
         Queries.isUserAlreadyExists(accessToken.getUserId());
-
         intent.putExtra("myUserId",Queries.getMyUser().getUserId());
-
-
-
-
-/*        ParseQuery<ParseObject> recQuery = ParseQuery.getQuery("Recipe");
-        recQuery.whereEqualTo("createdBy", myUser);
-
-        recQuery.findInBackground(new FindCallback<ParseObject>() {
-            public void done(List<ParseObject> recList, ParseException e) {
-                if (e == null) {
-                    Recipe a = (Recipe)recList.get(0);
-                    a.put("Category","wow");
-                    a.saveInBackground();
-                            /*Log.d("recList", "Retrieved " + recList.size() + " scores");
-
-                            for (ParseObject recipe : recList) {
-                                // This does not require a network access.
-                                ParseObject recipe2 = recipe.getParseObject("Recipe");
-                                ((Recipe)recipe).put("Category","Updated");
-                                recipe.saveInBackground();
-                                Log.d("post", "retrieved a related post");
-                            }
-
-                } else {
-                    Log.d("score", "Error: " + e.getMessage());
-                }
-
-
-            }
-        });
-*/
         startActivity(intent);
     }
+
+    private void callMainActivityAfterLogin(){
+        Intent intent;
+        intent = new Intent(this, MainActivity.class);
+        intent.putExtra("faceUser", accessToken);
+        intent.putExtra("myUserId",Queries.getMyUser().getUserId());
+        startActivity(intent);
+    }
+
     @Override
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -223,10 +151,5 @@ public class connAct extends Activity {
 
         // Logs 'app deactivate' App Event.
         AppEventsLogger.deactivateApp(this);
-    }
-
-    private void InitParse(){
-
-
     }
 }
