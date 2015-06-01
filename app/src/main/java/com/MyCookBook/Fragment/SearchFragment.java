@@ -112,7 +112,7 @@ public class SearchFragment extends Fragment {
 
         final Spinner dropdownKitchenType = (Spinner) rootView.findViewById(R.id.KitchenType);
         KitchenTypeId = dropdownKitchenType.getId();
-        createSpinner((dropdownKitchenType), R.array.personal_pref_array);
+        createSpinner((dropdownKitchenType), R.array.personal_no_pref_array);
 
         //String[] dataList = R.array.personal_no_pref_array;
 
@@ -130,6 +130,7 @@ public class SearchFragment extends Fragment {
         myListViewNo = (ListView) rootView.findViewById(R.id.listViewNo);
         final ArrayAdapter<CharSequence> adapterNo = ArrayAdapter.createFromResource(getActivity().getBaseContext(),
                 personal_no_pref_array,
+
                 android.R.layout.simple_list_item_multiple_choice);
 
         // Assign adapter to ListView

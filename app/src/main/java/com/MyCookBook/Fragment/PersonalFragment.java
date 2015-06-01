@@ -123,7 +123,7 @@ public class PersonalFragment extends Fragment {
         //////////******************************************************************//////
         //////////******************************************************************//////
         // Initialize the variables:
-        lvMyAlbums = (ListView) rootView.findViewById(R.id.lvMyAlbumes);
+        lvMyAlbums = (ListView) rootView.findViewById(R.id.listView);
         lvAllAlbums = (ListView) rootView.findViewById(R.id.lvAllAlbumes);
 
         // Set an Adapter to the ListView

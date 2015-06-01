@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.MyCookBook.Entities.Recipe;
+import com.example.mycookbook.mycookbook.Queries;
 import com.example.mycookbook.mycookbook.R;
 
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ public class FeedFragment extends Fragment {
     AutoCompleteTextView myAutoComplete;
     TableLayout tbLayout;
     ArrayList<Recipe> myRecepies;
+    boolean click = true;
     private PopupWindow pw;
 
     private RadioGroup rgpFilter;
@@ -44,7 +46,7 @@ public class FeedFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.activity_feed_fregment, container, false);
+        final View rootView = inflater.inflate(R.layout.activity_feed_fregment, container, false);
 
         //  Spinner dropdown = (Spinner)rootView.findViewById(R.id.spinner1);
         //   String[] items = new String[]{"1", "2", "three"};
@@ -83,12 +85,13 @@ public class FeedFragment extends Fragment {
         //tbLayout.setTextDirection(View.LAYOUT_DIRECTION_RTL);
         //tbLayout.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
 
-        myRecepies = MainActivity.myUser.getMy_recipes_list();
+        myRecepies = Queries.getLastRecipes(10);
 
-        for (int i = 0; i < myRecepies.size() + 2; i++)
+        for (int i = 0; i < myRecepies.size(); i++)
         {
             TextView tvRecipe = new TextView(getActivity().getBaseContext());
             ImageView ivRecipePhoto = new ImageView(getActivity().getBaseContext());
+//            ImageButton btRecipePhoto = new ImageButton(getActivity().getBaseContext());
             ImageButton btLike = new ImageButton(getActivity().getBaseContext());
 
             TableRow tr = new TableRow(getActivity().getBaseContext());
@@ -110,17 +113,41 @@ public class FeedFragment extends Fragment {
             tvRecipe.setMinimumWidth(350);
             tvRecipe.setText("המתכון של טל\n\n" + "\n" + "רכיבים:\nשוקולד\nסוכר");
             //tvRecipe.setTextDirection(View.LAYOUT_DIRECTION_RTL);
+            tvRecipe.setClickable(true);
+            tvRecipe.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // TODO: open recipe window
+                }
+            });
 
             // Handle recipe image
             ivRecipePhoto.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
             ivRecipePhoto.setMaxWidth(350);
             ivRecipePhoto.setMaxHeight(350);
             ivRecipePhoto.setAdjustViewBounds(true);
+            //TODO: delete
+            //myRecepies.get(i).setRecipePic(String.valueOf(R.drawable.com_facebook_profile_picture_blank_square));
+            // TODO: return
+            //ivRecipePhoto.setImageResource(Integer.parseInt (myRecepies.get(i).getRecipePic()));
             ivRecipePhoto.setImageResource(R.drawable.com_facebook_profile_picture_blank_square);
             ivRecipePhoto.setClickable(true);
-            ivRecipePhoto.setOnClickListener(photoOnClickListener);
-            ivRecipePhoto.setClickable(true);
-            ivRecipePhoto.setId(Integer.parseInt(myRecepies.get(i).getObjectId()));
+            ivRecipePhoto.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (click) {
+                        initiatePopUp(R.drawable.com_facebook_profile_picture_blank_square);
+                        pw.showAtLocation(rootView, Gravity.BOTTOM, 10, 10);
+                        click = false;
+                    }
+                    else{
+                        pw.dismiss();
+                        click = true;
+                    }
+                }
+            });
+
+            //ivRecipePhoto.setId(Integer.parseInt(myRecepies.get(i).getObjectId().toString()));
 
             // Handle like button
             btLike.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
@@ -129,6 +156,12 @@ public class FeedFragment extends Fragment {
             //btLike.setAdjustViewBounds(true);
             btLike.setImageResource(R.mipmap.red_like_icon);
             btLike.setClickable(true);
+            btLike.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // TODO: save like
+                }
+            });
 
             // Add to layOut
             tr.addView(tvRecipe);
@@ -152,43 +185,6 @@ public class FeedFragment extends Fragment {
             // Add to layOut
             tr2.addView(btLike);
             tbLayout.addView(tr2);
-        }
-
-        int rowNumCount = tbLayout.getChildCount();
-        for(int count = 1; count < rowNumCount; count++) {
-            View v = tbLayout.getChildAt(count);
-            if(v instanceof TableRow) {
-                final TableRow clickRow = (TableRow)v;
-                int rowCount = clickRow.getChildCount();
-                v.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {
-                        Recipe.getRecipeById(String.valueOf(clickRow.getId()));
-//                        Context context = getTabHost().getContext();
-//                        TableRow row = (TableRow)v;
-//                        TextView tv = (TextView)row.getChildAt(0);
-//                        CharSequence text = "Lot VALUE Selected: " + tv.getText();
-//                        int duration = Toast.LENGTH_SHORT;
-//                        Toast.makeText(context, text, duration).show();
-                    }
-                });
-            }
-            if(v instanceof ImageView) {
-                final ImageView clickImage = (ImageView)v;
-                //int rowCount = clickImage.getChildCount();
-                v.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {
-                        Recipe currRecipe = Recipe.getRecipeById(String.valueOf(clickImage.getId()));
-                        PopupWindow p = new PopupWindow();
-                        //initiatePopUp(currRecipe);
-//                        Context context = getTabHost().getContext();
-//                        TableRow row = (TableRow)v;
-//                        TextView tv = (TextView)row.getChildAt(0);
-//                        CharSequence text = "Lot VALUE Selected: " + tv.getText();
-//                        int duration = Toast.LENGTH_SHORT;
-//                        Toast.makeText(context, text, duration).show();
-                    }
-                });
-            }
         }
 
         /*TextView tvIngredients = new TextView(getActivity().getBaseContext());

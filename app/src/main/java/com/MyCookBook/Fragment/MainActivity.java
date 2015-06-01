@@ -9,6 +9,7 @@ import android.widget.ImageButton;
 
 import com.MyCookBook.Entities.Album;
 import com.MyCookBook.Entities.Recipe;
+import com.MyCookBook.Entities.User;
 import com.example.mycookbook.mycookbook.Queries;
 import com.example.mycookbook.mycookbook.R;
 

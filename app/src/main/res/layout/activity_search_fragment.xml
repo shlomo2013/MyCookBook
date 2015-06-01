@@ -286,7 +286,7 @@
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="200dp"
-        android:id="@+id/lvMyAlbumes"
+        android:id="@+id/listView"
         android:layout_below="@+id/textView3"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -302,7 +302,7 @@
         android:id="@+id/textView4"
         android:textStyle="bold"
         android:textColor="#ffff4f45"
-        android:layout_below="@+id/lvMyAlbumes"
+        android:layout_below="@+id/listView"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
