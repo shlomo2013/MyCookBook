@@ -5,16 +5,20 @@ import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import com.MyCookBook.Entities.Album;
+import com.MyCookBook.Entities.Grocery;
 import com.MyCookBook.Entities.Recipe;
 import com.MyCookBook.Entities.User;
 import com.parse.GetDataCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by shirabd on 12/05/2015.
@@ -22,7 +26,7 @@ import java.util.List;
 public class Queries {
     static User myUser;
     static boolean success;
-
+    static HashMap<String,String> groceriesList = new HashMap<>();
     /*
     This Function get the facebook userId as parameter
     and finds the user object from parse data
@@ -132,6 +136,27 @@ public class Queries {
         return retRecipe;
     }
 
+    public static ArrayList<Grocery> getGroceriesById(ArrayList<String> objectIds) {
+        ParseQuery<ParseObject> recQuery = ParseQuery.getQuery("Grocery");
+        recQuery.whereContainedIn("objectId", objectIds);
+        List<ParseObject> recList = null;
+        ArrayList<Grocery> gList = new ArrayList<>();
+        Recipe retRecipe = null;
+        try {
+            recList = recQuery.find();
+        } catch (Exception e) {
+            Log.d("getRecipeById Err", "cannot find Recipe by objId");
+        }
+        if (recList.size() != 0) {
+            for(ParseObject r:recList){
+                gList.add((Grocery)r);
+            }
+        }
+
+        return gList;
+    }
+
+
     /*Gets the last amount new recipes to present on the feed */
     public static ArrayList<Recipe> getLastRecipes(int amount) {
         ArrayList<Recipe> returnRec = new ArrayList<Recipe>();
@@ -156,6 +181,83 @@ public class Queries {
         }
         return returnRec;
     }
+
+    /*
+    * params:
+    *
+    * Diet - should be "true" or "false" or null(will not cosidered in search)
+    * vegan - should be "true" or "false" or null(will not cosidered in search)
+    * vegetarian - should be "true" or "false" or null(will not cosidered in search)
+    *
+    * */
+
+    public static ArrayList<Recipe> RecipesSearch(ArrayList<String> category,ArrayList<String> subCategory,ArrayList<String> dishType,String difficulty,String kitchenType, String diet,
+                                                  String vegetarian,String vegan, ArrayList<String> groceryIn, ArrayList<String> groceryOut) {
+        ArrayList<Recipe> returnRec = new ArrayList<Recipe>();
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Recipe");
+
+        if(subCategory!=null && subCategory.size()!=0) {
+            query.whereContainsAll(Recipe.SubCategory, subCategory);
+        }
+
+        if(category!=null && category.size()!=0) {
+            query.whereContainsAll(Recipe.Category, category);
+        }
+
+        if(dishType!=null && dishType.size()!=0) {
+            query.whereContainsAll(Recipe.DishType, dishType);
+        }
+
+        if(difficulty!=null && difficulty.length()!=0) {
+            query.whereEqualTo(Recipe.Difficulty, difficulty);
+        }
+
+        if(kitchenType!=null && kitchenType.length()!=0) {
+            query.whereEqualTo(Recipe.KitchenType, kitchenType);
+        }
+
+        if(diet!=null && diet.length()!=0) {
+            query.whereEqualTo(Recipe.Diet, diet);
+        }
+
+        if(vegan!=null && vegan.length()!=0) {
+            query.whereEqualTo(Recipe.Vegan, vegan);
+        }
+
+        if(vegetarian!=null && vegetarian.length()!=0) {
+            query.whereEqualTo(Recipe.Vegetarian, vegetarian);
+        }
+
+        if(groceryIn!=null && groceryIn.size()!=0) {
+            query.whereContainedIn(Recipe.Groceries, getGroceriesById(groceryIn));
+            query.include(Recipe.Groceries);
+
+        }
+
+        if(groceryOut!=null && groceryOut.size()!=0) {
+            query.whereNotContainedIn(Recipe.Groceries, getGroceriesById(groceryOut));
+            query.include(Recipe.Groceries);
+        }
+
+        //query.orderByDescending("createdAt");
+
+        // Only retrieve the last amount selected
+        //query.setLimit(amount);
+
+        List<ParseObject> recList = null;
+        try {
+            recList = query.find();
+        } catch (Exception e) {
+            Log.d("Queries Exception", "cannot find recipies for user");
+        }
+        if (recList != null) {
+            for (ParseObject rec : recList) {
+                returnRec.add((Recipe) rec);
+            }
+        }
+        return returnRec;
+    }
+
 
     public static User getMyUser() {
         return myUser;
@@ -224,4 +326,31 @@ public class Queries {
         return bmp;
     }
 
+    public static void refreshAllGroceries(){
+        List<ParseObject> returnList = null;
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Grocery");
+
+        try {
+            returnList = query.find();
+        } catch (Exception e) {
+        }
+
+        for(ParseObject grc:returnList){
+            groceriesList.put(grc.getObjectId(), ((Grocery) grc).getMaterialName());
+        }
+    }
+
+    public static ArrayList<String> createObjectIdList(ArrayList<String> selectedGroceries){
+        ArrayList<String> returnKeys = new ArrayList<String>();
+
+        for (Map.Entry<String, String> e : groceriesList.entrySet()) {
+            String key = e.getKey();
+            String value = e.getValue();
+            if(selectedGroceries.contains(value)){
+                returnKeys.add(key);
+            }
+        }
+
+        return returnKeys;
+    }
 }

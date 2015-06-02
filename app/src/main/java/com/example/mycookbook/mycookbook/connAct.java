@@ -157,6 +157,7 @@ public class connAct extends Activity {
         Queries.isUserAlreadyExists(accessToken.getUserId());
 
 
+
         ImageView IV= (ImageView)findViewById(R.id.imageView);
         Bitmap btmp = Queries.getProfilePicture();
         if(btmp!=null) {
