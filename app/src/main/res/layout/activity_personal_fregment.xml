@@ -90,7 +90,7 @@
             android:baselineAligned="false">
 
             <ListView
-                android:id="@+id/lvMyAlbumes"
+                android:id="@+id/listView"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="0.50">
@@ -101,7 +101,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_gravity="bottom"
-                android:layout_below="@id/lvMyAlbumes"
+                android:layout_below="@id/listView"
                 android:layout_weight="0.50">
             </ListView>
         </LinearLayout>

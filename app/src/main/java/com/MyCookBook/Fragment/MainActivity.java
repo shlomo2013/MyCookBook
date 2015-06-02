@@ -10,6 +10,7 @@ import android.widget.ImageButton;
 import com.MyCookBook.Entities.Album;
 import com.MyCookBook.Entities.Grocery;
 import com.MyCookBook.Entities.Recipe;
+import com.MyCookBook.Entities.User;
 import com.example.mycookbook.mycookbook.Queries;
 import com.example.mycookbook.mycookbook.R;
 
@@ -27,6 +28,8 @@ public class MainActivity extends ActionBarActivity {
     ImageButton btnAddRecipe;
     ImageButton btnLogOff;
     String myUserId;
+    // TODO: user object - temp
+    public static User myUser = new User();
 
     private void setMyUserId(Bundle savedInstanceState) {
         String newString;
