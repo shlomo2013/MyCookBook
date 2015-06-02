@@ -1,10 +1,15 @@
 package com.example.mycookbook.mycookbook;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import com.MyCookBook.Entities.Album;
 import com.MyCookBook.Entities.Recipe;
 import com.MyCookBook.Entities.User;
+import com.parse.GetDataCallback;
+import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
@@ -23,17 +28,17 @@ public class Queries {
     and finds the user object from parse data
     and set it in the "myUser" static variable.
      */
-    public static void updateMyUser(String userId){
+    public static void updateMyUser(String userId) {
         List<ParseObject> userList = null;
         ParseQuery<ParseObject> query = ParseQuery.getQuery("User");
         query.whereEqualTo("UserId", userId);
         try {
             userList = query.find();
-        }catch (Exception e){
+        } catch (Exception e) {
             myUser = null;
         }
         // Sets the last created user from parse
-        myUser = (User)userList.get(userList.size()-1);
+        myUser = (User) userList.get(userList.size() - 1);
         Log.d("User", "Retrieved " + myUser.getObjectId() + " name=" + myUser.getUserId());
     }
 
@@ -41,32 +46,32 @@ public class Queries {
     The function updates in all the recipies related to the user,
     in the field and value the function gets as parameters
      */
-    public static void updateTypeRecipes(String field, String value, User user){
+    public static void updateTypeRecipes(String field, String value, User user) {
         ParseQuery<ParseObject> recQuery = ParseQuery.getQuery("Recipe");
         recQuery.whereEqualTo("createdBy", user);
         List<ParseObject> recList = null;
         try {
             recList = recQuery.find();
-        }catch(Exception e) {
+        } catch (Exception e) {
         }
-                    for (ParseObject a : recList) {
-                        a.put(field, value);
-                        a.saveInBackground();
-                    }
+        for (ParseObject a : recList) {
+            a.put(field, value);
+            a.saveInBackground();
+        }
     }
 
     /* Returns the all the user's recipes in Recipe type List*/
-    public static ArrayList<Recipe> getUserRecipes(User user){
+    public static ArrayList<Recipe> getUserRecipes(User user) {
         ArrayList<Recipe> returnRec = new ArrayList<Recipe>();
         ParseQuery<ParseObject> recQuery = ParseQuery.getQuery("Recipe");
         recQuery.whereEqualTo("createdBy", user);
         List<ParseObject> recList = null;
         try {
             recList = recQuery.find();
-        }catch(Exception e) {
-            Log.d("Queries Exception","cannot find recipes for user");
+        } catch (Exception e) {
+            Log.d("Queries Exception", "cannot find recipes for user");
         }
-        Log.d("Number of rec:",String.valueOf(recList.size()));
+        Log.d("Number of rec:", String.valueOf(recList.size()));
 
         if (recList != null) {
             for (ParseObject rec : recList) {
@@ -81,20 +86,20 @@ public class Queries {
     the exisiting user from parse, or creating new user when
     it's the first time
      */
-    public static void isUserAlreadyExists(String userId){
+    public static void isUserAlreadyExists(String userId) {
         List<ParseObject> userList = null;
         ParseQuery<ParseObject> query = ParseQuery.getQuery("User");
         query.whereEqualTo("UserId", userId);
         try {
             userList = query.find();
-        }catch (Exception e){
+        } catch (Exception e) {
             myUser = null;
             Log.d("score", "Error: " + e.getMessage());
         }
-        if(userList.size()!=0) {
+        if (userList.size() != 0) {
             myUser = (User) userList.get(userList.size() - 1);
             Log.d("User", "already exists " + myUser.getObjectId() + " name=" + myUser.getUserId());
-        }else{
+        } else {
             myUser = new User();
             myUser.setUserId(userId);
             myUser.saveInBackground();
@@ -105,25 +110,25 @@ public class Queries {
     /*
     The function finds specific Recipe by "Parse" ObjectId
      */
-    public static Recipe getRecipeById(String objectId){
+    public static Recipe getRecipeById(String objectId) {
         ParseQuery<ParseObject> recQuery = ParseQuery.getQuery("Recipe");
         recQuery.whereEqualTo("objectId", objectId);
         List<ParseObject> recList = null;
         Recipe retRecipe = null;
         try {
             recList = recQuery.find();
-        }catch(Exception e) {
-            Log.d("getRecipeById Err","cannot find Recipe by objId");
+        } catch (Exception e) {
+            Log.d("getRecipeById Err", "cannot find Recipe by objId");
         }
-        if(recList.size()!=0) {
-            retRecipe = (Recipe)recList.get(0);
+        if (recList.size() != 0) {
+            retRecipe = (Recipe) recList.get(0);
         }
 
         return retRecipe;
     }
 
     /*Gets the last amount new recipes to present on the feed */
-    public static ArrayList<Recipe> getLastRecipes(int amount){
+    public static ArrayList<Recipe> getLastRecipes(int amount) {
         ArrayList<Recipe> returnRec = new ArrayList<Recipe>();
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Recipe");
 
@@ -136,8 +141,8 @@ public class Queries {
         List<ParseObject> recList = null;
         try {
             recList = query.find();
-        }catch(Exception e) {
-            Log.d("Queries Exception","cannot find recipies for user");
+        } catch (Exception e) {
+            Log.d("Queries Exception", "cannot find recipies for user");
         }
         if (recList != null) {
             for (ParseObject rec : recList) {
@@ -147,15 +152,16 @@ public class Queries {
         return returnRec;
     }
 
-    public static User getMyUser(){
+    public static User getMyUser() {
         return myUser;
     }
-    public static void eraseCurrentUser(){
+
+    public static void eraseCurrentUser() {
         myUser = null;
     }
 
     /*This function return list of albums that the user is related to*/
-    public static ArrayList<Album> getUserAlbum(User user){
+    public static ArrayList<Album> getUserAlbum(User user) {
         ArrayList<Album> returnAlbum = new ArrayList<Album>();
         ParseQuery<ParseObject> recQuery = ParseQuery.getQuery("Album");
 
@@ -163,13 +169,13 @@ public class Queries {
         List<ParseObject> recList = null;
         try {
             recList = recQuery.find();
-        }catch(Exception e) {
-            Log.d("Queries Exception","cannot find albums for user");
+        } catch (Exception e) {
+            Log.d("Queries Exception", "cannot find albums for user");
         }
-        Log.d("Number of rec:",String.valueOf(recList.size()));
-        if (recList != null){
-            for (ParseObject rec:recList){
-                returnAlbum.add((Album)rec);
+        Log.d("Number of rec:", String.valueOf(recList.size()));
+        if (recList != null) {
+            for (ParseObject rec : recList) {
+                returnAlbum.add((Album) rec);
             }
         }
 
@@ -177,7 +183,7 @@ public class Queries {
     }
 
     /*This function return list of albums that the user created by himself*/
-    public static ArrayList<Album> getAlbumUserCreated(User user){
+    public static ArrayList<Album> getAlbumUserCreated(User user) {
         ArrayList<Album> returnAlbum = new ArrayList<Album>();
         ParseQuery<ParseObject> recQuery = ParseQuery.getQuery("Album");
 
@@ -185,16 +191,32 @@ public class Queries {
         List<ParseObject> recList = null;
         try {
             recList = recQuery.find();
-        }catch(Exception e) {
-            Log.d("Queries Exception","cannot find albums for user");
+        } catch (Exception e) {
+            Log.d("Queries Exception", "cannot find albums for user");
         }
-        Log.d("Number of rec:",String.valueOf(recList.size()));
-        if (recList != null){
-            for (ParseObject rec:recList){
-                returnAlbum.add((Album)rec);
+        Log.d("Number of rec:", String.valueOf(recList.size()));
+        if (recList != null) {
+            for (ParseObject rec : recList) {
+                returnAlbum.add((Album) rec);
             }
         }
 
         return returnAlbum;
     }
+
+    public static Bitmap getProfilePicture() {
+        byte[] data= null;
+        Bitmap bmp = null;
+        ParseFile applicantResume = (ParseFile) myUser.get("Profile");
+
+        try {
+            data = applicantResume.getData();
+            bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
+        }catch(Exception e){
+            Log.e("User Profile Picture:","cannot retrieve picture");
+        }
+
+        return bmp;
+    }
+
 }

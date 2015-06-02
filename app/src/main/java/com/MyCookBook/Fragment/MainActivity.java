@@ -49,66 +49,7 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
         setMyUserId(savedInstanceState);
         Queries.updateMyUser(myUserId);
-        Log.d("shay", "n");
         Log.d("User Object is:",Queries.getMyUser().getObjectId());
-        Log.d("shay","y");
-
-        Recipe r = new Recipe("Jahnun","Yamen","italian new","cook etc","small","hard ptstsot"," ",true,false,false);
-
-
-        r.addGrocery(new Grocery("חלב","כוס","2"));
-        r.addGrocery(new Grocery("יין","כף","3"));
-        r.saveInBackground();
-        r.addRecipe(Queries.getMyUser());
-
-        Recipe d = new Recipe("Lahchuch","Yamen","italian new","cook etc","small","hard ptstsot"," ",true,false,false);
-        d.saveInBackground();
-        d.addRecipe(Queries.getMyUser());
-
-        Album newAlbum = new Album();
-        newAlbum.setAlbumName("Temoni");
-        newAlbum.addUser(Queries.getMyUser());
-
-        Album newAlbum2 = new Album();
-        newAlbum2.setAlbumName("Temoni2");
-        newAlbum2.addUser(Queries.getMyUser());
-
-        newAlbum.addRecipe(r);
-        newAlbum.addRecipe(d);
-
-        try {
-            newAlbum.save();
-            newAlbum2.save();
-        }catch(com.parse.ParseException e){
-            Log.d("save bug",e.getMessage());
-        }
-
-        ArrayList<Recipe> recipes = newAlbum.getAlbumRecipes();
-
-        ArrayList<Album> myalbums = Queries.getUserAlbum(Queries.getMyUser());
-        for(Album alb:myalbums){
-            Log.d("Album related: ",alb.getAlbumName());
-        }
-
-
-        ArrayList<Album> myCreatedalbums = Queries.getAlbumUserCreated(Queries.getMyUser());
-        for(Album alb:myCreatedalbums){
-            Log.d("Album Created: ",alb.getAlbumName());
-        }
-        //ArrayList<Recipe> recipies = Queries.getUserRecipes(Queries.getMyUser());
-
-        for(Recipe rec:recipes){
-            Log.d("recipe related: ",rec.getName());
-            Log.d("recipe is Diet?: ",String.valueOf(rec.getDiet()));
-        }
-
-        for(Grocery gro:r.getRecipeGroceries()){
-            Log.d("Grocery material: ",gro.getMaterialName());
-            Log.d("Grocery Amount: ",gro.getAmount());
-        }
-
-    //Queries.updateTypeRecipes(Recipe.Category,"jjjjjjj",Queries.getMyUser());
-
 
         frag = new FeedFragment();
         fragTransaction = getFragmentManager().beginTransaction().add(R.id.fragContainer, frag);
