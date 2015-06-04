@@ -56,33 +56,6 @@ public class MainActivity extends ActionBarActivity {
         Queries.updateMyUser(myUserId);
         Log.d("User Object is:",Queries.getMyUser().getObjectId());
         Queries.refreshAllGroceries();
-        /*ArrayList<String> rrr = null;
-        ArrayList<String> input = new ArrayList<String>();
-        input.add("חלב");
-
-        rrr = Queries.createObjectIdList(input);
-
-        for (String a:rrr){
-            Log.d("+",a);
-        }
-
-        ArrayList<String> input2 = new ArrayList<String>();
-        /*ParseObject pointer = new ParseObject("Grocery");
-        pointer.setObjectId("TD567Krzmu");
-
-        ParseObject pointer2 = new ParseObject("Grocery");
-        pointer.setObjectId("by5HF7yKcG");
-
-        input2.add("TD567Krzmu");
-        input2.add("by5HF7yKcG");
-        ArrayList<Recipe> ret =  Queries.RecipesSearch(null,null,null,null,null,null,null,null,input2,null);
-        for(Recipe r:ret){
-            Log.d("Wow recipe name:",r.getObjectId());
-        }*/
-
-        //ArrayList<String> category,ArrayList<String> subCategory,ArrayList<String> dishType,String difficulty,String kitchenType, String diet,
-        //String vegetarian,String vegan, ArrayList<Grocery> groceryIn, ArrayList<Grocery> groceryOut
-
 
         frag = new FeedFragment();
         fragTransaction = getFragmentManager().beginTransaction().add(R.id.fragContainer, frag);

@@ -33,6 +33,8 @@
         <activity
             android:name="com.MyCookBook.Fragment.MainActivity"
             android:label="@string/title_activity_main" >
+
+
         </activity>
         <activity
             android:name="com.MyCookBook.Activity.CookBookGalleryActivity"

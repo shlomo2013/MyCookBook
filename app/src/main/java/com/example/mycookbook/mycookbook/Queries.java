@@ -16,6 +16,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -229,15 +230,23 @@ public class Queries {
         }
 
         if(groceryIn!=null && groceryIn.size()!=0) {
-            query.whereContainedIn(Recipe.Groceries, getGroceriesById(groceryIn));
-            query.include(Recipe.Groceries);
+
+            //ParseQuery<ParseObject> innerQuery = ParseQuery.getQuery("Grocery");
+           // innerQuery.whereContainedIn("objectId", groceryIn);
+            //innerQuery.whereEqualTo("official", true);
+          //  query.whereMatchesQuery(Recipe.Groceries, innerQuery);
+
+            //query.whereContainedIn(Recipe.Groceries, Arrays.asList(getGroceriesById(groceryIn)));
+            //query.whereEqualTo(Recipe.Groceries, Arrays.asList(getGroceriesById(groceryIn).get(0)));
+            query.whereContainedIn(Recipe.Groceries, groceryIn);
+           // query.include(Recipe.Groceries);
 
         }
 
-        if(groceryOut!=null && groceryOut.size()!=0) {
+        /*if(groceryOut!=null && groceryOut.size()!=0) {
             query.whereNotContainedIn(Recipe.Groceries, getGroceriesById(groceryOut));
             query.include(Recipe.Groceries);
-        }
+        }*/
 
         //query.orderByDescending("createdAt");
 

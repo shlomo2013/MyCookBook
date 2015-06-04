@@ -37,6 +37,7 @@ public class Recipe  extends ParseObject {
     public Recipe() {
     }
 
+
     private void putOrDefault(String att,String value){
         if(value==null){
             this.put(att,"");
@@ -82,10 +83,14 @@ public class Recipe  extends ParseObject {
         this.saveInBackground();
     }
     public void addGrocery(Grocery grocery){
+        ParseRelation<ParseObject> relation = this.getRelation(Groceries);
+        relation.add(grocery);
+        this.saveInBackground();
+        /*
         if(grocery!=null) {
             this.put(Groceries, grocery);
         }
-        this.saveInBackground();
+        this.saveInBackground();*/
     }
 
     public void savePic(byte[] data){
