@@ -2,24 +2,11 @@ package com.MyCookBook.Fragment;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.ActionBarActivity;
 import android.widget.ImageButton;
 
-import com.MyCookBook.Entities.Album;
-import com.MyCookBook.Entities.Grocery;
-import com.MyCookBook.Entities.Recipe;
-import com.MyCookBook.Entities.User;
-import com.example.mycookbook.mycookbook.Queries;
 import com.example.mycookbook.mycookbook.R;
-import com.parse.Parse;
-import com.parse.ParseObject;
-
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Queue;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -31,8 +18,6 @@ public class MainActivity extends ActionBarActivity {
     ImageButton btnAddRecipe;
     ImageButton btnLogOff;
     String myUserId;
-    // TODO: user object - temp
-    public static User myUser = new User();
 
     private void setMyUserId(Bundle savedInstanceState) {
         String newString;
@@ -54,10 +39,63 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setMyUserId(savedInstanceState);
-        Queries.updateMyUser(myUserId);
-        Log.d("User Object is:",Queries.getMyUser().getObjectId());
-        Queries.refreshAllGroceries();
 
+        /**
+        Queries.updateMyUser(myUserId);
+        Log.d("shay", "n");
+        Log.d("User Object is:",Queries.getMyUser().getObjectId());
+        Log.d("shay","y");
+
+        Recipe r = new Recipe();
+        r.initRecipe("Jahnun","Yamen","italian new","cook etc","small","hard ptstsot"," ",true,false,false);
+        r.saveInBackground();
+        r.addRecipe(Queries.getMyUser());
+
+        Recipe d = new Recipe();
+        d.initRecipe("Lahchuch","Yamen","italian new","cook etc","small","hard ptstsot"," ",true,false,false);
+        d.saveInBackground();
+        d.addRecipe(Queries.getMyUser());
+
+        Album newAlbum = new Album("Temoni",Queries.getMyUser());
+        //newAlbum.setAlbumName("Temoni");
+        newAlbum.addUser(Queries.getMyUser());
+
+        Album newAlbum2 = new Album("Temoni2",Queries.getMyUser());
+        //newAlbum2.setAlbumName("Temoni2");
+        newAlbum2.addUser(Queries.getMyUser());
+
+        newAlbum.addRecipe(r);
+        newAlbum.addRecipe(d);
+
+        try {
+            newAlbum.save();
+            newAlbum2.save();
+        }catch(com.parse.ParseException e){
+            Log.d("save bug",e.getMessage());
+        }
+
+        ArrayList<Recipe> recipes = newAlbum.getAlbumRecipes();
+
+        ArrayList<Album> myalbums = Queries.getUserAlbum(Queries.getMyUser());
+        for(Album alb:myalbums){
+            Log.d("Album related: ",alb.getAlbumName());
+        }
+
+
+        ArrayList<Album> myCreatedalbums = Queries.getAlbumUserCreated(Queries.getMyUser());
+        for(Album alb:myCreatedalbums){
+            Log.d("Album Created: ",alb.getAlbumName());
+        }
+        //ArrayList<Recipe> recipies = Queries.getUserRecipes(Queries.getMyUser());
+
+        for(Recipe rec:recipes){
+            Log.d("recipe related: ",rec.getName());
+            Log.d("recipe is Diet?: ",String.valueOf(rec.getDiet()));
+        }
+
+    //Queries.updateTypeRecipes(Recipe.Category,"jjjjjjj",Queries.getMyUser());
+
+**/
         frag = new FeedFragment();
         fragTransaction = getFragmentManager().beginTransaction().add(R.id.fragContainer, frag);
         fragTransaction.commit();

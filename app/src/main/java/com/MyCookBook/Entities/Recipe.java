@@ -52,6 +52,7 @@ public class Recipe  extends ParseObject {
 
     public Recipe(String name,String category,String subCategory,String preparation,String dishType,
                            String difficulty,String kitchenType,boolean diet,boolean vegetarian,boolean vegan){
+        //TODO: אין שמירת מרכיבים
         setName(name);
         setCategory(category);
         setSubCategory(subCategory);

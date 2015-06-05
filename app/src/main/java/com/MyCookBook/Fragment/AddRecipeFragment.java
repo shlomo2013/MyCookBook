@@ -30,6 +30,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -58,27 +60,41 @@ public class AddRecipeFragment extends Fragment {
     private ArrayList<CheckBox> alFoodCategory;
 
     ImageView viewImage;
+    View rootView;
+    View popupView;
+
     Button bSelecPic;
     Button bAddIngridient;
     Button bSetCategory;
     Button bSave;
-    View rootView;
+
     TableLayout tbLayout;
     ListView lvDropDownList;
-    View popupView;
     LinearLayout ll;
 
-    // AutoCompleteTextView actIngredient;
-    //EditText etIngredientAmount;
-
     ArrayList<Grocery> groceries = new ArrayList<Grocery>();
+
+    // arguments from screen
+    EditText recipeName              ;
+    EditText recipeHowToMake         ;
+    Spinner recipeLevel              ;
+    Spinner recipeKitchenType        ;
+    CheckBox recipeFirst             ;
+    CheckBox recipeMain              ;
+    CheckBox recipeDesert            ;
+    CheckBox recipeDiet              ;
+    CheckBox recipeVegan             ;
+    CheckBox recipeVegetarian        ;
+    RadioGroup  recipeDishTypeGroup  ;
+    RadioButton recipeDishType       ;
+    ExpandableListView recipeCategory;
 
     // more efficient than HashMap for mapping integers to objects
     SparseArray<Group> groups = new SparseArray<Group>();
 
-    int nIngridientsCounter = 0;
-
-
+    private int nIngridientsCounter = 0;
+    private int levelId;
+    private int KitchenTypeId;
 
     public AddRecipeFragment() {
 
@@ -91,24 +107,43 @@ public class AddRecipeFragment extends Fragment {
         rootView            = inflater.inflate(R.layout.activity_addrecipe_fragment, container , false);
         popupView            = inflater.inflate(R.layout.popup, container , false);
         tbLayout            = (TableLayout)          rootView.findViewById(R.id.tbIngredients);
-        bSelecPic           = (Button)               rootView.findViewById(R.id.btnSelectPhoto);
         viewImage           = (ImageView)            rootView.findViewById(R.id.viewImage);
         bAddIngridient      = (Button)               rootView.findViewById(R.id.btnAddIngridient);
-        // bSetCategory        = (Button)               rootView.findViewById(R.id.btnAddCategoryToRecipe);
         bSave               = (Button)               rootView.findViewById(R.id.btnSaveRecipe);
         lvDropDownList      = (ListView)             popupView.findViewById(R.id.lvDropDownList);
-        ll      = (LinearLayout)             rootView.findViewById(R.id.LinearLayout1);
+        ll                  = (LinearLayout)             rootView.findViewById(R.id.LinearLayout1);
 
-        //      actIngredient       = (AutoCompleteTextView) rootView.findViewById(R.id.actIngedient);
-        //      etIngredientAmount  = (EditText)             rootView.findViewById(R.id.etTextAmount);
+        // arguments from screen
+        recipeName                   = (EditText)           rootView.findViewById(R.id.etRecName);
+        recipeHowToMake              = (EditText)           rootView.findViewById(R.id.etHowToMake);
+        recipeLevel                  = (Spinner)            rootView.findViewById(R.id.Level);
+        recipeKitchenType            = (Spinner)            rootView.findViewById(R.id.KitchenType);
+        recipeDiet                   = (CheckBox)           rootView.findViewById(R.id.cbDiet);
+        recipeVegan                  = (CheckBox)           rootView.findViewById(R.id.cbVegan);
+        recipeVegetarian             = (CheckBox)           rootView.findViewById(R.id.cbVeg);
+//        recipeFirst                  = (CheckBox)           rootView.findViewById(R.id.CBfirst);
+//        recipeMain                   = (CheckBox)           rootView.findViewById(R.id.CBmain);
+//        recipeDesert                 = (CheckBox)           rootView.findViewById(R.id.CBdesert);
+        recipeCategory               = (ExpandableListView) rootView.findViewById(R.id.elvCategoriess);
+        bSelecPic                    = (Button)             rootView.findViewById(R.id.btnSelectPhoto);
+        recipeDishTypeGroup          = (RadioGroup)         rootView.findViewById(R.id.rgDishType);
+        recipeDishType               = (RadioButton)        rootView.findViewById(recipeDishTypeGroup.getCheckedRadioButtonId());
+
+        final Spinner dropdownLevel = (Spinner) rootView.findViewById(R.id.Level);
+        levelId = dropdownLevel.getId();
+        createSpinner((dropdownLevel), R.array.Levels);
+;
+        final Spinner dropdownKitchenType = (Spinner) rootView.findViewById(R.id.KitchenType);
+        KitchenTypeId = dropdownKitchenType.getId();
+        createSpinner((dropdownKitchenType), R.array.recipie_category);
 
         createExpendableList();
         ExpandableListView categoryList = (ExpandableListView) rootView.findViewById(R.id.elvCategoriess);
         final MyExpandableListAdapter adapter = new MyExpandableListAdapter(getActivity() , groups);
         categoryList.setAdapter(adapter);
 
-        final ListView dropdownLevel = (ListView) rootView.findViewById(R.id.lvLevel);
-        createListView(dropdownLevel, R.array.Levels);
+//        final ListView dropdownLevel = (ListView) rootView.findViewById(R.id.lvLevel);
+//        createListView(dropdownLevel, R.array.Levels);
 
         // Handle Categories list
 //        categoryList.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
@@ -148,7 +183,7 @@ public class AddRecipeFragment extends Fragment {
         bSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getInputIngredients();
+                getInputIngridients();
                 SaveRecipe(rootView);
             }
         });
@@ -156,21 +191,33 @@ public class AddRecipeFragment extends Fragment {
         return rootView;
     }
 
+
+
+
+
+
+
     private void SaveRecipe(View v) {
+
         String category = "מרקים";
         String subCategory = "חמים";
-        String preparation = "דנהדנה דנהדנדהנדהדנדה";
-        String dishType = "lg";
-        String difficulty = "df";
-        String kitchenType = "df";
-        boolean diet = true;
-        boolean vegetarian = false;
-        boolean vegan = false;
-        String name = "דניאל נחמיאס המעפנה!";
+        String dishType = "ss"; //recipeDishType.getText().toString();
+
+        String difficulty = (String)recipeLevel.getSelectedItem();
+        String kitchenType = (String)recipeKitchenType.getSelectedItem();
+        String preparation = recipeHowToMake.getText().toString();
+        boolean diet = recipeDiet.isChecked();
+        boolean vegetarian = recipeVegetarian.isChecked();
+        boolean vegan = recipeVegan.isChecked();
+        String name = recipeName.getText().toString();
+
+        Recipe r = new Recipe(name, category , subCategory,preparation ,  dishType,
+                                    difficulty, kitchenType, diet, vegetarian, vegan);
 
         //EditText name = (EditText) v.findViewById(R.id.etRecName);
-        Recipe r = new Recipe(name.toString(), category , subCategory, preparation,  dishType,
-                                    difficulty, kitchenType, diet, vegetarian, vegan);
+//        r.initRecipe(name, category , subCategory,preparation ,  dishType,
+//                     difficulty, kitchenType, diet, vegetarian, vegan);
+        r.updateGroceries(groceries);
         r.addRecipe(Queries.getMyUser());
     }
 
@@ -302,7 +349,6 @@ public class AddRecipeFragment extends Fragment {
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == 1) {
                 File f = new File(Environment.getExternalStorageDirectory().toString());
-
                 for (File temp : f.listFiles()) {
                     if (temp.getName().equals("temp.jpg")) {
                         f = temp;
@@ -433,7 +479,7 @@ public class AddRecipeFragment extends Fragment {
 //        }
 
         Group CategoryGroup = new Group("קטגוריה" );
-       // Group CategoryGroup = new Group("קטגוריות " );
+        // Group CategoryGroup = new Group("קטגוריות " );
 
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity().getBaseContext(),
@@ -448,28 +494,28 @@ public class AddRecipeFragment extends Fragment {
         }
         groups.append(0, CategoryGroup);
 
-        CategoryGroup = new Group("תת קטגוריה" );
-   //     CategoryGroup = new Group("תת קטגוריה " );
-        // TODO dana: ליצור פונקציה שתביא את התת קטגוריה ע״פ  הקטגוריה שנבחרה
-        if (true){
+//        CategoryGroup = new Group("תת קטגוריה" );
+//   //     CategoryGroup = new Group("תת קטגוריה " );
+//        // TODO dana: ליצור פונקציה שתביא את התת קטגוריה ע״פ  הקטגוריה שנבחרה
+//        if (true){
+//
+//            // Create an ArrayAdapter using the string array and a default spinner layout
+//            ArrayAdapter<CharSequence> subAdapter = ArrayAdapter.createFromResource(getActivity().getBaseContext(),
+//                    R.array.subCategoryBread,
+//                    android.R.layout.simple_expandable_list_item_1);
+//
+//            for (int i = 0; i < subAdapter.getCount(); i++) {
+//                String subCategory =(String)subAdapter.getItem(i);
+//
+//                //  createListView;
+//                CategoryGroup.children.add(subCategory);
+//            }
+//        }
+//        else{
+//            CategoryGroup.children.add( "לא קיים תת קטגוריה" );
+//        }
 
-            // Create an ArrayAdapter using the string array and a default spinner layout
-            ArrayAdapter<CharSequence> subAdapter = ArrayAdapter.createFromResource(getActivity().getBaseContext(),
-                    R.array.subCategoryBread,
-                    android.R.layout.simple_expandable_list_item_1);
-
-            for (int i = 0; i < subAdapter.getCount(); i++) {
-                String subCategory =(String)subAdapter.getItem(i);
-
-                //  createListView;
-                CategoryGroup.children.add(subCategory);
-            }
-        }
-        else{
-            CategoryGroup.children.add( "לא קיים תת קטגוריה" );
-        }
-
-        groups.append(1, CategoryGroup);
+//        groups.append(1, CategoryGroup);
 
     }
 
@@ -487,7 +533,7 @@ public class AddRecipeFragment extends Fragment {
 
     }
 
-    private void getInputIngredients(){
+    private void getInputIngridients(){
 
         int nid = 1;
 
@@ -495,13 +541,37 @@ public class AddRecipeFragment extends Fragment {
             nid = i;
             nid *= 10;
 
+
+
             AutoCompleteTextView  matirial    = (AutoCompleteTextView)   rootView.findViewById(nid+1);
             Spinner               form        = (Spinner)                rootView.findViewById(nid+2);
             EditText              amount      = (EditText)               rootView.findViewById(nid+3);
 
+          //  g.initGrocery(matirial.getText().toString() , form.toString(), amount.getText().toString());
             Grocery g = new Grocery(matirial.getText().toString() , form.toString(), amount.getText().toString());
             groceries.add(g);
         }
     }
+
+
+    private void createSpinner(Spinner sp, @ArrayRes int dataList){
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity().getBaseContext(),
+                dataList,
+                android.R.layout.simple_spinner_item);
+
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        if (sp.getId() != levelId && sp.getId() != KitchenTypeId)
+        {
+            sp.setVisibility(View.INVISIBLE);
+        }
+
+        // Apply the adapter to the spinner
+        sp.setAdapter(adapter);
+
+    }
+
 }
 

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+   <ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/scrollView"
+        android:layout_marginBottom="56dp"
+        android:fillViewport="true"
+        android:layout_row="0"
+        android:layout_column="0" >
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:textAppearance="?android:attr/textAppearanceMedium"
+                  android:textDirection="rtl"
+                  android:paddingRight="20dp"
+                  android:text="קטגוריות שהיית רוצה שיופיעו "
+                  android:id="@+id/tvCategory"
+                  android:layout_alignParentRight="true"
+                  android:layout_alignParentEnd="true"
+                  android:textStyle="bold"
+                  android:textColor="#ffff4f45"
+                  android:layout_gravity="center_vertical" />
+
+              <ListView
+                  android:layout_width="wrap_content"
+                  android:layout_height="250dp"
+                  android:id="@+id/lvCategoriess"
+                  android:layout_below="@+id/textView4"
+                  android:layout_alignParentLeft="true"
+                  android:layout_alignParentStart="true"
+                  android:choiceMode="multipleChoice"
+                  android:background="@android:drawable/bottom_bar"
+                  android:layout_gravity="center_horizontal" />
+
+    <TextView
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:textAppearance="?android:attr/textAppearanceMedium"
+                  android:textDirection="rtl"
+                  android:paddingRight="20dp"
+                  android:text="מרכיבים שלא היית רוצה לראות במתכונים "
+                  android:id="@+id/tvNoCategory"
+                  android:layout_alignParentRight="true"
+                  android:layout_alignParentEnd="true"
+                  android:textStyle="bold"
+                  android:textColor="#ffff4f45"
+                  android:layout_gravity="center_vertical" />
+
+              <ListView
+                  android:layout_width="wrap_content"
+                  android:layout_height="250dp"
+                  android:id="@+id/lvNoCategoriess"
+                  android:layout_below="@+id/textView4"
+                  android:layout_alignParentLeft="true"
+                  android:layout_alignParentStart="true"
+                  android:choiceMode="multipleChoice"
+                  android:background="@android:drawable/bottom_bar"
+                  android:layout_gravity="center_horizontal" />
+<LinearLayout
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" android:gravity="center_horizontal"
+    android:orientation="horizontal">
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="בטל"
+        android:id="@+id/button" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="שמור"
+        android:id="@+id/bSaveCategory" />
+</LinearLayout>
+</LinearLayout>
+</ScrollView>

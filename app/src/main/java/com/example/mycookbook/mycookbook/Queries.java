@@ -35,7 +35,7 @@ public class Queries {
     and set it in the "myUser" static variable.
      */
     public static void updateMyUser(String userId) {
-        List<ParseObject> userList = null;
+        List<ParseObject> userList = null ;
         ParseQuery<ParseObject> query = ParseQuery.getQuery("User");
         //query.whereEqualTo("UserId", userId);
 
@@ -100,7 +100,12 @@ public class Queries {
     public static void isUserAlreadyExists(String userId) {
         List<ParseObject> userList = null;
         ParseQuery<ParseObject> query = ParseQuery.getQuery("User");
-        query.whereEqualTo("UserId", userId);
+       // query.whereEqualTo("UserId", userId);
+
+        //TODO delete
+        String s = "10153329758089662";
+        query.whereEqualTo("UserId", s);
+
         try {
             userList = query.find();
         } catch (Exception e) {

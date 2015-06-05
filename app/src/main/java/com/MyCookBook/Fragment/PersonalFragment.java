@@ -1,7 +1,7 @@
 package com.MyCookBook.Fragment;
 
 import android.app.Fragment;
-import android.content.Intent;
+import android.app.FragmentTransaction;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.ArrayRes;
@@ -12,13 +12,9 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.Gallery;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -26,16 +22,12 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
-import android.widget.TextView;
 
-import com.MyCookBook.Activity.CookBookGalleryActivity;
 import com.MyCookBook.CategoriesUtil.DropDownListAdapter;
 import com.example.mycookbook.mycookbook.R;
-import com.parse.ParseObject;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by nirgadasi on 4/29/15.
@@ -43,61 +35,30 @@ import java.util.List;
 public class PersonalFragment extends Fragment {
 
     private PopupWindow pw;
+
     TableLayout tbLayout;
     LinearLayout llPopup;
     RelativeLayout rlpersonalfrag;
     ListView lvDropDownList;
+
     View popupView;
     View singlGalleryView;
     View  rootView    ;
     View  popUpView   ;
     View  dropDownView;
 
+    Fragment subFrag;
+    FragmentTransaction fragTransaction;
+
+    Button btnMyAlbums;
+    Button btnAllAlbums;
+    Button btnSettings;
+
     ArrayList<CheckBox> alFoodCategory;
     ArrayList<CheckBox> alNoFoodCategory;
     DropDownListAdapter mAdapter;
-    List<ParseObject> lrecipieList;
-    Integer[] pics = {R.mipmap.cookbook_poster,
-            R.mipmap.ic_launcher,
-            R.mipmap.red_address_book_icon,
-            R.mipmap.red_balloon_2_icon,
-            R.mipmap.red_gear_icon,
-            R.mipmap.red_camera_icon };
 
-    ImageView ivPic;
-    GridView gvAlboms;
-    Gallery gAlbome;
-    ArrayList<ImageView> alAlbumList;
     LayoutInflater MyInflater;
-
-
-    //////////******************************************************************//////
-    //////////******************************************************************//////
-
-   public ListView lvMyAlbums;
-   public ListView lvAllAlbums;
-
-    // Create Array's of titles, descriptions and thumbs resource id's:
-    public String myTitle[] = { "Cup Cake", "Donut", "Eclair", "Froyo",
-            "Ginger Bread", "Honey Comb", "Icecream Sandwich", "Jelly Bean"};
-
-    public String myDesc[] = { "משפחה", "חברים",
-            "מרוקאי", "תמני", "קינוחים",
-            "פייסבוק", "צבא", "פומבי"};
-
-    public int MyAlbumesPics[] = { R.mipmap.red_camera_icon, R.mipmap.red_balloon_2_icon,
-            R.mipmap.red_balloon_plus_icon , R.mipmap.red_cross_icon ,
-            R.mipmap.red_like_icon ,R.mipmap.red_lock_icon ,
-            R.mipmap.red_like_icon ,R.mipmap.red_lock_icon };
-
-    public int AllAlbumesPics[] = { 
-               R.mipmap.red_like_icon ,R.mipmap.red_lock_icon ,
-               R.mipmap.red_unlock_icon , R.mipmap.red_home_icon, };
-
-    public String allTitle[] = {  "Lazania", "Pizza", "Icecream", "Yolo" };
-    public String allDesc[] = { "איטלקי", "בשר", "צמחוני", "טבעוני" };
-    //////////******************************************************************//////
-    //////////******************************************************************//////
 
 
 
@@ -118,81 +79,27 @@ public class PersonalFragment extends Fragment {
      //   gvAlboms                  =(GridView)            rootView.findViewById(R.id.albumGrid);
         lvDropDownList            = (ListView)           popupView.findViewById(R.id.lvDropDownList);
 
+        btnMyAlbums = (Button) rootView.findViewById(R.id.bMyAlbums);
+        btnAllAlbums = (Button) rootView.findViewById(R.id.bAllAlbums);
+        btnSettings  = (Button) rootView.findViewById(R.id.bSettings);
+        btnSettings  = (Button) rootView.findViewById(R.id.bAddAlbum);
 
+        btnMyAlbums.setOnClickListener(btnOnClickListener);
+        btnAllAlbums.setOnClickListener(btnOnClickListener);
+        btnSettings.setOnClickListener(btnOnClickListener);
 
-        //////////******************************************************************//////
-        //////////******************************************************************//////
-        // Initialize the variables:
-        lvMyAlbums = (ListView) rootView.findViewById(R.id.listView);
-        lvAllAlbums = (ListView) rootView.findViewById(R.id.lvAllAlbumes);
-
-        // Set an Adapter to the ListView
-        lvMyAlbums.setAdapter(new VersionAdapter(inflater, MyAlbumesPics, myDesc, myTitle));
-
-        // Set on item click listener to the ListView
-
-
-//        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//
-//            @Override
-//            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,  long arg3) {
-//                // actions to be performed when a list item clicked
-//                int pos = arg2;
-//
-//                View layout = singlGalleryView.findViewById(R.id.toast_layout_root);
-//
-//                ImageView iv = (ImageView) layout.findViewById(R.id.toast_iv);
-//                TextView tv = (TextView) layout.findViewById(R.id.toast_tv);
-//
-//                iv.setBackgroundResource(thumb[pos]);
-//                tv.setText(title[pos]);
-//
-//                Toast toast = new Toast(getActivity().getApplicationContext());
-//                toast.setView(layout);
-//                toast.setGravity(Gravity.CENTER, 0, 0);
-//                toast.show();
-//            }
-//        });
-
-        lvMyAlbums.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                Intent i = new Intent(getActivity().getApplicationContext(), CookBookGalleryActivity.class);
-                // TODO dana :  שליחה של המזהה עאלבום על מנת לשלוף את כל המתכונים במתכון
-                i.putExtra("AlbumID", "paramValue");
-                startActivity(i);
-            }
-        });
-
-//        lvAllAlbums.setAdapter(new VersionAdapter(inflater, AllAlbumesPics, allDesc, allTitle));
-//        lvAllAlbums.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//
-//                  @Override
-//                  public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//
-//                      Intent i = new Intent(getActivity().getApplicationContext(), CookBookGalleryActivity.class);
-//                      // TODO dana :  שליחה של המזהה עאלבום על מנת לשלוף את כל המתכונים במתכון
-//                      i.putExtra("AlbumID", "paramValue");
-//                      startActivity(i);
-//                  }
-//              });
-
-        //////////******************************************************************//////
-        //////////******************************************************************//////
-
-
-        // TODO getUserRecipies throws exeption
-//        lrecipieList = Queries.getUserRecipies("qbGQkwsX8G");
-//        ParseObject po = (ParseObject)lrecipieList.get(0);
-//        Recipe r = (Recipe)lrecipieList.get(0);
-//        po.getObjectId();
+//        btnMyAlbums.setOnHoverListener();
+        btnAllAlbums.setOnClickListener(btnOnClickListener);
+        btnSettings.setOnClickListener(btnOnClickListener);
 
 
 
-        handleCategories();
-        handleNoCategories();
+        subFrag = new MyGallery();
+        fragTransaction = getFragmentManager().beginTransaction().add(R.id.fragPersonal, subFrag);
+        fragTransaction.commit();
+
+//        handleCategories();
+        //      handleNoCategories();
         return rootView;
     }
     private ArrayList<ImageView> imageViewReader( ) {
@@ -215,6 +122,7 @@ public class PersonalFragment extends Fragment {
 
         return a;
     }
+
     private ArrayList<File> imageReader(File root) {
         ArrayList<File> a = new ArrayList<>();
         File[] files = root.listFiles();
@@ -241,16 +149,8 @@ public class PersonalFragment extends Fragment {
 
         items = new ArrayList<CheckBox>();
         for (int i = 0; i < adapter.getCount(); i++){
-            String s = (String)adapter.getItem(i);
-            CheckBox c = new CheckBox(getActivity().getBaseContext());
-            c.setText(s);
-//
-//            if(i%2 == 0) {
-//                c.setChecked(true);
-//            }else
-//            {
-//                c.setChecked(false);
-//            }
+            //      String s = (String)adapter.getItem(i);
+            CheckBox c = new CheckBox(getActivity().getBaseContext() );
             items.add(c);
 
         }
@@ -380,70 +280,42 @@ public class PersonalFragment extends Fragment {
 
     }
 
+    View.OnClickListener btnOnClickListener = new View.OnClickListener(){
+        @Override
+        public void onClick(View v){
+            Bundle b = new Bundle();
+
+            if (v == btnMyAlbums) {
+                fragTransaction = getFragmentManager().beginTransaction().detach(subFrag);
+                b.putBoolean("MyAlbum", true);
+                subFrag = new MyGallery();
+                subFrag.setArguments(b);
+
+            }
+            else if (v == btnAllAlbums) {
+//                fragTransaction = getFragmentManager().beginTransaction().detach(subFrag);
+                fragTransaction = getFragmentManager().beginTransaction().remove(subFrag);
+                b.putBoolean("MyAlbum", false);
+                subFrag = new MyGallery();
+                subFrag.setArguments(b);
+
+            }
+            else if (v == btnSettings) {
+                subFrag = new SettingsPersonal();
+            }
+
+            fragTransaction = getFragmentManager().beginTransaction().replace(R.id.fragPersonal, subFrag);
+            subFrag.setArguments(b);
+            fragTransaction.addToBackStack(null);
+            fragTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            fragTransaction.commit();
 
 
-
-
-
-
-
-
-
-// Create an Adapter Class extending the BaseAdapter
-class VersionAdapter extends BaseAdapter {
-
-    private LayoutInflater layoutInflater;
-    private int[] picItems;
-    private String[] itemsDesc;
-    private String[] itemsTitle;
-
-    public VersionAdapter(LayoutInflater inflater, int[] itemsPIc ,String[] itemsDesc ,String[] itemsTitle) {
-        this.layoutInflater = inflater;
-        this.picItems = itemsPIc;
-        this.itemsDesc = itemsDesc;
-        this.itemsTitle = itemsTitle;
-    }
-
-    @Override
-    public int getCount() {
-// Set the count value to the total number of items in the Array
-        return myTitle.length;
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return position;
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-
-// Inflate the item layout and set the views
-        View listItem = convertView;
-        int pos = position;
-        if (listItem == null) {
-            listItem = layoutInflater.inflate(R.layout.list_items, null);
         }
-
-// Initialize the views in the layout
-        ImageView iv = (ImageView) listItem.findViewById(R.id.thumb);
-        TextView tvTitle = (TextView) listItem.findViewById(R.id.title);
-        TextView tvDesc = (TextView) listItem.findViewById(R.id.desc);
-
-// Set the views in the layout
-        iv.setBackgroundResource(picItems[pos]);
-        tvTitle.setText(itemsTitle[pos]);
-        tvDesc.setText(itemsDesc[pos]);
-
-        return listItem;
-    }
+    };
 
 }
 
-}
+
+
 
