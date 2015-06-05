@@ -15,6 +15,7 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -202,11 +203,15 @@ public class Queries {
         }
 
         if(category!=null && category.size()!=0) {
-            query.whereContainsAll(Recipe.Category, category);
+            String []strings = new String[category.size()];
+            category.toArray(strings);
+            query.whereContainedIn(Recipe.Category, Arrays.asList(strings));
         }
 
         if(dishType!=null && dishType.size()!=0) {
-            query.whereContainsAll(Recipe.DishType, dishType);
+            String []strings = new String[dishType.size()];
+            dishType.toArray(strings);
+            query.whereContainedIn(Recipe.DishType, Arrays.asList(strings));
         }
 
         if(difficulty!=null && difficulty.length()!=0) {
@@ -243,10 +248,9 @@ public class Queries {
 
         }
 
-        /*if(groceryOut!=null && groceryOut.size()!=0) {
-            query.whereNotContainedIn(Recipe.Groceries, getGroceriesById(groceryOut));
-            query.include(Recipe.Groceries);
-        }*/
+        if(groceryOut!=null && groceryOut.size()!=0){
+            query.whereNotContainedIn(Recipe.Groceries, groceryOut);
+        }
 
         //query.orderByDescending("createdAt");
 
