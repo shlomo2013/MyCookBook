@@ -1,5 +1,6 @@
 package com.MyCookBook.Fragment;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -10,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -219,6 +221,7 @@ public class AddRecipeFragment extends Fragment {
 //                     difficulty, kitchenType, diet, vegetarian, vegan);
         r.updateGroceries(groceries);
         r.addRecipe(Queries.getMyUser());
+        r.savePic(selectedBitmap);
     }
 
     private void selectImage() {
@@ -342,6 +345,8 @@ public class AddRecipeFragment extends Fragment {
         });
 
     }
+    public Bitmap selectedBitmap = null;
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -356,13 +361,13 @@ public class AddRecipeFragment extends Fragment {
                     }
                 }
                 try {
-                    Bitmap bitmap;
                     BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
 
-                    bitmap = BitmapFactory.decodeFile(f.getAbsolutePath(),
+                    selectedBitmap = BitmapFactory.decodeFile(f.getAbsolutePath(),
                             bitmapOptions);
 
-                    viewImage.setImageBitmap(bitmap);
+                    viewImage.setImageBitmap(selectedBitmap);
+
 
                     String path = Environment
                             .getExternalStorageDirectory()
@@ -373,7 +378,7 @@ public class AddRecipeFragment extends Fragment {
                     File file = new File(path, String.valueOf(System.currentTimeMillis()) + ".jpg");
                     try {
                         outFile = new FileOutputStream(file);
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 85, outFile);
+                        selectedBitmap.compress(Bitmap.CompressFormat.JPEG, 85, outFile);
                         outFile.flush();
                         outFile.close();
                     } catch (FileNotFoundException e) {
