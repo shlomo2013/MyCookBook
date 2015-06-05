@@ -1,6 +1,5 @@
 package com.MyCookBook.Fragment;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -11,7 +10,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -185,7 +183,7 @@ public class AddRecipeFragment extends Fragment {
         bSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getInputIngridients();
+                getInputIngredients();
                 SaveRecipe(rootView);
             }
         });
@@ -224,7 +222,7 @@ public class AddRecipeFragment extends Fragment {
         r.savePic(selectedBitmap);
     }
 
-    private void selectImage() {
+        private void selectImage() {
 
         final CharSequence[] options = { "Take Photo", "Choose from Gallery","Cancel" };
 
@@ -538,7 +536,7 @@ public class AddRecipeFragment extends Fragment {
 
     }
 
-    private void getInputIngridients(){
+    private void getInputIngredients(){
 
         int nid = 1;
 
@@ -546,14 +544,12 @@ public class AddRecipeFragment extends Fragment {
             nid = i;
             nid *= 10;
 
-
-
             AutoCompleteTextView  matirial    = (AutoCompleteTextView)   rootView.findViewById(nid+1);
             Spinner               form        = (Spinner)                rootView.findViewById(nid+2);
             EditText              amount      = (EditText)               rootView.findViewById(nid+3);
 
           //  g.initGrocery(matirial.getText().toString() , form.toString(), amount.getText().toString());
-            Grocery g = new Grocery(matirial.getText().toString() , form.toString(), amount.getText().toString());
+            Grocery g = new Grocery(matirial.getText().toString() , form.getSelectedItem().toString(), amount.getText().toString());
             groceries.add(g);
         }
     }

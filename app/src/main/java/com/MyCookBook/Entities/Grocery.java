@@ -1,5 +1,7 @@
 package com.MyCookBook.Entities;
 
+import android.util.Log;
+
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 
@@ -18,6 +20,11 @@ public class Grocery  extends ParseObject {
         this.put(MaterialName, materialName);
         this.put(Form, form);
         this.put(Amount, amount);
+        try {
+            this.save();
+        }catch(Exception e){
+            Log.d("Cannot save Grocery: ",e.getMessage());
+        }
     }
 
     public String getMaterialName(){
