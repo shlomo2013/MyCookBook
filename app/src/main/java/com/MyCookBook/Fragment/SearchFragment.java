@@ -3,6 +3,7 @@ package com.MyCookBook.Fragment;
 import android.app.LauncherActivity;
 import android.content.ClipData;
 import android.content.DialogInterface;
+import android.opengl.EGLExt;
 import android.os.Bundle;
 import android.support.annotation.ArrayRes;
 import android.support.annotation.NonNull;
@@ -116,22 +117,33 @@ public class SearchFragment extends Fragment {
 
         //String[] dataList = R.array.personal_no_pref_array;
 
+        HashMap<String, String> hm = new HashMap<>(4);
+        ArrayList<String> alPref = new ArrayList<>(hm.values());
+
+        String[] prefList = new String[hm.size()];
+
+        for (int i = 0; i < hm.size(); i++)
+        {
+            prefList[i] = alPref.get(i);
+        }
+
         myListView = (ListView) rootView.findViewById(R.id.listView);
-        final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity().getBaseContext(),
-                personal_no_pref_array,
-                android.R.layout.simple_list_item_multiple_choice);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity().getBaseContext(), android.R.layout.simple_list_item_multiple_choice  , prefList );
+
+//        final ArrayAdapter<String> adapter = ArrayAdapter<>(getActivity().getBaseContext(),
+//                //.createFromResource(getActivity().getBaseContext(),
+//                //personal_no_pref_array,
+//                android.R.layout.simple_list_item_multiple_choice,
+//                prefList);
 
         // Assign adapter to ListView
         myListView.setAdapter(adapter);
 
-        HashMap<String, String> my = new HashMap<>(7);
-        ArrayList<String> list = new ArrayList<String>(my.values());
-
         myListViewNo = (ListView) rootView.findViewById(R.id.listViewNo);
-        final ArrayAdapter<CharSequence> adapterNo = ArrayAdapter.createFromResource(getActivity().getBaseContext(),
-                personal_no_pref_array,
-
-                android.R.layout.simple_list_item_multiple_choice);
+        ArrayAdapter<String> adapterNo = new ArrayAdapter<>(getActivity().getBaseContext(), android.R.layout.simple_list_item_multiple_choice  , prefList );
+//        final ArrayAdapter<CharSequence> adapterNo = ArrayAdapter.createFromResource(getActivity().getBaseContext(),
+//                personal_no_pref_array,
+//                android.R.layout.simple_list_item_multiple_choice);
 
         // Assign adapter to ListView
         myListViewNo.setAdapter(adapterNo);

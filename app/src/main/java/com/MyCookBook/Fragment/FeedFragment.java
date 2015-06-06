@@ -90,7 +90,7 @@ public class FeedFragment extends Fragment {
         for (int i = 0; i < myRecepies.size(); i++)
         {
             TextView tvRecipe = new TextView(getActivity().getBaseContext());
-            ImageView ivRecipePhoto = new ImageView(getActivity().getBaseContext());
+            final ImageView ivRecipePhoto = new ImageView(getActivity().getBaseContext());
 //            ImageButton btRecipePhoto = new ImageButton(getActivity().getBaseContext());
             ImageButton btLike = new ImageButton(getActivity().getBaseContext());
 
@@ -136,6 +136,8 @@ public class FeedFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     if (click) {
+                        // TODO: id
+                        //Queries.getRecipeById(String.valueOf(ivRecipePhoto.getId()));
                         initiatePopUp(R.drawable.com_facebook_profile_picture_blank_square);
                         pw.showAtLocation(rootView, Gravity.BOTTOM, 10, 10);
                         click = false;
