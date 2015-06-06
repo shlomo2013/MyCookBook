@@ -1,13 +1,16 @@
 package com.MyCookBook.Entities;
 
+import android.graphics.Bitmap;
 import android.util.Log;
 
+import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.parse.ParseClassName;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
@@ -119,4 +122,22 @@ public class Album  extends ParseObject {
             this.put(att,value);
         }
     }
+
+    public void savePic(Bitmap bitmap){
+        if(bitmap!=null) {
+            ParseFile file = new ParseFile("AlbumPic.jpeg", bitmapToByteArray(bitmap));
+            file.saveInBackground();
+            this.put(Pic, file);
+            this.saveInBackground();
+        }
+    }
+
+    public static byte[] bitmapToByteArray(Bitmap bmp)
+    {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+        return byteArray;
+    }
+
 }
