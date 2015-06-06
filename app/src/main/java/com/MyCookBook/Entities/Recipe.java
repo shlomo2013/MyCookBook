@@ -233,7 +233,15 @@ public class Recipe  extends ParseObject {
     public Bitmap getRecipePicture() {
         byte[] data= null;
         Bitmap bmp = null;
-        ParseFile applicantResume = (ParseFile) this.get(Recipe.RecipePic);
+
+        Object pic = this.get(Recipe.RecipePic);
+        ParseFile applicantResume = null;
+
+        if(pic!= null){
+            applicantResume = (ParseFile)pic;
+        }else{
+            return null;
+        }
 
         try {
             data = applicantResume.getData();

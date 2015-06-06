@@ -144,7 +144,15 @@ public class Album  extends ParseObject {
     public Bitmap getAlbumPicture() {
         byte[] data= null;
         Bitmap bmp = null;
-        ParseFile applicantResume = (ParseFile) this.get(Recipe.RecipePic);
+
+        Object pic = this.get(Album.Pic);
+        ParseFile applicantResume = null;
+
+        if(pic!= null){
+            applicantResume = (ParseFile)pic;
+        }else{
+            return null;
+        }
 
         try {
             data = applicantResume.getData();
