@@ -1,5 +1,6 @@
 package com.MyCookBook.Entities;
 
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.example.mycookbook.mycookbook.Queries;
@@ -9,6 +10,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +39,7 @@ public class Recipe  extends ParseObject {
     public Recipe() {
     }
 
+
     private void putOrDefault(String att,String value){
         if(value==null){
             this.put(att,"");
@@ -51,6 +54,7 @@ public class Recipe  extends ParseObject {
 
     public Recipe(String name,String category,String subCategory,String preparation,String dishType,
                            String difficulty,String kitchenType,boolean diet,boolean vegetarian,boolean vegan){
+        //TODO: אין שמירת מרכיבים
         setName(name);
         setCategory(category);
         setSubCategory(subCategory);
@@ -62,7 +66,11 @@ public class Recipe  extends ParseObject {
         setVegetarian(vegetarian);
         setVegan(vegan);
         put(LikesCounter,0);
-        this.saveInBackground();
+        try {
+            this.save();
+        }catch(Exception e){
+            Log.d("Cannot Save Recipe ",e.getMessage());
+        }
     }
 
     public static Recipe getRecipeById(String id)
@@ -78,22 +86,39 @@ public class Recipe  extends ParseObject {
     }
 
     public void updateGroceries(ArrayList<Grocery> groceries){
-        this.put(Groceries, groceries);
-        this.saveInBackground();
-    }
-    public void addGrocery(Grocery grocery){
-        if(grocery!=null) {
-            this.put(Groceries, grocery);
+        if(groceries!=null && groceries.size()!=0) {
+            for(Grocery grc:groceries){
+                this.addGrocery(grc);
+            }
         }
         this.saveInBackground();
     }
-
-    public void savePic(byte[] data){
-        //byte[] data = "Working at Parse is great!".getBytes();
-        ParseFile file = new ParseFile(RecipePic, data);
-        file.saveInBackground();
-        this.put(RecipePic,file);
+    public void addGrocery(Grocery grocery){
+        ParseRelation<ParseObject> relation = this.getRelation(Groceries);
+        relation.add(grocery);
         this.saveInBackground();
+        /*
+        if(grocery!=null) {
+            this.put(Groceries, grocery);
+        }
+        this.saveInBackground();*/
+    }
+
+    public void savePic(Bitmap bitmap){
+        if(bitmap!=null) {
+            ParseFile file = new ParseFile("RecipePic.jpeg", bitmapToByteArray(bitmap));
+            file.saveInBackground();
+            this.put(RecipePic, file);
+            this.saveInBackground();
+        }
+    }
+
+    public static byte[] bitmapToByteArray(Bitmap bmp)
+    {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+        return byteArray;
     }
 
     public ArrayList<Grocery> getRecipeGroceries(){

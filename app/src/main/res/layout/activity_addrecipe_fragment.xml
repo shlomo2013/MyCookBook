@@ -38,7 +38,7 @@
                 android:layout_height="fill_parent">
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="שם מתכון"
@@ -71,13 +71,84 @@
 
             </TableRow>
 
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingRight="20dp"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="סוגי מנות"
+                    android:id="@+id/textView2"
+                    android:layout_below="@+id/CBdrinks"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:textStyle="bold"
+                    android:textColor="#ffff4f45" />
+            </TableRow>
+        </TableLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingRight="20dp"
+            android:layoutDirection="rtl"
+            android:layout_gravity="center_horizontal">
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:id="@+id/rgDishType"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ראשונה"
+                    android:id="@+id/CBfirst"
+                    android:layout_below="@+id/textView2"
+                    android:layout_alignRight="@+id/CBdrinks"
+                    android:layout_alignEnd="@+id/CBdrinks" />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="עיקרית"
+                    android:id="@+id/CBmain"
+                    android:layout_alignTop="@+id/CBfirst"
+                    android:layout_toLeftOf="@+id/CBdrinks"
+                    android:layout_toStartOf="@+id/CBdrinks" />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="קינוח"
+                    android:id="@+id/CBdesert"
+                    android:layout_alignTop="@+id/CBmain"
+                    android:layout_toLeftOf="@+id/CBmain"
+                    android:layout_toStartOf="@+id/CBmain" />
+            </RadioGroup>
+        </LinearLayout>
+
+
+        <TableLayout
+            android:layout_width="366dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="20dp"
+            android:id="@+id/tbIngredients2"
+            android:layout_weight="0.12"
+            android:baselineAligned="false">
 
             <TableRow
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent">
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="מצרכים במנה"
@@ -107,10 +178,10 @@
                     android:layout_column="0" />
             </TableRow>
 
-            </TableLayout>
+        </TableLayout>
 
 
-            <TableLayout
+        <TableLayout
             android:layout_width="366dp"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -184,7 +255,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="רמת קושי"
-                    android:padding="20dp"
+                    android:paddingRight="20dp"
                     android:id="@+id/textView5"
                     android:textStyle="bold"
                     android:textColor="#ffff4f45"
@@ -198,18 +269,55 @@
             <TableRow
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent">
-
-                <ListView
+                <Spinner
+                    android:paddingRight="20dp"
+                    android:id="@+id/Level"
                     android:layout_width="match_parent"
-                    android:padding="20dp"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/lvLevel"
-                    android:choiceMode="singleChoice"
-                    android:clickable="false"
-                    android:background="@android:drawable/bottom_bar"
-                    android:layout_gravity="center"
+                    android:layout_height="50dp"
+                    android:background="@android:drawable/btn_dropdown"
+                    android:spinnerMode="dropdown"
+                    android:textDirection="rtl"
+                    android:layout_below="@+id/textView5"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_weight="1" />
             </TableRow>
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="20dp"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="סוג מטבח"
+                    android:id="@+id/textView6"
+                    android:textStyle="bold"
+                    android:textColor="#ffff4f45"
+                    android:layout_below="@+id/Level"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_weight="1" />
+
+            </TableRow>
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent">
+                <Spinner
+                    android:id="@+id/KitchenType"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@android:drawable/btn_dropdown"
+                    android:spinnerMode="dropdown"
+                    android:textDirection="rtl"
+                    android:layout_below="@+id/textView6"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_weight="1" />
+            </TableRow>
+
+
 
             <TableRow
                 android:layout_width="fill_parent"
@@ -222,17 +330,19 @@
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="הגבלות תזונתיות"
                     android:id="@+id/tvVegan"
-                    android:paddingBottom="5dp"
                     android:textStyle="bold"
                     android:textColor="#ffff4f45"
                     android:layout_below="@+id/KitchenType"
                     android:layout_alignParentRight="true"
-                    android:padding="20dp"
+                    android:paddingRight="20dp"
                     android:layout_alignParentEnd="true"
                     android:layout_weight="1"/>
             </TableRow>
+
         </TableLayout>
         <!--</LinearLayout>-->
+
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -241,6 +351,7 @@
             android:paddingRight="20dp"
             android:layoutDirection="rtl"
             android:layout_gravity="center_horizontal">
+
             <CheckBox
                 android:layoutDirection="rtl"
                 android:layout_width="wrap_content"
@@ -298,7 +409,7 @@
             <ExpandableListView
                 android:layout_width="wrap_content"
                 android:layout_weight="0"
-                android:layout_height="200dp"
+                android:layout_height="250dp"
                 android:id="@+id/elvCategoriess"
                 android:layout_below="@+id/textView4"
                 android:layout_alignParentLeft="true"
