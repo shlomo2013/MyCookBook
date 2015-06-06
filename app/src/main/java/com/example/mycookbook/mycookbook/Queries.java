@@ -268,6 +268,72 @@ public class Queries {
         return returnRec;
     }
 
+    public static ArrayList<Recipe> RecipesSearchPartial(ArrayList<String> category,ArrayList<String> subCategory,ArrayList<String> dishType,String difficulty,String kitchenType, ArrayList<String> groceryIn,
+                                                         ArrayList<String> groceryOut) {
+        ArrayList<Recipe> returnRec = new ArrayList<Recipe>();
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Recipe");
+
+        if(subCategory!=null && subCategory.size()!=0) {
+            query.whereContainsAll(Recipe.SubCategory, subCategory);
+        }
+
+        if(category!=null && category.size()!=0) {
+            String []strings = new String[category.size()];
+            category.toArray(strings);
+            query.whereContainedIn(Recipe.Category, Arrays.asList(strings));
+        }
+
+        if(dishType!=null && dishType.size()!=0) {
+            String []strings = new String[dishType.size()];
+            dishType.toArray(strings);
+            query.whereContainedIn(Recipe.DishType, Arrays.asList(strings));
+        }
+
+        if(difficulty!=null && difficulty.length()!=0) {
+            query.whereEqualTo(Recipe.Difficulty, difficulty);
+        }
+
+        if(kitchenType!=null && kitchenType.length()!=0) {
+            query.whereEqualTo(Recipe.KitchenType, kitchenType);
+        }
+
+        if(groceryIn!=null && groceryIn.size()!=0) {
+
+            //ParseQuery<ParseObject> innerQuery = ParseQuery.getQuery("Grocery");
+            // innerQuery.whereContainedIn("objectId", groceryIn);
+            //innerQuery.whereEqualTo("official", true);
+            //  query.whereMatchesQuery(Recipe.Groceries, innerQuery);
+
+            //query.whereContainedIn(Recipe.Groceries, Arrays.asList(getGroceriesById(groceryIn)));
+            //query.whereEqualTo(Recipe.Groceries, Arrays.asList(getGroceriesById(groceryIn).get(0)));
+            query.whereContainedIn(Recipe.Groceries, groceryIn);
+            // query.include(Recipe.Groceries);
+
+        }
+
+        if(groceryOut!=null && groceryOut.size()!=0){
+            query.whereNotContainedIn(Recipe.Groceries, groceryOut);
+        }
+
+        //query.orderByDescending("createdAt");
+
+        // Only retrieve the last amount selected
+        //query.setLimit(amount);
+
+        List<ParseObject> recList = null;
+        try {
+            recList = query.find();
+        } catch (Exception e) {
+            Log.d("Queries Exception", "cannot find recipies for user");
+        }
+        if (recList != null) {
+            for (ParseObject rec : recList) {
+                returnRec.add((Recipe) rec);
+            }
+        }
+        return returnRec;
+    }
+
 
     public static User getMyUser() {
         return myUser;
