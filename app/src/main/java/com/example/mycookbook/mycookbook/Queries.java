@@ -100,11 +100,7 @@ public class Queries {
     public static void isUserAlreadyExists(String userId) {
         List<ParseObject> userList = null;
         ParseQuery<ParseObject> query = ParseQuery.getQuery("User");
-       // query.whereEqualTo("UserId", userId);
-
-        //TODO delete
-        String s = "10153329758089662";
-        query.whereEqualTo("UserId", s);
+        query.whereEqualTo("UserId", userId);
 
         try {
             userList = query.find();
