@@ -540,7 +540,7 @@ public class AddRecipeFragment extends Fragment {
 
         int nid = 1;
 
-        for (int i = 1 ; i < nIngridientsCounter; i++){
+        for (int i = 1 ; i <= nIngridientsCounter; i++){
             nid = i;
             nid *= 10;
 

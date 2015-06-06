@@ -198,8 +198,8 @@ public class Queries {
     *
     * */
 
-    public static ArrayList<Recipe> RecipesSearch(ArrayList<String> category,ArrayList<String> subCategory,ArrayList<String> dishType,String difficulty,String kitchenType, String diet,
-                                                  String vegetarian,String vegan, ArrayList<String> groceryIn, ArrayList<String> groceryOut) {
+    public static ArrayList<Recipe> RecipesSearch(ArrayList<String> category,ArrayList<String> subCategory,ArrayList<String> dishType,String difficulty,String kitchenType, boolean diet,
+                                                  boolean vegetarian,boolean vegan, ArrayList<String> groceryIn, ArrayList<String> groceryOut) {
         ArrayList<Recipe> returnRec = new ArrayList<Recipe>();
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Recipe");
 
@@ -227,16 +227,16 @@ public class Queries {
             query.whereEqualTo(Recipe.KitchenType, kitchenType);
         }
 
-        if(diet!=null && diet.length()!=0) {
-            query.whereEqualTo(Recipe.Diet, diet);
+        if(diet) {
+            query.whereEqualTo(Recipe.Diet, String.valueOf(diet));
         }
 
-        if(vegan!=null && vegan.length()!=0) {
-            query.whereEqualTo(Recipe.Vegan, vegan);
+        if(vegan) {
+            query.whereEqualTo(Recipe.Vegan, String.valueOf(vegan));
         }
 
-        if(vegetarian!=null && vegetarian.length()!=0) {
-            query.whereEqualTo(Recipe.Vegetarian, vegetarian);
+        if(vegetarian) {
+            query.whereEqualTo(Recipe.Vegetarian, String.valueOf(vegetarian));
         }
 
         if(groceryIn!=null && groceryIn.size()!=0) {
