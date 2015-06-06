@@ -191,21 +191,21 @@ public class Recipe  extends ParseObject {
     }
 
     public boolean getDiet(){
-        return Boolean.valueOf(this.getString(Diet));
+        return this.getBoolean(Diet);
     }
 
     public boolean getVegetarian(){
-        return Boolean.valueOf(this.getString(Vegetarian));
+        return this.getBoolean(Vegetarian);
     }
     public boolean getVegan(){
-        return Boolean.valueOf(this.getString(Vegan));
+        return this.getBoolean(Vegan);
     }
     public String getRecipePic(){
         return this.getString(RecipePic);
     }
 
-    public String getLikesCounter(){
-        return this.getString(LikesCounter);
+    public int getLikesCounter(){
+        return this.getInt(LikesCounter);
     }
 
     public ArrayList<User>  getUsersWhoLikeThisRecipe(){
@@ -255,13 +255,13 @@ public class Recipe  extends ParseObject {
         putOrDefault(KitchenType,param);
     }
     public void setDiet(boolean param){
-        putBoolean(Diet,param);
+        this.put(Diet,param);
     }
     public void setVegetarian(boolean param){
-        putBoolean(Vegetarian,param);
+        this.put(Vegetarian,param);
     }
     public void setVegan(boolean param){
-        putBoolean(Vegan, param);
+        this.put(Vegan, param);
     }
     public void setRecipePic(String param){
         putOrDefault(RecipePic,param);

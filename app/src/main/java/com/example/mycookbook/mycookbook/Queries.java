@@ -228,15 +228,15 @@ public class Queries {
         }
 
         if(diet) {
-            query.whereEqualTo(Recipe.Diet, String.valueOf(diet));
+            query.whereEqualTo(Recipe.Diet, diet);
         }
 
         if(vegan) {
-            query.whereEqualTo(Recipe.Vegan, String.valueOf(vegan));
+            query.whereEqualTo(Recipe.Vegan, vegan);
         }
 
         if(vegetarian) {
-            query.whereEqualTo(Recipe.Vegetarian, String.valueOf(vegetarian));
+            query.whereEqualTo(Recipe.Vegetarian, vegetarian);
         }
 
         if(groceryIn!=null && groceryIn.size()!=0) {
@@ -371,4 +371,25 @@ public class Queries {
 
         return returnKeys;
     }
+
+    public static ArrayList<Recipe> getTopRatedRecipes(int amount){
+        ArrayList<Recipe> returnKeys = new ArrayList<Recipe>();
+        List<ParseObject> recList = null;
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Recipe");
+        query.orderByDescending(Recipe.LikesCounter);
+        query.setLimit(amount);
+
+        try{
+            recList = query.find();
+        }catch(Exception e){
+            Log.d("Cannot execute 'getTopRatedRecipes'= ",e.getMessage());
+        }
+
+        for(ParseObject rec:recList){
+            returnKeys.add((Recipe)rec);
+        }
+        return returnKeys;
+    }
+
+
 }
