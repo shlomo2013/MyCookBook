@@ -28,7 +28,7 @@ import java.util.Map;
 public class Queries {
     static User myUser;
     static boolean success;
-    static HashMap<String,String> groceriesList = new HashMap<>();
+    public static HashMap<String,String> groceriesList = new HashMap<>();
     /*
     This Function get the facebook userId as parameter
     and finds the user object from parse data

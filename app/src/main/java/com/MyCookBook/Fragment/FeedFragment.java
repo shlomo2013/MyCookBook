@@ -5,6 +5,8 @@ import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -17,27 +19,37 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.MyCookBook.Entities.Grocery;
 import com.MyCookBook.Entities.Recipe;
 import com.example.mycookbook.mycookbook.Queries;
 import com.example.mycookbook.mycookbook.R;
 
+import org.w3c.dom.Text;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class FeedFragment extends Fragment {
 
     AutoCompleteTextView myAutoComplete;
     TableLayout tbLayout;
-    ArrayList<Recipe> myRecepies;
-    boolean click = true;
+    ArrayList<Recipe> myRecipes;
     private PopupWindow pw;
-
+    boolean click = true;
     private RadioGroup rgpFilter;
+    private int  currRecipe;
+    private TextView txtLikes;
+    private TextWatcher autoCompListenerCategory;
+    String category;
+    View rootView;
+    ScrollView scView;
 
     public FeedFragment() {
 
@@ -46,16 +58,36 @@ public class FeedFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        final View rootView = inflater.inflate(R.layout.activity_feed_fregment, container, false);
-
-        //  Spinner dropdown = (Spinner)rootView.findViewById(R.id.spinner1);
-        //   String[] items = new String[]{"1", "2", "three"};
-        //  ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
-        //   dropdown.setAdapter(adapter);
-
+        rootView = inflater.inflate(R.layout.activity_feed_fregment, container, false);
         myAutoComplete = (AutoCompleteTextView) rootView.findViewById(R.id.autoCompleteTextView);
+        category = String.valueOf(myAutoComplete.getText());
 
-        //myAutoComplete.addTextChangedListener(this);
+        autoCompListenerCategory = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String[] categories = new String[R.layout.activity_feed_fregment];
+                for(int i = 0; i < categories.length; i++)
+                {
+                    if (categories[i].equals(category)) {
+                        ArrayList<String> categoryList = new ArrayList<String>(1);
+                        categoryList.add(category);
+                        myRecipes = Queries.RecipesSearchPartial(categoryList, null, null, null, null, null, null);
+                    }
+                }
+            }
+        };
+
+        myAutoComplete.addTextChangedListener(autoCompListenerCategory);
 
         final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity().getBaseContext(),
                 R.array.categories,
@@ -63,6 +95,7 @@ public class FeedFragment extends Fragment {
         myAutoComplete.setAdapter(adapter);
 
         rgpFilter = (RadioGroup) rootView.findViewById(R.id.RBgroup);
+        scView = (ScrollView) rootView.findViewById(R.id.ScrollView);
 
         rgpFilter.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -71,28 +104,90 @@ public class FeedFragment extends Fragment {
                 if (null != rb && checkedId > -1) {
                     switch (rb.getId()) {
                         case R.id.RBnew:
+                            myRecipes = Queries.getLastRecipes(15);
+                            setFeed();
                             break;
                         case R.id.RBloved:
+                            myRecipes = Queries.getTopRatedRecipes(15);
+                            setFeed();
                             break;
                         case R.id.RBtop5:
+                            myRecipes = Queries.getTopRatedRecipes(5);
+                            setFeed();
                             break;
                     }
                 }
             }
         });
 
+        // Set first display recipes
+        myRecipes = Queries.getLastRecipes(15);
         tbLayout = (TableLayout) rootView.findViewById(R.id.tbFeed);
-        //tbLayout.setTextDirection(View.LAYOUT_DIRECTION_RTL);
-        //tbLayout.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        setFeed();
 
-        myRecepies = Queries.getLastRecipes(10);
+        return rootView;
+    }
 
-        for (int i = 0; i < myRecepies.size(); i++)
+
+    View.OnClickListener photoOnClickListener = new View.OnClickListener(){
+        @Override
+        public void onClick(View v){
+            tbLayout = (TableLayout) v.findViewById(R.id.tbFeed);
+            //tbLayout.setOnClickListener();
+        }
+
+    };
+
+    private void initiatePopUp(int resId){
+
+        LayoutInflater layoutInflater = (LayoutInflater) getActivity().getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View popupView = layoutInflater.inflate(R.layout.imagepopup, null);
+
+        pw = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        //Pop-up window background cannot be null if we want the pop-up to listen touch events outside its window
+        pw.setBackgroundDrawable(new BitmapDrawable());
+        pw.setTouchable(true);
+
+        //let pop-up be informed about touch events outside its window. This  should be done before setting the content of pop-up
+        pw.setOutsideTouchable(true);
+        //pw.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+        final ImageView RecipePhoto = (ImageView) popupView.findViewById(R.id.ImageRecipePhoto);
+        RecipePhoto.setImageResource(resId);
+
+        //dismiss the pop-up i.e. drop-down when touched anywhere outside the pop-up
+        pw.setTouchInterceptor(new View.OnTouchListener() {
+
+            public boolean onTouch(View v, MotionEvent event) {
+                // TODO Auto-generated method stub
+                if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+                    pw.dismiss();
+                    return true;
+                }
+                return false;
+            }
+        });
+
+    }
+
+    private void setFeed()
+    {
+
+        int count = tbLayout.getChildCount();
+        for (int i = 0; i < count; i++) {
+            View child = tbLayout.getChildAt(i);
+            if (child instanceof TableRow) ((ViewGroup) child).removeAllViews();
+        }
+
+        for (int i = 0; i < myRecipes.size(); i++)
         {
+            currRecipe = i;
+
             TextView tvRecipe = new TextView(getActivity().getBaseContext());
             final ImageView ivRecipePhoto = new ImageView(getActivity().getBaseContext());
 //            ImageButton btRecipePhoto = new ImageButton(getActivity().getBaseContext());
             ImageButton btLike = new ImageButton(getActivity().getBaseContext());
+            txtLikes = new TextView(getActivity().getBaseContext());
 
             TableRow tr = new TableRow(getActivity().getBaseContext());
             TableRow.LayoutParams trLP = new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT,
@@ -111,7 +206,18 @@ public class FeedFragment extends Fragment {
             // Handle recipe text
             tvRecipe.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
             tvRecipe.setMinimumWidth(350);
-            tvRecipe.setText("המתכון של טל\n\n" + "\n" + "רכיבים:\nשוקולד\nסוכר");
+
+            String myResipe;
+            myResipe = "אופן הכנה:"  + "\n" + myRecipes.get(i).getPreparation() + "\n" + "רכיבים:";
+            ArrayList<Grocery> grocery = myRecipes.get(i).getRecipeGroceries();
+
+            for (int j = 0; j < grocery.size(); j++)
+            {
+                myResipe.concat("\n" + grocery.get(j));
+            }
+
+
+            tvRecipe.setText(myResipe);
             //tvRecipe.setTextDirection(View.LAYOUT_DIRECTION_RTL);
             tvRecipe.setClickable(true);
             tvRecipe.setOnClickListener(new View.OnClickListener() {
@@ -161,14 +267,14 @@ public class FeedFragment extends Fragment {
             btLike.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // TODO: save like
+                    myRecipes.get(currRecipe).Like();
+                    txtLikes.setText(myRecipes.get(currRecipe).getLikesCounter() + "אהבו!");
                 }
             });
 
             // Add to layOut
             tr.addView(tvRecipe);
             tr.addView(ivRecipePhoto);
-            // tr.addView(btLike);
 
             tbLayout.addView(tr);
 
@@ -184,73 +290,13 @@ public class FeedFragment extends Fragment {
             btLike.setText("אהבתי");
             btLike.setBackgroundResource(R.drawable.abc_btn_rating_star_off_mtrl_alpha); */
 
+            txtLikes.setText(myRecipes.get(i).getLikesCounter() + "אהבו!");
+
             // Add to layOut
+            tr2.addView(txtLikes);
             tr2.addView(btLike);
             tbLayout.addView(tr2);
         }
-
-        /*TextView tvIngredients = new TextView(getActivity().getBaseContext());
-        TableRow tr2 = new TableRow(getActivity().getBaseContext());
-        TableRow.LayoutParams trLP2 = new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT,
-                TableRow.LayoutParams.WRAP_CONTENT);
-        tr.setLayoutParams(trLP2);
-
-        // Handle recipe text
-        tvIngredients.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-        tvIngredients.setMinimumWidth(350);
-        tvIngredients.setText("רכיבים:\nשוקולד\nסוכר");
-        //tvIngredients.setTextDirection(View.LAYOUT_DIRECTION_RTL);
-
-        // Add to layOut
-        tr2.addView(tvIngredients);
-        tbLayout.addView(tr2); */
-
-
-
-        return rootView;
     }
-
-
-    View.OnClickListener photoOnClickListener = new View.OnClickListener(){
-        @Override
-        public void onClick(View v){
-            tbLayout = (TableLayout) v.findViewById(R.id.tbFeed);
-            //tbLayout.setOnClickListener();
-        }
-
-    };
-
-    private void initiatePopUp(int resId){
-
-        LayoutInflater layoutInflater = (LayoutInflater) getActivity().getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View popupView = layoutInflater.inflate(R.layout.imagepopup, null);
-
-        pw = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-
-        //Pop-up window background cannot be null if we want the pop-up to listen touch events outside its window
-        pw.setBackgroundDrawable(new BitmapDrawable());
-        pw.setTouchable(true);
-
-        //let pop-up be informed about touch events outside its window. This  should be done before setting the content of pop-up
-        pw.setOutsideTouchable(true);
-        //pw.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-        final ImageView RecipePhoto = (ImageView) popupView.findViewById(R.id.ImageRecipePhoto);
-        RecipePhoto.setImageResource(resId);
-
-        //dismiss the pop-up i.e. drop-down when touched anywhere outside the pop-up
-        pw.setTouchInterceptor(new View.OnTouchListener() {
-
-            public boolean onTouch(View v, MotionEvent event) {
-                // TODO Auto-generated method stub
-                if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
-                    pw.dismiss();
-                    return true;
-                }
-                return false;
-            }
-        });
-
-    }
-
 
 }

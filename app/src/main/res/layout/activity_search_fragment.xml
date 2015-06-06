@@ -13,7 +13,7 @@
     tools:context="com.MyCookBook.Fragment.SearchFragment"
     android:id="@+id/search"
     android:textDirection="rtl"
-    android:minHeight="1080dp">
+    android:minHeight="1110dp">
 
     <CheckBox
         android:layout_width="wrap_content"
@@ -123,11 +123,12 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="סוגי מנות"
         android:id="@+id/textView2"
-        android:layout_below="@+id/CBdrinks"
+        android:textStyle="bold"
+        android:textColor="#ffff4f45"
+        android:layout_below="@+id/lowDrinks"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:textStyle="bold"
-        android:textColor="#ffff4f45" />
+        android:layout_marginTop="32dp" />
 
     <CheckBox
         android:layout_width="wrap_content"
@@ -398,6 +399,17 @@
         android:id="@+id/btSearch"
         android:layout_below="@+id/CBvegan"
         android:layout_centerHorizontal="true" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="בשרים"
+        android:id="@+id/CBmeat"
+        android:checked="false"
+        android:layout_gravity="right"
+        android:layout_below="@+id/CBdrinks"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 </RelativeLayout>
 </ScrollView>
 

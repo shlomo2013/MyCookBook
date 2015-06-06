@@ -111,7 +111,19 @@
         <item>לחם ומאפים</item>
         <item>פסטה ואורז</item>
     </string-array>
+
+    <string-array name="kitchenType">
+        <item>בחר</item>
+        <item>אסייתי</item>
+        <item>איטלקי</item>
+        <item>באמריקאי</item>
+        <item>ישראלי</item>
+    </string-array>
+
     <string name="title_activity_cook_book_gallery">CookBookGallery</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
 

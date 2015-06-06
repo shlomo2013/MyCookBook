@@ -1,8 +1,11 @@
 package com.MyCookBook.Fragment;
 
+import android.app.AlertDialog;
+import android.app.FragmentTransaction;
 import android.app.LauncherActivity;
 import android.content.ClipData;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.opengl.EGLExt;
 import android.os.Bundle;
 import android.support.annotation.ArrayRes;
@@ -24,6 +27,8 @@ import android.widget.Spinner;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
 
+import com.MyCookBook.Entities.Recipe;
+import com.example.mycookbook.mycookbook.Queries;
 import com.example.mycookbook.mycookbook.R;
 
 import java.sql.Array;
@@ -38,6 +43,9 @@ import static com.example.mycookbook.mycookbook.R.array.personal_no_pref_array;
 
 public class SearchFragment extends Fragment {
 
+    Fragment frag;
+    FragmentTransaction fragTransaction;
+
     private RadioGroup rgpTypes;
 
     // Categories checkboxes
@@ -46,6 +54,7 @@ public class SearchFragment extends Fragment {
     private CheckBox cbSweets;
     private CheckBox cbDrinks;
     private CheckBox cbBread;
+    private CheckBox cbMeat;
 
     // Dish types checkboxes
     private CheckBox cbMain;
@@ -59,19 +68,29 @@ public class SearchFragment extends Fragment {
 
     // Listeners
     private  View.OnClickListener checkBoxListenerCategory;
+    private  View.OnClickListener searchButtenListener;
     private  View.OnClickListener checkBoxListenerType;
     private  View.OnClickListener checkBoxListenerSpec;
     private  View.OnClickListener ListViewListener;
 
-
+    // Lists
     private ArrayList<String> categoryArr;
-    private ArrayAdapter<String> aa;
+    private ArrayList<String> subCategory;
+    private ArrayList<String> dishType;
+    private ArrayList<String> groceryIn;
+    private ArrayList<String> groceryOut;
+    private static ArrayList<Recipe> searchResults;
+
     private int compId;
     private int noCopmId;
     private int levelId;
     private int KitchenTypeId;
     private  ListView myListView;
     private  ListView myListViewNo;
+
+    private boolean veg = false;
+    private boolean vegan = false;
+    private boolean diet = false;
 
     public SearchFragment() {
 
@@ -83,6 +102,10 @@ public class SearchFragment extends Fragment {
         final View rootView = inflater.inflate(R.layout.activity_search_fragment, container , false);
 
         categoryArr = new ArrayList<String>();
+        subCategory = new ArrayList<String>();
+        dishType = new ArrayList<String>();
+        groceryIn = new ArrayList<String>();
+        groceryOut = new ArrayList<String>();
 
         final Spinner dropdownSweets = (Spinner) rootView.findViewById(R.id.lowSweets);
         createSpinner((dropdownSweets), R.array.subCategorySweets);
@@ -113,11 +136,12 @@ public class SearchFragment extends Fragment {
 
         final Spinner dropdownKitchenType = (Spinner) rootView.findViewById(R.id.KitchenType);
         KitchenTypeId = dropdownKitchenType.getId();
-        createSpinner((dropdownKitchenType), R.array.personal_no_pref_array);
+        createSpinner((dropdownKitchenType), R.array.kitchenType);
 
         //String[] dataList = R.array.personal_no_pref_array;
 
-        HashMap<String, String> hm = new HashMap<>(4);
+        Queries.refreshAllGroceries();
+        HashMap<String, String> hm = Queries.groceriesList;
         ArrayList<String> alPref = new ArrayList<>(hm.values());
 
         String[] prefList = new String[hm.size()];
@@ -173,6 +197,7 @@ public class SearchFragment extends Fragment {
         cbBread=(CheckBox) rootView.findViewById(R.id.CBbredAnd);
         cbDrinks=(CheckBox) rootView.findViewById(R.id.CBdrinks);
         cbSweets=(CheckBox) rootView.findViewById(R.id.CBsweets);
+        cbMeat=(CheckBox) rootView.findViewById(R.id.CBmeat);
 
         // Listener for Categories checkboxes
         checkBoxListenerCategory = new View.OnClickListener() {
@@ -183,7 +208,7 @@ public class SearchFragment extends Fragment {
                 //tv.setText("I Like ");
 
                 if(cbSoop.isChecked()) {
-                    categoryArr.add("SOOP");
+                    categoryArr.add("מרקים");
                     dropdownSoop.setVisibility(View.VISIBLE);
                 }
                 else
@@ -192,7 +217,7 @@ public class SearchFragment extends Fragment {
                 }
 
                 if(cbBreakfast.isChecked()) {
-                    categoryArr.add("BREAKFEST");
+                    categoryArr.add("ארוחת בוקר");
                     dropdownBf.setVisibility(View.VISIBLE);
                 }
                 else
@@ -201,7 +226,7 @@ public class SearchFragment extends Fragment {
                 }
 
                 if(cbSweets.isChecked()) {
-                    categoryArr.add("SWEETS");
+                    categoryArr.add("מתוקים");
                     dropdownSweets.setVisibility(View.VISIBLE);
                 }
                 else
@@ -210,7 +235,7 @@ public class SearchFragment extends Fragment {
                 }
 
                 if(cbBread.isChecked()) {
-                    categoryArr.add("BREAD");
+                    categoryArr.add("לחם ומאפים");
                     dropdownBread.setVisibility(View.VISIBLE);
                 }
                 else
@@ -219,12 +244,28 @@ public class SearchFragment extends Fragment {
                 }
 
                 if(cbDrinks.isChecked()) {
-                    categoryArr.add("DRINKS");
+                    categoryArr.add("משקאות");
                     dropdownDrinks.setVisibility(View.VISIBLE);
                 }
                 else
                 {
                     dropdownDrinks.setVisibility(View.INVISIBLE);
+                }
+
+                if(cbMeat.isChecked()){
+                    categoryArr.add("בשרים");
+                }
+
+                if(cbMeat.isChecked()){
+                    categoryArr.add("סלטים");
+                }
+
+                if(cbMeat.isChecked()){
+                    categoryArr.add("אורז ופסטה");
+                }
+
+                if(cbMeat.isChecked()){
+                    categoryArr.add("תוספות");
                 }
 
             }
@@ -246,17 +287,16 @@ public class SearchFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(cbMain.isChecked()) {
-
+                    dishType.add("עיקרית");
                 }
 
                 if(cbFirst.isChecked()) {
-
+                    dishType.add("ראשונה");
                 }
 
                 if(cbDesert.isChecked()) {
-
+                    dishType.add("קינוח");
                 }
-
             }
         };
 
@@ -274,15 +314,15 @@ public class SearchFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(cbVeg.isChecked()) {
-
+                    veg = true;
                 }
 
                 if(cbVegan.isChecked()) {
-
+                    vegan = true;
                 }
 
                 if(cbDiet.isChecked()) {
-
+                    diet = true;
                 }
             }
         };
@@ -315,6 +355,98 @@ public class SearchFragment extends Fragment {
             }
         });
 
+        final Button btnSearch = (Button) rootView.findViewById(R.id.btSearch);
+
+        searchButtenListener = new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if ((String.valueOf(dropdownBf.getSelectedItem())).equals("בחר") == false)
+                {
+                    subCategory.add(String.valueOf(dropdownBf.getSelectedItem()));
+                }
+
+                if (String.valueOf(dropdownBread.getSelectedItem()).equals("בחר")  == false) {
+                    subCategory.add(String.valueOf(dropdownBread.getSelectedItem()));
+                }
+
+                if (String.valueOf(dropdownDrinks.getSelectedItem()).equals("בחר")  == false) {
+                    subCategory.add(String.valueOf(dropdownDrinks.getSelectedItem()));
+                }
+
+                if (String.valueOf(dropdownSoop.getSelectedItem()).equals("בחר")  == false) {
+                    subCategory.add(String.valueOf(dropdownSoop.getSelectedItem()));
+                }
+
+                if (String.valueOf(dropdownSweets.getSelectedItem()).equals("בחר")  == false) {
+                    subCategory.add(String.valueOf(dropdownSweets.getSelectedItem()));
+                }
+
+                String level = String.valueOf(dropdownLevel.getSelectedItem());
+                String kitchenType = String.valueOf(dropdownKitchenType.getSelectedItem());
+
+                if(categoryArr.size() == 0)
+                {
+                    categoryArr = null;
+                }
+                if(subCategory.size() == 0)
+                {
+                    subCategory = null;
+                }
+                if(dishType.size() == 0)
+                {
+                    dishType = null;
+                }
+                if(groceryIn.size() == 0)
+                {
+                    groceryIn = null;
+                }
+                if(groceryOut.size() == 0)
+                {
+                    groceryOut = null;
+                }
+
+                if (level.equals("בחר"))
+                {
+                    level = null;
+                }
+                if (kitchenType.equals("בחר"))
+                {
+                    kitchenType = null;
+                }
+
+                searchResults = Queries.RecipesSearch(categoryArr, subCategory, dishType, level, kitchenType, diet, veg, vegan, groceryIn, groceryOut);
+
+                if(searchResults.size() != 0){
+
+                    //Intent in = new Intent(, SearchResultFragment.class);
+                    //in.putExtra("myRecipes", searchResults);
+                    fragTransaction = getFragmentManager().beginTransaction().detach(frag);
+                    frag = new SearchResultFragment();
+                    //frag.startActivity(in);
+
+                    fragTransaction = getFragmentManager().beginTransaction().replace(R.id.fragContainer, frag);
+                    fragTransaction.addToBackStack(null);
+                    fragTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                    fragTransaction.commit();
+                }
+                else
+                {
+                    new AlertDialog.Builder(rootView.getContext())
+                            .setTitle("תוצאות חיפוש")
+                            .setMessage("לא נמצאו תוצאות התואמות את החיפוש")
+                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // continue with delete
+                                }
+                            })
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .show();
+                }
+            }
+        };
+
+        btnSearch.setOnClickListener(searchButtenListener);
 
         return rootView;
     }
@@ -356,6 +488,11 @@ public class SearchFragment extends Fragment {
                 getActivity(),
                 prompt,
                 Toast.LENGTH_LONG).show();
+    }
+
+    public static ArrayList<Recipe> getResults()
+    {
+        return searchResults;
     }
 
 }
