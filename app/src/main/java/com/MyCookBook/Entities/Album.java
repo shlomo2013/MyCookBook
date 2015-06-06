@@ -1,6 +1,7 @@
 package com.MyCookBook.Entities;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
@@ -139,5 +140,22 @@ public class Album  extends ParseObject {
         byte[] byteArray = stream.toByteArray();
         return byteArray;
     }
+
+    public Bitmap getAlbumPicture() {
+        byte[] data= null;
+        Bitmap bmp = null;
+        ParseFile applicantResume = (ParseFile) this.get(Recipe.RecipePic);
+
+        try {
+            data = applicantResume.getData();
+            bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
+        }catch(Exception e){
+            Log.e("User Profile Picture:","cannot retrieve picture");
+        }
+
+        return bmp;
+    }
+
+
 
 }

@@ -419,6 +419,7 @@ public class Queries {
         return bmp;
     }
 
+
     public static void refreshAllGroceries(){
         List<ParseObject> returnList = null;
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Grocery");
