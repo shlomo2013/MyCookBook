@@ -156,10 +156,9 @@ public class connAct extends Activity {
         intent.putExtra("faceUser",accessToken);
         Queries.isUserAlreadyExists(accessToken.getUserId());
 
-
-
         ImageView IV= (ImageView)findViewById(R.id.imageView);
         Bitmap btmp = Queries.getProfilePicture();
+
         if(btmp!=null) {
             IV.setImageBitmap(btmp);
         }else{

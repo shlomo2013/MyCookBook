@@ -4,9 +4,15 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.widget.ImageButton;
 
+import com.MyCookBook.Entities.Recipe;
+import com.MyCookBook.Entities.User;
+import com.example.mycookbook.mycookbook.Queries;
 import com.example.mycookbook.mycookbook.R;
+
+import java.util.ArrayList;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -36,12 +42,16 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("User List wow1 ","Yes");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setMyUserId(savedInstanceState);
 
+        //Queries.updateMyUser(myUserId);
+
         /**
-        Queries.updateMyUser(myUserId);
+
         Log.d("shay", "n");
         Log.d("User Object is:",Queries.getMyUser().getObjectId());
         Log.d("shay","y");

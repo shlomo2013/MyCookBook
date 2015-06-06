@@ -135,6 +135,23 @@ public class Queries {
         return retRecipe;
     }
 
+    public static Album getAlbumById(String objectId) {
+        ParseQuery<ParseObject> recQuery = ParseQuery.getQuery("Album");
+        recQuery.whereEqualTo("objectId", objectId);
+        List<ParseObject> recList = null;
+        Album retAlbum = null;
+        try {
+            recList = recQuery.find();
+        } catch (Exception e) {
+            Log.d("getRecipeById Err", "cannot find Recipe by objId");
+        }
+        if (recList.size() != 0) {
+            retAlbum = (Album) recList.get(0);
+        }
+
+        return retAlbum;
+    }
+
     public static ArrayList<Grocery> getGroceriesById(ArrayList<String> objectIds) {
         ParseQuery<ParseObject> recQuery = ParseQuery.getQuery("Grocery");
         recQuery.whereContainedIn("objectId", objectIds);
@@ -402,6 +419,7 @@ public class Queries {
         return bmp;
     }
 
+
     public static void refreshAllGroceries(){
         List<ParseObject> returnList = null;
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Grocery");
@@ -449,5 +467,21 @@ public class Queries {
         return returnKeys;
     }
 
+    public static ArrayList<User> getAllUsers() {
+        ArrayList<User> userList = new ArrayList<User>();
+        List<ParseObject> recList = null ;
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("User");
 
+        try {
+            recList = query.find();
+        } catch (Exception e) {
+
+        }
+        if(recList!=null && recList.size()!=0) {
+            for (ParseObject user : recList) {
+                userList.add((User) user);
+            }
+        }
+        return userList;
+    }
 }
