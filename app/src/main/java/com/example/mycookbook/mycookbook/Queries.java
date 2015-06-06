@@ -449,5 +449,21 @@ public class Queries {
         return returnKeys;
     }
 
+    public static ArrayList<User> getAllUsers() {
+        ArrayList<User> userList = new ArrayList<User>();
+        List<ParseObject> recList = null ;
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("User");
 
+        try {
+            recList = query.find();
+        } catch (Exception e) {
+
+        }
+        if(recList!=null && recList.size()!=0) {
+            for (ParseObject user : recList) {
+                userList.add((User) user);
+            }
+        }
+        return userList;
+    }
 }
