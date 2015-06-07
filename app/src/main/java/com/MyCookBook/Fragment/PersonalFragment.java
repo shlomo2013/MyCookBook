@@ -42,10 +42,12 @@ public class PersonalFragment extends Fragment {
     ListView lvDropDownList;
 
     View popupView;
-    View singlGalleryView;
+  //  View singlGalleryView;
     View  rootView    ;
-    View  popUpView   ;
-    View  dropDownView;
+    View  AddAlbumView    ;
+    View  SettingsView    ;
+  //  View  popUpView   ;
+  //  View  dropDownView;
 
     Fragment subFrag;
     FragmentTransaction fragTransaction;
@@ -53,6 +55,7 @@ public class PersonalFragment extends Fragment {
     Button btnMyAlbums;
     Button btnAllAlbums;
     Button btnSettings;
+    Button btnAddAlbum;
 
     ArrayList<CheckBox> alFoodCategory;
     ArrayList<CheckBox> alNoFoodCategory;
@@ -68,38 +71,34 @@ public class PersonalFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        MyInflater = inflater;
-        rootView     = inflater.inflate(R.layout.activity_personal_fregment, container, false);
-        dropDownView = inflater.inflate(R.layout.drop_down_list_row, container, false);
-        popupView    = inflater.inflate(R.layout.popup, null);
-        singlGalleryView     = inflater.inflate(R.layout.custom_toast, container, false);
+        MyInflater       = inflater;
+
+        rootView         = inflater.inflate(R.layout.activity_personal_fregment, container, false);
+        SettingsView     = inflater.inflate(R.layout.settings_personal, container, false);
+        AddAlbumView     = inflater.inflate(R.layout.add_album, container, false);
+
+       // dropDownView    = inflater.inflate(R.layout.drop_down_list_row, container, false);
+        popupView       = inflater.inflate(R.layout.popup, null);
+       // singlGalleryView     = inflater.inflate(R.layout.custom_toast, container, false);
 
 
-        llPopup                   = (LinearLayout)       rootView.findViewById(R.id.DropDownList);
-     //   gvAlboms                  =(GridView)            rootView.findViewById(R.id.albumGrid);
-        lvDropDownList            = (ListView)           popupView.findViewById(R.id.lvDropDownList);
+  //      llPopup                   = (LinearLayout)       rootView.findViewById(R.id.DropDownList);
+  //      lvDropDownList            = (ListView)           popupView.findViewById(R.id.lvDropDownList);
 
         btnMyAlbums = (Button) rootView.findViewById(R.id.bMyAlbums);
         btnAllAlbums = (Button) rootView.findViewById(R.id.bAllAlbums);
         btnSettings  = (Button) rootView.findViewById(R.id.bSettings);
-        btnSettings  = (Button) rootView.findViewById(R.id.bAddAlbum);
+        btnAddAlbum  = (Button) rootView.findViewById(R.id.bAddAlbum);
 
         btnMyAlbums.setOnClickListener(btnOnClickListener);
         btnAllAlbums.setOnClickListener(btnOnClickListener);
         btnSettings.setOnClickListener(btnOnClickListener);
-
-//        btnMyAlbums.setOnHoverListener();
-        btnAllAlbums.setOnClickListener(btnOnClickListener);
-        btnSettings.setOnClickListener(btnOnClickListener);
-
-
+        btnAddAlbum.setOnClickListener(btnOnClickListener);
 
         subFrag = new MyGallery();
         fragTransaction = getFragmentManager().beginTransaction().add(R.id.fragPersonal, subFrag);
         fragTransaction.commit();
 
-//        handleCategories();
-        //      handleNoCategories();
         return rootView;
     }
     private ArrayList<ImageView> imageViewReader( ) {
@@ -302,6 +301,9 @@ public class PersonalFragment extends Fragment {
             }
             else if (v == btnSettings) {
                 subFrag = new SettingsPersonal();
+            }
+            else if (v == btnAddAlbum) {
+                           subFrag = new AddAlbum();
             }
 
             fragTransaction = getFragmentManager().beginTransaction().replace(R.id.fragPersonal, subFrag);

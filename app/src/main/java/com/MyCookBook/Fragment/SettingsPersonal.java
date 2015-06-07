@@ -51,9 +51,6 @@ public class SettingsPersonal extends Fragment {
         btnSaveCategory.setOnClickListener(btnOnClickListener);
 
 
-
-
-
         alNoFoodCategory =  initCategories( R.array.personal_no_pref_array);
         ddlNoCategiriesAdapter = new DropDownListAdapter(alNoFoodCategory, getActivity().getBaseContext());
         lvNoCategoriesList.setAdapter(ddlNoCategiriesAdapter);

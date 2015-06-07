@@ -9,11 +9,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.Gallery;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.MyCookBook.Entities.Album;
+import com.MyCookBook.Entities.Recipe;
+import com.example.mycookbook.mycookbook.Queries;
 import com.example.mycookbook.mycookbook.R;
+
+import java.util.ArrayList;
 
 public class CookBookGalleryActivity extends ActionBarActivity {
 
@@ -26,29 +33,53 @@ public class CookBookGalleryActivity extends ActionBarActivity {
             R.mipmap.pizza , R.mipmap.lazania3, };
 
     ImageView iv;
+    ImageView ivRecipeImage;
+
+    TextView RcipeName;
+    TextView DishType;
+    TextView Level;
+    TextView KitchenType;
+    TextView Category;
+    CheckBox Vegan;
+    CheckBox Vegaterian;
+    CheckBox Diet;
+    ArrayList<Recipe> RecipesList;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cook_book_gallery);
 
+        ivRecipeImage   = (ImageView) findViewById(R.id.RecipeImage);
+        RcipeName       = (TextView) findViewById(R.id.tvRcipeName);
+        DishType        = (TextView) findViewById(R.id.tvDishType);
+        Level           = (TextView) findViewById(R.id.tvLevel);
+        KitchenType     = (TextView) findViewById(R.id.tvKitchenType);
+        Category        = (TextView) findViewById(R.id.tvCategory);
+        Vegan           = (CheckBox) findViewById(R.id.cbVegan);
+        Vegaterian      = (CheckBox) findViewById(R.id.cbVeg);
+        Diet            = (CheckBox) findViewById(R.id.cbDiet);
+
         Bundle extras = getIntent().getExtras();
         if (extras != null)
         {
-            if(extras.getString("strName")!= null)
+            String albumID = extras.getString("AlbumID");
+            if(albumID != null)
             {
                 // TODO dana: להשתמש בפונקציה ששולפת את המתכומנים לפי אלבום
+                Album a = Queries.getAlbumById(albumID);
+                a.getAlbumName();
 
+                RecipesList = a.getAlbumRecipes();
             }
         }
         else
         {
             //..oops!
         }
-
-
         Gallery g = (Gallery)findViewById(R.id.gallery);
-        iv = (ImageView)findViewById(R.id.tempImageView);
+      //  iv = (ImageView)findViewById(R.id.tempImageView);
 
         // Create adapter gallery
         g.setAdapter( new ImageAdapter(this));
@@ -57,8 +88,16 @@ public class CookBookGalleryActivity extends ActionBarActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // TODO dana: לקחת את המתכון עלפי התמונה שלחצה ולהקפיץ מסף של מתכון
-                Toast.makeText(getApplicationContext(), "מתכון:" , Toast.LENGTH_SHORT);
-                iv.setImageResource(thumb[position]);
+                Toast.makeText(getApplicationContext(), "מתכון:", Toast.LENGTH_SHORT);
+                ivRecipeImage.setImageResource(thumb[position]);
+                RcipeName.setText("דניאל נחמיאס המעפנה");
+//                DishType       ;
+//                Level          ;
+//                KitchenType    ;
+//                Category       ;
+                Vegan.setChecked(true);          ;
+//                Vegaterian     ;
+//                Diet           ;
             }
         });
 
@@ -117,5 +156,18 @@ public class CookBookGalleryActivity extends ActionBarActivity {
             image.setImageResource(thumb[position]);
             return image;
         }
+    }
+
+    public void fillRecipe(Recipe r){
+
+       ivRecipeImage.setImageBitmap( r.getRecipePicture());
+                       RcipeName.setText("דניאל נחמיאס המעפנה");
+       //                DishType       ;
+       //                Level          ;
+       //                KitchenType    ;
+       //                Category       ;
+                       Vegan.setChecked(true);          ;
+       //                Vegaterian     ;
+       //                Diet           ;
     }
 }

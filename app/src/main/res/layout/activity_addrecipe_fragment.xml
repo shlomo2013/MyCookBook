@@ -403,12 +403,10 @@
                 android:layout_alignParentEnd="true"
                 android:textStyle="bold"
                 android:textColor="#ffff4f45"
-                android:layout_weight="1"
                 android:layout_gravity="center_vertical" />
 
             <ExpandableListView
                 android:layout_width="wrap_content"
-                android:layout_weight="0"
                 android:layout_height="250dp"
                 android:id="@+id/elvCategoriess"
                 android:layout_below="@+id/textView4"
@@ -417,6 +415,13 @@
                 android:choiceMode="multipleChoice"
                 android:background="@android:drawable/bottom_bar"
                 android:layout_gravity="center_horizontal" />
+
+            <include
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/gllarySelect"
+                layout="@layout/gallery_view"
+                android:layout_gravity="right" />
 
         </LinearLayout>
 
