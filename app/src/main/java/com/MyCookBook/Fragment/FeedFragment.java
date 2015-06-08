@@ -264,11 +264,15 @@ public class FeedFragment extends Fragment {
             //btLike.setAdjustViewBounds(true);
             btLike.setImageResource(R.mipmap.red_like_icon);
             btLike.setClickable(true);
+            btLike.setTag(currRecipe);
             btLike.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    myRecipes.get(currRecipe).Like();
-                    txtLikes.setText(myRecipes.get(currRecipe).getLikesCounter() + "אהבו!");
+                    int currButtonPos = Integer.parseInt(v.getTag().toString());
+                    myRecipes.get(currButtonPos).Like();
+                    TableRow currRow = ((TableRow) v.getParent());
+                    TextView clickedTextView = ((TextView)currRow.getChildAt(0));
+                    clickedTextView.setText(String.valueOf(myRecipes.get(currButtonPos).getLikesCounter()) + "אהבו!");
                 }
             });
 
