@@ -23,7 +23,7 @@ import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
-import com.MyCookBook.CategoriesUtil.DropDownListAdapter;
+import com.MyCookBook.Utiltis.DropDownListAdapter;
 import com.example.mycookbook.mycookbook.R;
 
 import java.io.File;

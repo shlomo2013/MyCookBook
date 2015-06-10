@@ -1,9 +1,7 @@
 package com.MyCookBook.Fragment;
 
-import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -23,20 +21,15 @@ import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
-import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.MyCookBook.Entities.Grocery;
 import com.MyCookBook.Entities.Recipe;
 import com.example.mycookbook.mycookbook.Queries;
 import com.example.mycookbook.mycookbook.R;
 
-import org.w3c.dom.Text;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class FeedFragment extends Fragment {

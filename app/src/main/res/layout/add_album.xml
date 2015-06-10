@@ -28,6 +28,7 @@
 
     <LinearLayout
         android:layout_width="200dp"
+        android:id="@+id/layout2"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:orientation="vertical">
@@ -115,6 +116,26 @@
 
     </LinearLayout>
 
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/layout2"
+    android:orientation="vertical">
+   <ListView
+       android:layout_width="fill_parent"
+       android:id="@+id/AllUsersListView"
+       android:layout_height="match_parent"
+       android:layout_weight="1">
+
+    </ListView>
+    <Button
+        android:id="@+id/bSaveUser"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:text="שמור"
+        android:layout_weight="1" />
+
+    </LinearLayout>
 
 </RelativeLayout>
 

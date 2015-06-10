@@ -1,4 +1,4 @@
-package com.MyCookBook.CategoriesUtil;
+package com.MyCookBook.Utiltis;
 
 /**
  * Created by nirgadasi on 5/25/15.

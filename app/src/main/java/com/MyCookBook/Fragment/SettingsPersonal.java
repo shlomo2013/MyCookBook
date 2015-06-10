@@ -13,7 +13,7 @@ import android.widget.CheckBox;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
-import com.MyCookBook.CategoriesUtil.DropDownListAdapter;
+import com.MyCookBook.Utiltis.DropDownListAdapter;
 import com.example.mycookbook.mycookbook.R;
 
 import java.util.ArrayList;

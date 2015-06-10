@@ -36,9 +36,8 @@ import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
-import com.MyCookBook.CategoriesUtil.DropDownListAdapter;
-import com.MyCookBook.CategoriesUtil.Group;
-import com.MyCookBook.CategoriesUtil.MyExpandableListAdapter;
+import com.MyCookBook.Utiltis.DropDownListAdapter;
+import com.MyCookBook.Utiltis.*;
 import com.MyCookBook.Entities.Grocery;
 import com.MyCookBook.Entities.Recipe;
 import com.example.mycookbook.mycookbook.Queries;
@@ -79,9 +78,6 @@ public class AddRecipeFragment extends Fragment {
     EditText recipeHowToMake         ;
     Spinner recipeLevel              ;
     Spinner recipeKitchenType        ;
-    CheckBox recipeFirst             ;
-    CheckBox recipeMain              ;
-    CheckBox recipeDesert            ;
     CheckBox recipeDiet              ;
     CheckBox recipeVegan             ;
     CheckBox recipeVegetarian        ;
@@ -553,7 +549,6 @@ public class AddRecipeFragment extends Fragment {
             groceries.add(g);
         }
     }
-
 
     private void createSpinner(Spinner sp, @ArrayRes int dataList){
         // Create an ArrayAdapter using the string array and a default spinner layout

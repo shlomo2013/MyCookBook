@@ -4,17 +4,15 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
-import java.io.ByteArrayOutputStream;
-import java.lang.reflect.Array;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
+
+import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by si on 30/05/2015.
@@ -101,6 +99,7 @@ public class Album  extends ParseObject {
     {
         return getString(Name);
     }
+
     public void setAlbumName(String value) {
         putOrDefault(Name,value);
         this.saveInBackground();
