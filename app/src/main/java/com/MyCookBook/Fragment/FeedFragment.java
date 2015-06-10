@@ -1,7 +1,9 @@
 package com.MyCookBook.Fragment;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -86,6 +88,7 @@ public class FeedFragment extends Fragment {
 //                for(int i = 0; i < categories.length; i++)
 //                {
 //                    if (categories[i].equals(category)) {
+                        category = String.valueOf(myAutoComplete.getText());
                         ArrayList<String> categoryList = new ArrayList<String>(1);
                         categoryList.add(category);
                         ArrayList<Recipe> myRecipesTest = Queries.RecipesSearchPartial(categoryList, null, null, null, null, null, null);
@@ -93,6 +96,21 @@ public class FeedFragment extends Fragment {
                         if(myRecipesTest != null && myRecipesTest.size() != 0)
                         {
                             myRecipes = myRecipesTest;
+                        }
+                        else
+                        {
+                            myAutoComplete.setText("חיפוש על פי קטגוריה");
+
+                            new AlertDialog.Builder(rootView.getContext())
+                                    .setTitle("תוצאות חיפוש")
+                                    .setMessage("לא נמצאו תוצאות התואמות את החיפוש")
+                                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            // continue with delete
+                                        }
+                                    })
+                                    .setIcon(android.R.drawable.ic_dialog_alert)
+                                    .show();
                         }
 //                    }
 //                }
@@ -238,9 +256,6 @@ public class FeedFragment extends Fragment {
 
             // Handle like button
             btLike.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-            //btLike.setMaxWidth(350);
-            //btLike.setMaxHeight(150);
-            //btLike.setAdjustViewBounds(true);
             btLike.setImageResource(R.mipmap.red_like_icon);
             btLike.setClickable(true);
             btLike.setTag(myRecipes.get(i));

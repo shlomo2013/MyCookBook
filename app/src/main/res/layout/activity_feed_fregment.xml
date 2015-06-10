@@ -9,8 +9,8 @@
     tools:context="com.MyCookBook.Fragment.MainActivity">
 
     <RelativeLayout
-        android:layout_width="100dp"
-        android:layout_height="500dp"
+        android:layout_width="350dp"
+        android:layout_height="40dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:id="@+id/relativeLayout"
@@ -31,23 +31,16 @@
         <RadioGroup
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:orientation="vertical"
-            android:layout_below="@+id/textView8"
-            android:gravity="right"
+            android:orientation="horizontal"
+            android:gravity="center"
             android:id="@+id/RBgroup"
+            android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true">
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="הכי חדש"
-                    android:id="@+id/RBnew"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_below="@+id/textView8"
-                    android:checked="true" />
+            android:layout_alignParentStart="true"
+            android:layout_toLeftOf="@+id/textView8"
+            android:layout_toStartOf="@+id/textView8">
 
-                <RadioButton
+            <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="הכי אהוב"
@@ -64,7 +57,17 @@
                     android:layout_below="@+id/RBloved"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true" />
-            </RadioGroup>
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="הכי חדש"
+                android:id="@+id/RBnew"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@+id/textView8"
+                android:checked="true" />
+        </RadioGroup>
     </RelativeLayout>
 
     <RelativeLayout
@@ -95,12 +98,13 @@
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="100dp"
         android:fillViewport="false"
         android:id="@+id/ScrollView"
-        android:layout_below="@+id/relativeLayout2"
-        android:layout_toLeftOf="@+id/relativeLayout"
-        android:layout_toStartOf="@+id/relativeLayout">
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/relativeLayout">
 
         <TableLayout
             android:layout_width="fill_parent"
