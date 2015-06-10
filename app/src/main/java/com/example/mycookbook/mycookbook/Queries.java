@@ -419,6 +419,21 @@ public class Queries {
         return bmp;
     }
 
+    public static Bitmap getProfilePictureOfUser(User user) {
+        byte[] data= null;
+        Bitmap bmp = null;
+        ParseFile applicantResume = (ParseFile) user.get("Profile");
+
+        try {
+            data = applicantResume.getData();
+            bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
+        }catch(Exception e){
+            Log.e("User Profile Picture:","cannot retrieve picture");
+        }
+
+        return bmp;
+    }
+
 
     public static void refreshAllGroceries(){
         List<ParseObject> returnList = null;
