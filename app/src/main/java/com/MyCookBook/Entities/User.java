@@ -1,7 +1,12 @@
 package com.MyCookBook.Entities;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Log;
+
 import com.parse.ParseClassName;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
@@ -91,5 +96,20 @@ public class User extends ParseObject {
     }
     public void setBirthday(String value) {
         putOrDefault(Birthday,value);
+    }
+
+    public Bitmap getProfilePic() {
+        byte[] data= null;
+        Bitmap bmp = null;
+        ParseFile applicantResume = (ParseFile) this.get("Profile");
+
+        try {
+            data = applicantResume.getData();
+            bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
+        }catch(Exception e){
+            Log.e("User Profile Picture:", "cannot retrieve picture");
+        }
+
+        return bmp;
     }
 }
