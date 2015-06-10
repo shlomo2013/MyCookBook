@@ -54,6 +54,9 @@ public class FeedFragment extends Fragment {
     View rootView;
     ScrollView scView;
     RadioButton rb;
+    RadioButton rbNew;
+    RadioButton rbLoved;
+    RadioButton rbTop;
 
     public FeedFragment() {
 
@@ -65,6 +68,7 @@ public class FeedFragment extends Fragment {
         rootView = inflater.inflate(R.layout.activity_feed_fregment, container, false);
         myAutoComplete = (AutoCompleteTextView) rootView.findViewById(R.id.autoCompleteTextView);
         category = String.valueOf(myAutoComplete.getText());
+        rgpFilter = (RadioGroup) rootView.findViewById(R.id.RBgroup);
 
         final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity().getBaseContext(),
                 R.array.categories,
@@ -84,42 +88,38 @@ public class FeedFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
+                category = String.valueOf(myAutoComplete.getText());
 
-//                for(int i = 0; i < categories.length; i++)
-//                {
-//                    if (categories[i].equals(category)) {
-                        category = String.valueOf(myAutoComplete.getText());
-                        ArrayList<String> categoryList = new ArrayList<String>(1);
-                        categoryList.add(category);
-                        ArrayList<Recipe> myRecipesTest = Queries.RecipesSearchPartial(categoryList, null, null, null, null, null, null);
+                if (category.equals("")) {
+                    rbNew = (RadioButton) rootView.findViewById(R.id.RBnew);
+                    rbLoved = (RadioButton) rootView.findViewById(R.id.RBloved);
+                    rbTop = (RadioButton) rootView.findViewById(R.id.RBtop5);
 
-                        if(myRecipesTest != null && myRecipesTest.size() != 0)
-                        {
-                            myRecipes = myRecipesTest;
-                        }
-                        else
-                        {
-                            myAutoComplete.setText("חיפוש על פי קטגוריה");
-
-                            new AlertDialog.Builder(rootView.getContext())
-                                    .setTitle("תוצאות חיפוש")
-                                    .setMessage("לא נמצאו תוצאות התואמות את החיפוש")
-                                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            // continue with delete
-                                        }
-                                    })
-                                    .setIcon(android.R.drawable.ic_dialog_alert)
-                                    .show();
-                        }
-//                    }
-//                }
+                    if (rbNew.isChecked())
+                    {
+                        setFilterByRB(rbNew);
+                    }
+                    if (rbLoved.isChecked())
+                    {
+                        setFilterByRB(rbLoved);
+                    }
+                    if (rbTop.isChecked())
+                    {
+                        setFilterByRB(rbTop);
+                    }
+                }
+                else
+                {
+                    ArrayList<String> categoryList = new ArrayList<String>(1);
+                    categoryList.add(category);
+                    ArrayList<Recipe> myRecipesTest = Queries.RecipesSearchPartial(categoryList, null, null, null, null, null, null);
+                    myRecipes = myRecipesTest;
+                    setFeed();
+                }
             }
         };
 
         myAutoComplete.addTextChangedListener(autoCompListenerCategory);
-
-        rgpFilter = (RadioGroup) rootView.findViewById(R.id.RBgroup);
         scView = (ScrollView) rootView.findViewById(R.id.ScrollView);
 
         rgpFilter.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -141,14 +141,11 @@ public class FeedFragment extends Fragment {
         return rootView;
     }
 
-
-    View.OnClickListener photoOnClickListener = new View.OnClickListener(){
+    View.OnClickListener photoOnClickListener = new View.OnClickListener() {
         @Override
-        public void onClick(View v){
+        public void onClick(View v) {
             tbLayout = (TableLayout) v.findViewById(R.id.tbFeed);
-            //tbLayout.setOnClickListener();
         }
-
     };
 
     private void initiatePopUp(Bitmap photo){
@@ -180,12 +177,10 @@ public class FeedFragment extends Fragment {
                 return false;
             }
         });
-
     }
 
     private void setFeed()
     {
-
         int count = tbLayout.getChildCount();
         for (int i = 0; i < count; i++) {
             View child = tbLayout.getChildAt(i);
@@ -194,8 +189,6 @@ public class FeedFragment extends Fragment {
 
         for (int i = 0; i < myRecipes.size(); i++)
         {
-            currRecipe = i;
-
             TextView tvRecipe = new TextView(getActivity().getBaseContext());
             final ImageView ivRecipePhoto = new ImageView(getActivity().getBaseContext());
             final ImageButton btLike = new ImageButton(getActivity().getBaseContext());
@@ -211,17 +204,16 @@ public class FeedFragment extends Fragment {
             tvRecipe.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
             tvRecipe.setMinimumWidth(350);
 
-            String myResipe;
-            myResipe = "אופן הכנה:"  + "\n" + myRecipes.get(i).getPreparation() + "\n" + "רכיבים:";
+            String myRecipe;
+            myRecipe = "אופן הכנה:"  + "\n" + myRecipes.get(i).getPreparation() + "\n" + "רכיבים:";
             ArrayList<Grocery> grocery = myRecipes.get(i).getRecipeGroceries();
 
             for (int j = 0; j < grocery.size(); j++)
             {
-                myResipe.concat("\n" + grocery.get(j));
+                myRecipe.concat("\n" + grocery.get(j));
             }
 
-
-            tvRecipe.setText(myResipe);
+            tvRecipe.setText(myRecipe);
             tvRecipe.setClickable(true);
             tvRecipe.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -263,7 +255,7 @@ public class FeedFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     ((Recipe)btLike.getTag()).Like();
-                    txtLikes.setText(myRecipes.get(currRecipe).getLikesCounter() + "אהבו!");
+                    txtLikes.setText(((Recipe)btLike.getTag()).getLikesCounter() + "אהבו!");
                     setFeed();
                 }
             });
@@ -271,7 +263,6 @@ public class FeedFragment extends Fragment {
             // Add to layOut
             tr.addView(tvRecipe);
             tr.addView(ivRecipePhoto);
-
             tbLayout.addView(tr);
 
             TableRow tr2 = new TableRow(getActivity().getBaseContext());
@@ -305,5 +296,4 @@ public class FeedFragment extends Fragment {
                 break;
         }
     }
-
 }
