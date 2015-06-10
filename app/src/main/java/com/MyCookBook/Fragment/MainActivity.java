@@ -11,6 +11,7 @@ import com.MyCookBook.Entities.Recipe;
 import com.MyCookBook.Entities.User;
 import com.example.mycookbook.mycookbook.Queries;
 import com.example.mycookbook.mycookbook.R;
+import com.parse.ParseObject;
 
 import java.util.ArrayList;
 

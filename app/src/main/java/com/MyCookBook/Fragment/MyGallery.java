@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.MyCookBook.Activity.CookBookGalleryActivity;
 import com.MyCookBook.Entities.Album;
+import com.example.mycookbook.mycookbook.Queries;
 import com.example.mycookbook.mycookbook.R;
 
 import java.util.ArrayList;
@@ -63,14 +64,14 @@ public class MyGallery extends Fragment {
         lvAlbums = (ListView) rootView.findViewById(R.id.lvAlbumes);
 
         if (isMyAlbums) {
-        //    cookBooks = Queries.getAlbumUserCreated(Queries.getMyUser());
-            // Set an Adapter to the ListView
-            lvAlbums.setAdapter(new AlbumsAdapter(inflater, MyAlbumesPics, myDesc, myTitle));
+                    cookBooks = Queries.getAlbumUserCreated(Queries.getMyUser());
+                    // Set an Adapter to the ListView
+                    lvAlbums.setAdapter(new AlbumsAdapter(inflater, MyAlbumesPics, myDesc, myTitle));
 
-        }
+                }
         else{
 
-//            cookBooks = Queries.getUserAlbum(Queries.getMyUser());
+            cookBooks = Queries.getUserAlbum(Queries.getMyUser());
 
             // Set an Adapter to the ListView
             lvAlbums.setAdapter(new AlbumsAdapter(inflater, AllAlbumesPics, allDesc, allTitle));
@@ -85,7 +86,7 @@ public class MyGallery extends Fragment {
 
                 Intent i = new Intent(getActivity().getApplicationContext(), CookBookGalleryActivity.class);
                 // TODO dana :  שליחה של המזהה עאלבום על מנת לשלוף את כל המתכונים במתכון
-                i.putExtra("AlbumID", "paramValue");
+                i.putExtra("AlbumID", "uXA9Uv0d89");
                 startActivity(i);
             }
         });

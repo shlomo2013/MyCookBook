@@ -55,7 +55,6 @@ public class Recipe  extends ParseObject {
 
     public Recipe(String name,String category,String subCategory,String preparation,String dishType,
                            String difficulty,String kitchenType,boolean diet,boolean vegetarian,boolean vegan){
-        //TODO: אין שמירת מרכיבים
         setName(name);
         setCategory(category);
         setSubCategory(subCategory);
@@ -66,19 +65,12 @@ public class Recipe  extends ParseObject {
         setDiet(diet);
         setVegetarian(vegetarian);
         setVegan(vegan);
-        put(LikesCounter,0);
+        this.put(LikesCounter,0);
         try {
             this.save();
         }catch(Exception e){
             Log.d("Cannot Save Recipe ",e.getMessage());
         }
-    }
-
-    public static Recipe getRecipeById(String id)
-    {
-        Recipe myRecipe = new Recipe();
-        // TODO: select recipe
-        return myRecipe;
     }
 
     public void addRecipe(User user) {
@@ -139,7 +131,12 @@ public class Recipe  extends ParseObject {
         ParseRelation<ParseObject> relation = this.getRelation(Likes);
         relation.add(Queries.getMyUser());
         this.increment(LikesCounter);
-        this.saveInBackground();
+        try {
+            this.save();
+        }catch(Exception e){
+            Log.d("Like: ", e.getMessage());
+
+        }
     }
 
     public void LikebyUser(User user){

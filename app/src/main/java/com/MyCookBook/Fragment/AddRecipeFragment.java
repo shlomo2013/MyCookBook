@@ -212,7 +212,7 @@ public class AddRecipeFragment extends Fragment {
         String name = recipeName.getText().toString();
 
         Recipe r = new Recipe(name, category , subCategory,preparation ,  dishType,
-                                    difficulty, kitchenType, diet, vegetarian, vegan);
+                difficulty, kitchenType, diet, vegetarian, vegan);
 
         //EditText name = (EditText) v.findViewById(R.id.etRecName);
 //        r.initRecipe(name, category , subCategory,preparation ,  dishType,

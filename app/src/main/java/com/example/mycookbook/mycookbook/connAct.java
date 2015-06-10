@@ -143,7 +143,7 @@ public class connAct extends Activity {
 
             @Override
             public void onClick(View v) {
-                if(accessToken.isExpired())
+                if(accessToken!= null && accessToken.isExpired())
                     LoginManager.getInstance().logInWithReadPermissions(connAct.this, Arrays.asList("public_profile", "user_friends"));
             }
         });
