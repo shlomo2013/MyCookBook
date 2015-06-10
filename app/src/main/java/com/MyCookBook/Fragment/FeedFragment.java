@@ -2,6 +2,7 @@ package com.MyCookBook.Fragment;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -50,6 +51,7 @@ public class FeedFragment extends Fragment {
     String category;
     View rootView;
     ScrollView scView;
+    RadioButton rb;
 
     public FeedFragment() {
 
@@ -61,6 +63,11 @@ public class FeedFragment extends Fragment {
         rootView = inflater.inflate(R.layout.activity_feed_fregment, container, false);
         myAutoComplete = (AutoCompleteTextView) rootView.findViewById(R.id.autoCompleteTextView);
         category = String.valueOf(myAutoComplete.getText());
+
+        final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity().getBaseContext(),
+                R.array.categories,
+                android.R.layout.simple_list_item_1);
+        myAutoComplete.setAdapter(adapter);
 
         autoCompListenerCategory = new TextWatcher() {
             @Override
@@ -75,24 +82,24 @@ public class FeedFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                String[] categories = new String[R.layout.activity_feed_fregment];
-                for(int i = 0; i < categories.length; i++)
-                {
-                    if (categories[i].equals(category)) {
+
+//                for(int i = 0; i < categories.length; i++)
+//                {
+//                    if (categories[i].equals(category)) {
                         ArrayList<String> categoryList = new ArrayList<String>(1);
                         categoryList.add(category);
-                        myRecipes = Queries.RecipesSearchPartial(categoryList, null, null, null, null, null, null);
-                    }
-                }
+                        ArrayList<Recipe> myRecipesTest = Queries.RecipesSearchPartial(categoryList, null, null, null, null, null, null);
+
+                        if(myRecipesTest != null && myRecipesTest.size() != 0)
+                        {
+                            myRecipes = myRecipesTest;
+                        }
+//                    }
+//                }
             }
         };
 
         myAutoComplete.addTextChangedListener(autoCompListenerCategory);
-
-        final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity().getBaseContext(),
-                R.array.categories,
-                android.R.layout.simple_list_item_1);
-        myAutoComplete.setAdapter(adapter);
 
         rgpFilter = (RadioGroup) rootView.findViewById(R.id.RBgroup);
         scView = (ScrollView) rootView.findViewById(R.id.ScrollView);
@@ -100,22 +107,10 @@ public class FeedFragment extends Fragment {
         rgpFilter.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                RadioButton rb = (RadioButton) group.findViewById(checkedId);
+
+                rb = (RadioButton) group.findViewById(checkedId);
                 if (null != rb && checkedId > -1) {
-                    switch (rb.getId()) {
-                        case R.id.RBnew:
-                            myRecipes = Queries.getLastRecipes(15);
-                            setFeed();
-                            break;
-                        case R.id.RBloved:
-                            myRecipes = Queries.getTopRatedRecipes(15);
-                            setFeed();
-                            break;
-                        case R.id.RBtop5:
-                            myRecipes = Queries.getTopRatedRecipes(5);
-                            setFeed();
-                            break;
-                    }
+                    setFilterByRB(rb);
                 }
             }
         });
@@ -138,7 +133,7 @@ public class FeedFragment extends Fragment {
 
     };
 
-    private void initiatePopUp(int resId){
+    private void initiatePopUp(Bitmap photo){
 
         LayoutInflater layoutInflater = (LayoutInflater) getActivity().getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View popupView = layoutInflater.inflate(R.layout.imagepopup, null);
@@ -153,7 +148,7 @@ public class FeedFragment extends Fragment {
         pw.setOutsideTouchable(true);
         //pw.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         final ImageView RecipePhoto = (ImageView) popupView.findViewById(R.id.ImageRecipePhoto);
-        RecipePhoto.setImageResource(resId);
+        RecipePhoto.setImageBitmap(photo);
 
         //dismiss the pop-up i.e. drop-down when touched anywhere outside the pop-up
         pw.setTouchInterceptor(new View.OnTouchListener() {
@@ -185,23 +180,14 @@ public class FeedFragment extends Fragment {
 
             TextView tvRecipe = new TextView(getActivity().getBaseContext());
             final ImageView ivRecipePhoto = new ImageView(getActivity().getBaseContext());
-//            ImageButton btRecipePhoto = new ImageButton(getActivity().getBaseContext());
-            ImageButton btLike = new ImageButton(getActivity().getBaseContext());
+            final ImageButton btLike = new ImageButton(getActivity().getBaseContext());
             txtLikes = new TextView(getActivity().getBaseContext());
 
             TableRow tr = new TableRow(getActivity().getBaseContext());
             TableRow.LayoutParams trLP = new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT,
                     TableRow.LayoutParams.WRAP_CONTENT);
             tr.setLayoutParams(trLP);
-            //tr.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
             tr.setGravity(Gravity.RIGHT);
-//            tr.setClickable(true);
-//            tr.setId(Integer.parseInt(myRecepies.get(i).getObjectId()));
-//            tr.setOnClickListener(new rowOnClickListener() {
-//                public void onClick(View v) {
-//
-//                }
-//            });
 
             // Handle recipe text
             tvRecipe.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
@@ -218,7 +204,6 @@ public class FeedFragment extends Fragment {
 
 
             tvRecipe.setText(myResipe);
-            //tvRecipe.setTextDirection(View.LAYOUT_DIRECTION_RTL);
             tvRecipe.setClickable(true);
             tvRecipe.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -232,19 +217,15 @@ public class FeedFragment extends Fragment {
             ivRecipePhoto.setMaxWidth(350);
             ivRecipePhoto.setMaxHeight(350);
             ivRecipePhoto.setAdjustViewBounds(true);
-            //TODO: delete
-            //myRecepies.get(i).setRecipePic(String.valueOf(R.drawable.com_facebook_profile_picture_blank_square));
-            // TODO: return
-            //ivRecipePhoto.setImageResource(Integer.parseInt (myRecepies.get(i).getRecipePic()));
-            ivRecipePhoto.setImageResource(R.drawable.com_facebook_profile_picture_blank_square);
+            ivRecipePhoto.setImageBitmap(myRecipes.get(i).getRecipePicture());
+            ivRecipePhoto.setTag(myRecipes.get(i));
             ivRecipePhoto.setClickable(true);
             ivRecipePhoto.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (click) {
-                        // TODO: id
-                        //Queries.getRecipeById(String.valueOf(ivRecipePhoto.getId()));
-                        initiatePopUp(R.drawable.com_facebook_profile_picture_blank_square);
+                        // Handle show big picture
+                        initiatePopUp(((Recipe)ivRecipePhoto.getTag()).getRecipePicture());
                         pw.showAtLocation(rootView, Gravity.BOTTOM, 10, 10);
                         click = false;
                     }
@@ -255,8 +236,6 @@ public class FeedFragment extends Fragment {
                 }
             });
 
-            //ivRecipePhoto.setId(Integer.parseInt(myRecepies.get(i).getObjectId().toString()));
-
             // Handle like button
             btLike.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
             //btLike.setMaxWidth(350);
@@ -264,11 +243,13 @@ public class FeedFragment extends Fragment {
             //btLike.setAdjustViewBounds(true);
             btLike.setImageResource(R.mipmap.red_like_icon);
             btLike.setClickable(true);
+            btLike.setTag(myRecipes.get(i));
             btLike.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    myRecipes.get(currRecipe).Like();
+                    ((Recipe)btLike.getTag()).Like();
                     txtLikes.setText(myRecipes.get(currRecipe).getLikesCounter() + "אהבו!");
+                    setFeed();
                 }
             });
 
@@ -284,18 +265,29 @@ public class FeedFragment extends Fragment {
             tr2.setLayoutParams(trLP2);
             tr2.setGravity(Gravity.RIGHT);
 
-            // Handle like button
-            /*btLike.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-           // btLike.setMinimumWidth(350);
-            btLike.setText("אהבתי");
-            btLike.setBackgroundResource(R.drawable.abc_btn_rating_star_off_mtrl_alpha); */
-
             txtLikes.setText(myRecipes.get(i).getLikesCounter() + "אהבו!");
 
             // Add to layOut
             tr2.addView(txtLikes);
             tr2.addView(btLike);
             tbLayout.addView(tr2);
+        }
+    }
+
+    private void setFilterByRB(RadioButton rb) {
+        switch (rb.getId()) {
+            case R.id.RBnew:
+                myRecipes = Queries.getLastRecipes(15);
+                setFeed();
+                break;
+            case R.id.RBloved:
+                myRecipes = Queries.getTopRatedRecipes(15);
+                setFeed();
+                break;
+            case R.id.RBtop5:
+                myRecipes = Queries.getTopRatedRecipes(5);
+                setFeed();
+                break;
         }
     }
 
