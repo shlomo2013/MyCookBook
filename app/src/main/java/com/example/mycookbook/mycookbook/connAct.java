@@ -3,12 +3,16 @@ package com.example.mycookbook.mycookbook;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.StrictMode;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -46,6 +50,8 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.List;
 public class connAct extends Activity {
@@ -59,6 +65,7 @@ public class connAct extends Activity {
         FacebookSdk.sdkInitialize(getApplicationContext());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_conn);
+
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
@@ -69,6 +76,10 @@ public class connAct extends Activity {
         if(AccessToken.getCurrentAccessToken()!=null){
             accessToken = AccessToken.getCurrentAccessToken();
             callMainActivity();
+        }else{
+            Button connectButton = (Button) findViewById(R.id.connect);
+            //final Button connectButton = (Button) findViewById(R.id.connect);
+            connectButton.setEnabled(false);
         }
 
         loginButton.setReadPermissions(Arrays.asList("public_profile, email, user_birthday"));
@@ -89,6 +100,8 @@ public class connAct extends Activity {
                                 Log.v("LoginActivity", response.toString());
                                 Queries.isUserAlreadyExists(accessToken.getUserId());
                                 User s = Queries.getMyUser();
+                                Button connectButton = (Button) findViewById(R.id.connect);
+                                connectButton.setEnabled(true);
 
                                 try {
                                     Log.v("user parameters set for: ", object.getString("name"));
@@ -145,8 +158,25 @@ public class connAct extends Activity {
             public void onClick(View v) {
                 if(accessToken!= null && accessToken.isExpired())
                     LoginManager.getInstance().logInWithReadPermissions(connAct.this, Arrays.asList("public_profile", "user_friends"));
+                else{
+                    Button connectButton = (Button) findViewById(R.id.connect);
+                    connectButton.setEnabled(false);
+                    Queries.eraseCurrentUser();
+                }
+            }
+
+
+
+        });
+        Button connectButton = (Button) findViewById(R.id.connect);
+        connectButton.setOnClickListener(new Button.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                callMainActivityFromButton();
             }
         });
+
     }
 
 
@@ -169,6 +199,12 @@ public class connAct extends Activity {
         startActivity(intent);
     }
 
+    private void callMainActivityFromButton() {
+        Intent intent;
+        intent = new Intent(this, MainActivity.class);
+        intent.putExtra("myUserId",Queries.getMyUser().getUserId());
+        startActivity(intent);
+    }
     private void callMainActivityAfterLogin(){
         //ImageView IV= (ImageView)findViewById(R.id.imageView);
         //Drawable drw = ImageOperations(this,urlString,"profile");
@@ -251,5 +287,20 @@ public class connAct extends Activity {
 
         // Logs 'app deactivate' App Event.
         AppEventsLogger.deactivateApp(this);
+    }
+
+    private void printKeyhash(){
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo("com.example.mycookbook.mycookbook", PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
     }
 }

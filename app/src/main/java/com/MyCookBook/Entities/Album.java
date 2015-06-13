@@ -230,7 +230,7 @@ public class Album  extends ParseObject {
             data = applicantResume.getData();
             bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
         }catch(Exception e){
-            Log.e("User Profile Picture:","cannot retrieve picture");
+            Log.e("User album Picture:","cannot retrieve picture");
         }
 
         return bmp;

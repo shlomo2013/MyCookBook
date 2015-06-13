@@ -104,7 +104,7 @@ public class Queries {
             myUser = null;
             Log.d("score", "Error: " + e.getMessage());
         }
-        if (userList.size() != 0) {
+        if (userList!= null && userList.size() != 0) {
             myUser = (User) userList.get(userList.size() - 1);
             Log.d("User", "already exists " + myUser.getObjectId() + " name=" + myUser.getUserId());
         } else {
