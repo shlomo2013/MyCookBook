@@ -1,9 +1,17 @@
 package com.MyCookBook.Activity;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -28,9 +36,15 @@ import android.widget.Toast;
 import com.MyCookBook.Entities.Album;
 import com.MyCookBook.Entities.Grocery;
 import com.MyCookBook.Entities.Recipe;
+import com.MyCookBook.Entities.User;
 import com.example.mycookbook.mycookbook.Queries;
 import com.example.mycookbook.mycookbook.R;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 
 public class CookBookGalleryActivity extends ActionBarActivity {
@@ -74,6 +88,7 @@ public class CookBookGalleryActivity extends ActionBarActivity {
     Button btnSaveAlbum;
     ListView lvAllUsers;
     Boolean isAlbumEditable = false;
+    Bitmap selectedAlbumPic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,24 +110,25 @@ public class CookBookGalleryActivity extends ActionBarActivity {
         Vegan           = (CheckBox) findViewById(R.id.cbVegan);
         Vegaterian      = (CheckBox) findViewById(R.id.cbVeg);
         Diet            = (CheckBox) findViewById(R.id.cbDiet);
-        IngredientsTitle =(TextView)  findViewById(R.id.tvIngredientsTitle);
-        IngredientName     = (TextView)  findViewById(R.id.tvIngredientName);
-        IngredientType    = (TextView)  findViewById(R.id.tvIngredientType);
-        IngredientAmount    = (TextView)  findViewById(R.id.tvIngredientAmount);
+        IngredientsTitle= (TextView)  findViewById(R.id.tvIngredientsTitle);
+        IngredientName  = (TextView)  findViewById(R.id.tvIngredientName);
+        IngredientType  = (TextView)  findViewById(R.id.tvIngredientType);
+        IngredientAmount= (TextView)  findViewById(R.id.tvIngredientAmount);
         HowToMakeTitle  = (TextView)  findViewById(R.id.tvHowToMakeTitle);
         HowToMake       = (TextView)  findViewById(R.id.tvHowToMake);
 
         //Album Include
-        albumType   = (EditText)    findViewById(R.id.etAlbumType);
-        albumName   = (EditText)    findViewById(R.id.etAlbumName);
-        albumDesc   = (EditText)    findViewById(R.id.etAlbumDetails);
-        albumNameTitle  = (TextView)  findViewById(R.id.tvrRcipeName);
-        albumTypeTitle  = (TextView)  findViewById(R.id.tvAlbumType);
-        albumDescTitle  = (TextView)  findViewById(R.id.tvAlbumDetails);
-        viAlbumPic  = (ImageView)   findViewById(R.id.AlbumPic);
-        btnAlbumPic =  (Button)     findViewById(R.id.btnSelectPhoto);
-        btnSaveAlbum     =  (Button)     findViewById(R.id.bSaveUser);
-        lvAllUsers  =  (ListView)   findViewById(R.id.AllUsersListView);
+        albumType       = (EditText)    findViewById(R.id.etAlbumType);
+        albumName       = (EditText)    findViewById(R.id.etAlbumName);
+        albumDesc       = (EditText)    findViewById(R.id.etAlbumDetails);
+        albumNameTitle  = (TextView)    findViewById(R.id.tvrRcipeName);
+        albumTypeTitle  = (TextView)    findViewById(R.id.tvAlbumType);
+        albumDescTitle  = (TextView)    findViewById(R.id.tvAlbumDetails);
+        viAlbumPic      = (ImageView)   findViewById(R.id.AlbumPic);
+        btnAlbumPic     =  (Button)     findViewById(R.id.btnSelectPhoto);
+        btnSaveAlbum    =  (Button)     findViewById(R.id.bSaveUser);
+        lvAllUsers      =  (ListView)   findViewById(R.id.AllUsersListView);
+        btnAlbumPic     =  (Button)     findViewById(R.id.btnSelectPhoto);
 
         makeRecipeInvisibale();
         lvAllUsers.setVisibility(View.INVISIBLE);
@@ -167,6 +183,27 @@ public class CookBookGalleryActivity extends ActionBarActivity {
         g.setAdapter( new ImageAdapter(this, RecipesList, imageBitmaps));
         g.setOnItemClickListener(onGalletyItemSelect);
 
+        //ALBUM edit
+        btnAlbumPic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectImage();
+            }
+        });
+        btnSaveAlbum.setOnClickListener(new View.OnClickListener() {
+                  @Override
+                  public void onClick(View v) {
+                      ArrayList<User> uu = new ArrayList<User>();
+                      uu.add(Queries.getMyUser());
+
+                      Album a = new Album(albumName.getText().toString(),
+                              albumType.getText().toString(),
+                              albumDesc.getText().toString(),
+                              Queries.getMyUser(), uu, selectedAlbumPic);
+                      a.saveAlbum();
+
+                  }
+              });
     }
 
     @Override
@@ -261,19 +298,6 @@ public class CookBookGalleryActivity extends ActionBarActivity {
 
         }
     };
-
-    public void fillRecipe(Recipe r){
-
-        ivRecipeImage.setImageBitmap( r.getRecipePicture());
-        RcipeName.setText("דניאל נחמיאס המעפנה");
-        //                DishType       ;
-        //                Level          ;
-        //                KitchenType    ;
-        //                Category       ;
-        Vegan.setChecked(true);          ;
-        //                Vegaterian     ;
-        //                Diet           ;
-    }
 
     private void initiatePopUp(){
 
@@ -382,7 +406,94 @@ public class CookBookGalleryActivity extends ActionBarActivity {
         tbLayout.addView(tr);
     }
 
+ //8************************ pic ****************************************
+    //8************************ pic ****************************************
 
+    private void selectImage() {
+
+        final CharSequence[] options = { "Take Photo", "Choose from Gallery","Cancel" };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Add Photo!");
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                if (options[item].equals("Take Photo")) {
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
+                    startActivityForResult(intent, 1);
+                } else if (options[item].equals("Choose from Gallery")) {
+                    Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(intent, 2);
+
+                } else if (options[item].equals("Cancel")) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        builder.show();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == 1) {
+                File f = new File(Environment.getExternalStorageDirectory().toString());
+                for (File temp : f.listFiles()) {
+                    if (temp.getName().equals("temp.jpg")) {
+                        f = temp;
+                        break;
+                    }
+                }
+                try {
+                    BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
+
+                    selectedAlbumPic = BitmapFactory.decodeFile(f.getAbsolutePath(),
+                            bitmapOptions);
+
+                    viAlbumPic.setImageBitmap(selectedAlbumPic);
+
+                    String path = Environment
+                            .getExternalStorageDirectory()
+                            + File.separator
+                            + "Phoenix" + File.separator + "default";
+                    f.delete();
+                    OutputStream outFile = null;
+                    File file = new File(path, String.valueOf(System.currentTimeMillis()) + ".jpg");
+                    try {
+                        outFile = new FileOutputStream(file);
+                        selectedAlbumPic.compress(Bitmap.CompressFormat.JPEG, 85, outFile);
+                        outFile.flush();
+                        outFile.close();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else if (requestCode == 2) {
+
+                Uri selectedImage = data.getData();
+                String[] filePath = { MediaStore.Images.Media.DATA };
+                //                Cursor c = getActivity().getContentResolver().query(selectedImage,filePath, null, null, null);
+                //                c.moveToFirst();
+                //                int columnIndex = c.getColumnIndex(filePath[0]);
+                //                String picturePath = c.getString(columnIndex);
+                //                c.close();
+                //                Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
+                //                Log.w("path:", picturePath+"");
+                //                viewImage.setImageBitmap(thumbnail);
+            }
+        }
+    }
+    //8************************ pic ****************************************
+    //8************************ pic ****************************************
 
 
 
