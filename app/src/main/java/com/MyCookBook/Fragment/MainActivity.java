@@ -43,8 +43,6 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("User List wow1 ","Yes");
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setMyUserId(savedInstanceState);

@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.ArrayRes;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -27,12 +29,14 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -219,8 +223,8 @@ public class AddRecipeFragment extends Fragment {
 
         r.addRecipe(Queries.getMyUser());
 
-        selectedAlbum.addRecipe(r);
-
+        if(selectedAlbum!=null)
+            selectedAlbum.addRecipe(r);
     }
 
     private void selectImage() {
@@ -417,22 +421,24 @@ public class AddRecipeFragment extends Fragment {
         AutoCompleteTextView actNewIngredient= new AutoCompleteTextView(getActivity().getBaseContext());
         Spinner spNewIngredientType = new Spinner(getActivity().getBaseContext());
         EditText etNewIngredientAmount = new EditText(getActivity().getBaseContext());
+        ImageButton btnCancel = new ImageButton(getActivity().getBaseContext());
+
 
         TableRow tr = new TableRow(getActivity().getBaseContext());
-        TableRow.LayoutParams trLP = new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT,
+        TableRow.LayoutParams trLP = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,
                 TableRow.LayoutParams.WRAP_CONTENT);
         tr.setLayoutParams(trLP);
         tr.setTextDirection(View.LAYOUT_DIRECTION_RTL);
 
         // Handle AutoCompleteTextView
-        actNewIngredient.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+        actNewIngredient.setLayoutParams(new TableRow.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
         actNewIngredient.setMaxWidth(320);
         actNewIngredient.setId(nId + 1);
 
         // Handle Spinner
         createSpinner(spNewIngredientType);
         spNewIngredientType.setScrollContainer(true);
-        spNewIngredientType.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT));
+        spNewIngredientType.setLayoutParams(new TableRow.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.MATCH_PARENT));
         spNewIngredientType.setId(nId + 2);
 
         // Handle EditText
@@ -440,14 +446,42 @@ public class AddRecipeFragment extends Fragment {
         etNewIngredientAmount.setLayoutParams(new TableRow.LayoutParams(130, TableRow.LayoutParams.WRAP_CONTENT));
         etNewIngredientAmount.setId(nId + 3);
 
+
+        btnCancel.setImageResource(R.drawable.cancel);
+        //TableRow.LayoutParams lp = new TableRow.LayoutParams(100, 100);
+        btnCancel.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
+        //RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(100, 100);
+        //Drawable replacer = getResources().getDrawable(R.drawable.);
+
+       // btnCancel.setLayoutParams(lp);
+        btnCancel.setOnClickListener(btnCancelOnClickListener);
+        btnCancel.setBackgroundColor(Color.TRANSPARENT);
+        btnCancel.setTag(nExsistingIngridients);
+        btnCancel.setId(nExsistingIngridients);
+        //btnCancel.setMaxHeight(100);
+        //btnCancel.setMaxWidth(100);
+
+
         // Add to layOut
         tr.addView(actNewIngredient);
         tr.addView(spNewIngredientType);
         tr.addView(etNewIngredientAmount);
+        tr.addView(btnCancel);
 
         tbLayout.addView(tr);
         return nExsistingIngridients;
     }
+
+    private View.OnClickListener btnCancelOnClickListener = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+            //check which green ball was clicked
+            ImageButton imgBtn = (ImageButton) v;
+            TableRow currRow = ((TableRow)v.getParent());
+            currRow.removeAllViews();
+        }
+    };
 
     public void btnCategoryDropDawn(){
         // get all of the categories
@@ -548,10 +582,11 @@ public class AddRecipeFragment extends Fragment {
             AutoCompleteTextView  matirial    = (AutoCompleteTextView)   rootView.findViewById(nid+1);
             Spinner               form        = (Spinner)                rootView.findViewById(nid+2);
             EditText              amount      = (EditText)               rootView.findViewById(nid+3);
-
-            //  g.initGrocery(matirial.getText().toString() , form.toString(), amount.getText().toString());
-            Grocery g = new Grocery(matirial.getText().toString() , form.getSelectedItem().toString(), amount.getText().toString());
-            groceries.add(g);
+            if(matirial!=null && form!=null && amount!=null) {
+                //  g.initGrocery(matirial.getText().toString() , form.toString(), amount.getText().toString());
+                Grocery g = new Grocery(matirial.getText().toString(), form.getSelectedItem().toString(), amount.getText().toString());
+                groceries.add(g);
+            }
         }
     }
 
