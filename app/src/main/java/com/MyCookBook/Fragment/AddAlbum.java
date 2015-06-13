@@ -87,6 +87,9 @@ public class AddAlbum extends Fragment {
                         albumType.getText().toString(),
                         albumDesc.getText().toString(),
                         Queries.getMyUser(), uu, selectedPic);
+
+                a.setAlbumName(albumName.getText().toString());
+                a.setAlbumType(albumType.getText().toString());
                 a.saveAlbum();
 
             }

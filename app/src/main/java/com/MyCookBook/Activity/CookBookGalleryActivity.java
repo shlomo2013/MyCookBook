@@ -77,6 +77,7 @@ public class CookBookGalleryActivity extends ActionBarActivity {
     ArrayList<Recipe> RecipesList;
 
     //Album Include
+    Album selectedAlbum;
     ImageView viAlbumPic;
     EditText albumName;
     EditText albumType;
@@ -141,11 +142,13 @@ public class CookBookGalleryActivity extends ActionBarActivity {
             if(albumID != null)
             {
                 setEditableAlbum(isAlbumEditable);
-                Album a = Queries.getAlbumById(albumID);
+                selectedAlbum = Queries.getAlbumById(albumID);
 
-                albumName.setText(a.getAlbumName());
-                albumType.setText(a.getAlbumType());
-                viAlbumPic.setImageBitmap(a.getAlbumPicture());
+                albumName.setText(selectedAlbum.getAlbumName());
+                albumType.setText(selectedAlbum.getAlbumType());
+                albumDesc.setText((selectedAlbum.getDescription()));
+
+                viAlbumPic.setImageBitmap(selectedAlbum.getAlbumPicture());
 
                 albumName.setOnLongClickListener(onAlbumLongClick);
                 albumType.setOnLongClickListener(onAlbumLongClick);
@@ -155,7 +158,7 @@ public class CookBookGalleryActivity extends ActionBarActivity {
                 albumDescTitle.setOnLongClickListener(onAlbumLongClick);
 
                 // get Album recipe
-                RecipesList = a.getAlbumRecipes();
+                RecipesList = selectedAlbum.getAlbumRecipes();
                 imageBitmaps = new Bitmap[RecipesList.size()];
 
                 if (RecipesList != null) {
@@ -195,12 +198,12 @@ public class CookBookGalleryActivity extends ActionBarActivity {
                   public void onClick(View v) {
                       ArrayList<User> uu = new ArrayList<User>();
                       uu.add(Queries.getMyUser());
+                      selectedAlbum.setAlbumName(albumName.getText().toString());
+                      selectedAlbum.setAlbumType(albumType.getText().toString());
+                      selectedAlbum.setDescription(albumDesc.getText().toString());
 
-                      Album a = new Album(albumName.getText().toString(),
-                              albumType.getText().toString(),
-                              albumDesc.getText().toString(),
-                              Queries.getMyUser(), uu, selectedAlbumPic);
-                      a.saveAlbum();
+                      isAlbumEditable= !isAlbumEditable;
+                      setEditableAlbum(isAlbumEditable);
 
                   }
               });
@@ -308,6 +311,7 @@ public class CookBookGalleryActivity extends ActionBarActivity {
 
         //Pop-up window background cannot be null if we want the pop-up to listen touch events outside its window
         pw.setTouchable(true);
+        popupView.setBackgroundColor(getResources().getColor(R.color.primary_material_dark));
 
         //let pop-up be informed about touch events outside its window. This  should be done before setting the content of pop-up
         pw.setOutsideTouchable(true);
