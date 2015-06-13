@@ -212,7 +212,7 @@ public class AddRecipeFragment extends Fragment {
 
         String category = "מרקים";
         String subCategory = "חמים";
-        String dishType = recipeDishType.getText().toString(); //(String)recipeDishType.getSel().toString();
+        String dishType = " sdsds"; //recipeDishType.getText().toString(); //(String)recipeDishType.getSel().toString();
 
         String difficulty = (String)recipeLevel.getSelectedItem();
         String kitchenType = (String)recipeKitchenType.getSelectedItem();

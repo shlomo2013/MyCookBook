@@ -147,7 +147,9 @@ public class CookBookGalleryActivity extends ActionBarActivity {
                 albumName.setText(selectedAlbum.getAlbumName());
                 albumType.setText(selectedAlbum.getAlbumType());
                 albumDesc.setText((selectedAlbum.getDescription()));
-
+                if (selectedAlbumPic != null) {
+                    selectedAlbum.savePic(selectedAlbumPic);
+                }
                 viAlbumPic.setImageBitmap(selectedAlbum.getAlbumPicture());
 
                 albumName.setOnLongClickListener(onAlbumLongClick);
