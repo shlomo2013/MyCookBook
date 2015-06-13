@@ -1,10 +1,10 @@
 package com.MyCookBook.Activity;
 
 import android.content.Context;
-import android.graphics.drawable.BitmapDrawable;
+import android.content.res.TypedArray;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,10 +20,13 @@ import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.MyCookBook.Entities.Album;
+import com.MyCookBook.Entities.Grocery;
 import com.MyCookBook.Entities.Recipe;
 import com.example.mycookbook.mycookbook.Queries;
 import com.example.mycookbook.mycookbook.R;
@@ -32,20 +35,12 @@ import java.util.ArrayList;
 
 public class CookBookGalleryActivity extends ActionBarActivity {
 
-
-    public int thumb[] = { R.mipmap.cheese_cake, R.mipmap.chips,
-            R.mipmap.konus_pizza , R.mipmap.yami,
-            R.mipmap.lazania ,R.mipmap.oreo ,
-            R.mipmap.pankaiyk ,R.mipmap.pay_coco ,
-            R.mipmap.lazania2 ,R.mipmap.peanut_butter ,
-            R.mipmap.pizza , R.mipmap.lazania3, };
-
-
     Gallery g;
     Button bAddRecipe;
     private PopupWindow pw;
-    boolean click;
-
+    boolean click = true;
+    Bitmap[] imageBitmaps;
+    TableLayout tbLayout;
 
     ImageView iv;
     ImageView ivRecipeImage;
@@ -56,7 +51,12 @@ public class CookBookGalleryActivity extends ActionBarActivity {
     TextView Level;
     TextView KitchenType;
     TextView Category;
-    TextView AlbumName;
+    TextView IngredientsTitle;
+    TextView IngredientName;
+    TextView IngredientType;
+    TextView IngredientAmount;
+    TextView HowToMakeTitle;
+    TextView HowToMake;
     CheckBox Vegan;
     CheckBox Vegaterian;
     CheckBox Diet;
@@ -67,9 +67,13 @@ public class CookBookGalleryActivity extends ActionBarActivity {
     EditText albumName;
     EditText albumType;
     EditText albumDesc;
+    TextView albumNameTitle;
+    TextView albumTypeTitle;
+    TextView albumDescTitle;
     Button btnAlbumPic;
-    Button btnSave;
+    Button btnSaveAlbum;
     ListView lvAllUsers;
+    Boolean isAlbumEditable = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +83,7 @@ public class CookBookGalleryActivity extends ActionBarActivity {
         // Gallery
         g           = (Gallery)findViewById(R.id.gallery);
         bAddRecipe  = (Button) findViewById(R.id.btnAddRecipeToAlbum);
+        tbLayout    = (TableLayout) findViewById(R.id.tbIngredients);
 
         // Recipe Include
         ivRecipeImage   = (ImageView) findViewById(R.id.RecipeImage);
@@ -87,23 +92,31 @@ public class CookBookGalleryActivity extends ActionBarActivity {
         Level           = (TextView) findViewById(R.id.tvLevel);
         KitchenType     = (TextView) findViewById(R.id.tvKitchenType);
         Category        = (TextView) findViewById(R.id.tvCategory);
-        AlbumName        = (TextView) findViewById(R.id.tvAlbumName);
         Vegan           = (CheckBox) findViewById(R.id.cbVegan);
         Vegaterian      = (CheckBox) findViewById(R.id.cbVeg);
         Diet            = (CheckBox) findViewById(R.id.cbDiet);
+        IngredientsTitle =(TextView)  findViewById(R.id.tvIngredientsTitle);
+        IngredientName     = (TextView)  findViewById(R.id.tvIngredientName);
+        IngredientType    = (TextView)  findViewById(R.id.tvIngredientType);
+        IngredientAmount    = (TextView)  findViewById(R.id.tvIngredientAmount);
+        HowToMakeTitle  = (TextView)  findViewById(R.id.tvHowToMakeTitle);
+        HowToMake       = (TextView)  findViewById(R.id.tvHowToMake);
 
         //Album Include
         albumType   = (EditText)    findViewById(R.id.etAlbumType);
         albumName   = (EditText)    findViewById(R.id.etAlbumName);
         albumDesc   = (EditText)    findViewById(R.id.etAlbumDetails);
+        albumNameTitle  = (TextView)  findViewById(R.id.tvrRcipeName);
+        albumTypeTitle  = (TextView)  findViewById(R.id.tvAlbumType);
+        albumDescTitle  = (TextView)  findViewById(R.id.tvAlbumDetails);
         viAlbumPic  = (ImageView)   findViewById(R.id.AlbumPic);
         btnAlbumPic =  (Button)     findViewById(R.id.btnSelectPhoto);
-        btnSave     =  (Button)     findViewById(R.id.bSaveUser);
+        btnSaveAlbum     =  (Button)     findViewById(R.id.bSaveUser);
         lvAllUsers  =  (ListView)   findViewById(R.id.AllUsersListView);
 
-
+        makeRecipeInvisibale();
         lvAllUsers.setVisibility(View.INVISIBLE);
-        btnSave.setVisibility(View.INVISIBLE);
+        btnSaveAlbum.setVisibility(View.INVISIBLE);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null)
@@ -111,32 +124,47 @@ public class CookBookGalleryActivity extends ActionBarActivity {
             String albumID = extras.getString("AlbumID");
             if(albumID != null)
             {
+                setEditableAlbum(isAlbumEditable);
                 Album a = Queries.getAlbumById(albumID);
-                AlbumName.setText(a.getAlbumName());
+
+                albumName.setText(a.getAlbumName());
+                albumType.setText(a.getAlbumType());
+                viAlbumPic.setImageBitmap(a.getAlbumPicture());
+
+                albumName.setOnLongClickListener(onAlbumLongClick);
+                albumType.setOnLongClickListener(onAlbumLongClick);
+                viAlbumPic.setOnLongClickListener(onAlbumLongClick);
+                albumNameTitle.setOnLongClickListener(onAlbumLongClick);
+                albumTypeTitle.setOnLongClickListener(onAlbumLongClick);
+                albumDescTitle.setOnLongClickListener(onAlbumLongClick);
 
                 // get Album recipe
                 RecipesList = a.getAlbumRecipes();
-                int albumPics[] = new int[RecipesList.size()];
+                imageBitmaps = new Bitmap[RecipesList.size()];
 
-                // set recipe
-                Recipe r;
-                for (int i= 0 ; i < RecipesList.size(); i++){
-                    r = RecipesList.get(i);
-                    //TODO - create list of pics
-                    //  albumPics[i]= (r.getRecipePicture()).get
+                if (RecipesList != null) {
+                    for (int i = 0; i < RecipesList.size(); i++) {
+                        Recipe r = RecipesList.get(i);
+                        Bitmap b = r.getRecipePicture();
+                        imageBitmaps[i] =  b;
+
+                    }
                 }
             }
         }
+
         else
         {
-            AlbumName.setText("שגיאה!! לא  נמצא אלבום" );
-
+            Toast t = new Toast(this);
+            t.setText("לא נמצאו מתכונים עבור ספר הבישול");
+            t.show();
         }
 
         bAddRecipe.setOnClickListener(btnAddRecipeOnClickListener);
 
+
         // Create adapter gallery
-        g.setAdapter( new ImageAdapter(this, RecipesList));
+        g.setAdapter( new ImageAdapter(this, RecipesList, imageBitmaps));
         g.setOnItemClickListener(onGalletyItemSelect);
 
     }
@@ -165,44 +193,7 @@ public class CookBookGalleryActivity extends ActionBarActivity {
     }
 
 
-    public class ImageAdapter extends BaseAdapter {
-        private Context context;
-        int ImageBackRound;
-        ArrayList<Recipe> RecipesListPerAlbum;
 
-        public ImageAdapter(Context c, ArrayList<Recipe> RecipesListPerAlbum){
-            this.context = c;
-            this.RecipesListPerAlbum = RecipesListPerAlbum;
-        }
-
-        @Override
-        public int getCount() {
-            return thumb.length;
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return position;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ImageView image = new ImageView(context);
-
-//            Recipe r = RecipesListPerAlbum.get(position);
-//            image.setTag(r);
-//
-//            image.setImageResource(thumb[position]);
-//
-
-            return image;
-        }
-    }
 
     public View.OnClickListener btnAddRecipeOnClickListener = new View.OnClickListener(){
         @Override
@@ -210,7 +201,7 @@ public class CookBookGalleryActivity extends ActionBarActivity {
             if (click) {
                 initiatePopUp();
                 // Handle show big picture
-                pw.showAtLocation(bAddRecipe, Gravity.TOP, 100, 100);
+                pw.showAsDropDown(bAddRecipe);
                 click = false;
             }
             else{
@@ -229,15 +220,45 @@ public class CookBookGalleryActivity extends ActionBarActivity {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 // TODO dana: לקחת את המתכון עלפי התמונה שלחצה ולהקפיץ מסף של מתכון
             Toast.makeText(getApplicationContext(), "מתכון:", Toast.LENGTH_SHORT);
-            ivRecipeImage.setImageResource(thumb[position]);
-            RcipeName.setText("דניאל נחמיאס המעפנה");
-//                DishType       ;
-//                Level          ;
-//                KitchenType    ;
-//                Category       ;
-            Vegan.setChecked(true);          ;
-//                Vegaterian     ;
-//                Diet
+
+            ivRecipeImage.setImageBitmap(imageBitmaps[position]);
+            Recipe r = RecipesList.get(position);
+            RcipeName.setText(r.getName());
+
+            KitchenType.setText(r.getKitchenType());
+            DishType.setText(r.getDishType());
+            Level.setText(r.getDifficulty());
+            Category.setText(r.getCategory());
+
+            Vegan.setChecked(r.getVegan());
+            Vegaterian.setChecked(r.getVegetarian());
+            Diet.setChecked(r.getDiet());
+
+            HowToMake.setText(r.getPreparation());
+            ArrayList<Grocery> gg = r.getRecipeGroceries();
+            for(int i = 0; i < gg.size(); i++) {
+                Grocery g = gg.get(i);
+//                IngredientName.setText(g.getAmount());
+//                IngredientType.setText(g.getForm());
+//                IngredientAmount.setText(g.getMaterialName());
+//
+                addIngridientToScreen(g.getMaterialName(),g.getForm() , g.getAmount());
+
+            }
+
+            ivRecipeImage.setVisibility(View.VISIBLE);
+            RcipeName.setVisibility(View.VISIBLE);
+            DishType.setVisibility(View.VISIBLE);
+            Level.setVisibility(View.VISIBLE);
+            KitchenType.setVisibility(View.VISIBLE);
+            Category.setVisibility(View.VISIBLE);
+            Vegan.setVisibility(View.VISIBLE);
+            Vegaterian.setVisibility(View.VISIBLE);
+            Diet.setVisibility(View.VISIBLE);
+            IngredientsTitle.setVisibility(View.VISIBLE);
+            HowToMakeTitle.setVisibility(View.VISIBLE);
+            HowToMake.setVisibility(View.VISIBLE);
+
         }
     };
 
@@ -262,15 +283,10 @@ public class CookBookGalleryActivity extends ActionBarActivity {
         pw = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         //Pop-up window background cannot be null if we want the pop-up to listen touch events outside its window
-        pw.setBackgroundDrawable(new BitmapDrawable());
         pw.setTouchable(true);
 
         //let pop-up be informed about touch events outside its window. This  should be done before setting the content of pop-up
         pw.setOutsideTouchable(true);
-        //pw.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-//        final ImageView RecipePhoto = (ImageView) popupView.findViewById(R.id.ImageRecipePhoto);
-//        RecipePhoto.setImageBitmap(photo);
-
 
         //dismiss the pop-up i.e. drop-down when touched anywhere outside the pop-up
         pw.setTouchInterceptor(new View.OnTouchListener() {
@@ -284,4 +300,146 @@ public class CookBookGalleryActivity extends ActionBarActivity {
             }
         });
     }
+
+    public void setEditableAlbum(boolean isEditable){
+        albumName.setEnabled(isEditable);
+        albumType.setEnabled(isEditable);
+        btnAlbumPic.setEnabled(isEditable);
+        albumDesc.setEnabled(isEditable);
+        if (isEditable) {
+            lvAllUsers.setVisibility(View.VISIBLE);
+            btnSaveAlbum.setVisibility(View.VISIBLE);
+        }
+        else{
+            lvAllUsers.setVisibility(View.INVISIBLE);
+            btnSaveAlbum.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    View.OnLongClickListener onAlbumLongClick = new View.OnLongClickListener(){
+
+
+        @Override
+        public boolean onLongClick(View v) {
+            isAlbumEditable = !isAlbumEditable;
+            setEditableAlbum(isAlbumEditable);
+
+            return false;
+        }
+    };
+
+
+    public void makeRecipeInvisibale(){
+        ivRecipeImage.setVisibility(View.INVISIBLE);
+        RcipeName.setVisibility(View.INVISIBLE);
+        DishType.setVisibility(View.INVISIBLE);
+        Level.setVisibility(View.INVISIBLE);
+        KitchenType.setVisibility(View.INVISIBLE);
+        Category.setVisibility(View.INVISIBLE);
+        Vegan.setVisibility(View.INVISIBLE);
+        Vegaterian.setVisibility(View.INVISIBLE);
+        Diet.setVisibility(View.INVISIBLE);
+        IngredientsTitle.setVisibility(View.INVISIBLE);
+        HowToMakeTitle.setVisibility(View.INVISIBLE);
+        HowToMake.setVisibility(View.INVISIBLE);
+    }
+
+
+    public void addIngridientToScreen(String name, String type , String amount){
+
+        // set the attribute id
+
+        TextView actNewIngredient= new TextView(this);
+        TextView spNewIngredientType = new TextView(this);
+        TextView etNewIngredientAmount = new TextView(this);
+
+        actNewIngredient.setText(name);
+        spNewIngredientType.setText(type);
+        etNewIngredientAmount.setText(amount);
+
+        TableRow tr = new TableRow(this);
+        TableRow.LayoutParams trLP = new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT,TableRow.LayoutParams.WRAP_CONTENT);
+        tr.setLayoutParams(trLP);
+        tr.setTextDirection(View.LAYOUT_DIRECTION_RTL);
+/**
+        // Handle AutoCompleteTextView
+        actNewIngredient.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+        actNewIngredient.setMaxWidth(320);
+
+        // Handle Spinner
+        spNewIngredientType.setScrollContainer(true);
+        spNewIngredientType.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT));
+
+        // Handle EditText
+        etNewIngredientAmount.setInputType(3);
+        etNewIngredientAmount.setLayoutParams(new TableRow.LayoutParams(130, TableRow.LayoutParams.WRAP_CONTENT));
+**/
+        // Add to layOut
+        tr.addView(actNewIngredient);
+        tr.addView(spNewIngredientType);
+        tr.addView(etNewIngredientAmount);
+
+        tbLayout.addView(tr);
+    }
+
+
+
+
+
+
+
+    public class ImageAdapter extends BaseAdapter {
+        private Context context;
+        int defaultImageBackRound;
+        Bitmap[] imageBitmaps;
+        Bitmap placeHolder;
+        ArrayList<Recipe> RecipesListPerAlbum;
+
+        public ImageAdapter(Context c, ArrayList<Recipe> RecipesListPerAlbum, Bitmap[] imageBitmaps){
+            this.context = c;
+            this.RecipesListPerAlbum = RecipesListPerAlbum;
+            this.imageBitmaps = imageBitmaps;
+
+            TypedArray styleAttrs = context.obtainStyledAttributes(R.styleable.PicGallery);
+            defaultImageBackRound = styleAttrs.getResourceId(R.styleable.PicGallery_android_galleryItemBackground, 0 );
+            styleAttrs.recycle();
+        }
+
+        @Override
+        public int getCount() {
+            return imageBitmaps.length;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return position;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ImageView image = new ImageView(context);
+
+            if (RecipesListPerAlbum != null && imageBitmaps != null) {
+
+                image.setImageBitmap(imageBitmaps[position]);
+                //image
+                image.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                image.setBackgroundResource(defaultImageBackRound);
+
+                Recipe r = RecipesListPerAlbum.get(position);
+                image.setTag(r);
+
+            }
+
+            return image;
+        }
+    }
+
 }
+
+

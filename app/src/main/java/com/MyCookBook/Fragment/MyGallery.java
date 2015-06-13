@@ -70,14 +70,9 @@ public class MyGallery extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Intent i = new Intent(getActivity().getApplicationContext(), CookBookGalleryActivity.class);
-
-                // TODO dana :  שליחה של המזהה עאלבום על מנת לשלוף את כל המתכונים במתכון
                 gallaryPic           = (ImageView)            view.findViewById(R.id.thumb);
                 Album a = (Album)gallaryPic.getTag();
                 i.putExtra("AlbumID", a.getObjectId() );
-
-                 //TODO - del
-//                i.putExtra("AlbumID", "B4SH6fyzHI");
                 startActivity(i);
             }
         });

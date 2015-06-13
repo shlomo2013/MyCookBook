@@ -19,6 +19,7 @@
             android:textDirection="rtl"
             android:paddingRight="20dp"
             android:id="@+id/tvRcipeName"
+            android:text="שם מתכון"
             android:layout_gravity="right"
             android:textStyle="bold"
             android:textColor="#ffff4f45"
@@ -42,6 +43,7 @@
                 android:layout_weight="1"
                 android:paddingRight="20dp"
                 android:id="@+id/tvDishType"
+                android:text="סוג מנה"
                 android:layout_alignParentRight="true"
                 android:layout_gravity="right"
                 android:layout_alignParentEnd="true"
@@ -53,6 +55,7 @@
                 android:layout_height="wrap_content"
                 android:paddingRight="20dp"
                 android:id="@+id/tvLevel"
+                android:text="רמת קושי"
                 android:layout_below="@+id/listViewNo"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
@@ -64,17 +67,20 @@
                 android:layout_height="wrap_content"
                 android:paddingRight="20dp"
                 android:id="@+id/tvKitchenType"
+                android:text="סוג מטבח"
                 android:layout_gravity="right"
                 android:layout_below="@+id/Level"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:autoText="true" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textDirection="rtl"
                 android:paddingRight="20dp"
                 android:id="@+id/tvCategory"
+                android:text="קטגוריה"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 android:layout_weight="1"
@@ -95,7 +101,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="צמחוני"
-                android:visibility="invisible"
                 android:enabled="false"
                 android:id="@+id/cbVeg"
                 android:editable="false"
@@ -106,15 +111,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="טבעוני"
+                android:enabled="false"
                 android:editable="false"
-                android:visibility="invisible"
                 android:id="@+id/cbVegan"/>
 
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="invisible"
                 android:text="דיאטטי"
+                android:enabled="false"
                 android:editable="false"
                 android:id="@+id/cbDiet" />
         </LinearLayout>
@@ -123,6 +128,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="רכיבים "
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textDirection="rtl"
             android:paddingRight="20dp"
@@ -135,26 +141,54 @@
             android:textColor="#ffff4f45"
             android:layout_weight="1" />
 
+        <TableLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/tbIngredients">
+
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textDirection="rtl"
+                    android:paddingRight="20dp"
+                    android:id="@+id/tvIngredientName"
+                    android:layout_gravity="right"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_weight="1" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textDirection="rtl"
+                    android:paddingRight="20dp"
+                    android:id="@+id/tvIngredientType"
+                    android:layout_gravity="right"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textDirection="rtl"
+                    android:paddingRight="20dp"
+                    android:id="@+id/tvIngredientAmount"
+                    android:layout_gravity="right"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_weight="1" />
+
+
+
+            </TableRow>
+        </TableLayout>
+
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textDirection="rtl"
-            android:paddingRight="20dp"
-            android:id="@+id/tvIngredients"
-            android:layout_gravity="right"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:textStyle="bold"
-            android:textColor="#ffff4f45"
-            android:layout_weight="1" />
-
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:text="אופן הכנה"
             android:layout_gravity="right"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textDirection="rtl"
@@ -169,31 +203,29 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="הכנה "
             android:layout_gravity="right"
-            android:textAppearance="?android:attr/textAppearanceMedium"
             android:textDirection="rtl"
             android:paddingRight="20dp"
             android:id="@+id/tvHowToMake"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:textStyle="bold"
-            android:textColor="#ffff4f45"
             android:layout_weight="1" />
     </LinearLayout>
 
 
-<LinearLayout
-android:id="@+id/LinearLayout1"
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:orientation="vertical"
-android:layout_gravity="right"
-android:layout_rowWeight="@integer/abc_max_action_buttons"
-android:layoutDirection="rtl">
+    <LinearLayout
+        android:id="@+id/LinearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="right"
+        android:layout_rowWeight="@integer/abc_max_action_buttons"
+        android:layoutDirection="rtl">
 
 
-</LinearLayout>
+    </LinearLayout>
 
 
-    </GridLayout>
+</GridLayout>
 

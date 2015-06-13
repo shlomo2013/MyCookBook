@@ -20,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -35,11 +36,15 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.Toast;
 
-import com.MyCookBook.Utiltis.DropDownListAdapter;
-import com.MyCookBook.Utiltis.*;
+import com.MyCookBook.Activity.CookBookGalleryActivity;
+import com.MyCookBook.Entities.Album;
 import com.MyCookBook.Entities.Grocery;
 import com.MyCookBook.Entities.Recipe;
+import com.MyCookBook.Utiltis.DropDownListAdapter;
+import com.MyCookBook.Utiltis.Group;
+import com.MyCookBook.Utiltis.MyExpandableListAdapter;
 import com.example.mycookbook.mycookbook.Queries;
 import com.example.mycookbook.mycookbook.R;
 
@@ -58,20 +63,15 @@ public class AddRecipeFragment extends Fragment {
     private PopupWindow pw;
     private ArrayList<CheckBox> alFoodCategory;
 
-    ImageView viewImage;
     View rootView;
     View popupView;
-
-    Button bSelecPic;
-    Button bAddIngridient;
-    Button bSetCategory;
-    Button bSave;
-
     TableLayout tbLayout;
     ListView lvDropDownList;
     LinearLayout ll;
 
-    ArrayList<Grocery> groceries = new ArrayList<Grocery>();
+    // album
+    private ListView lvAlbums;
+    private Album selectedAlbum;
 
     // arguments from screen
     EditText recipeName              ;
@@ -84,9 +84,17 @@ public class AddRecipeFragment extends Fragment {
     RadioGroup  recipeDishTypeGroup  ;
     RadioButton recipeDishType       ;
     ExpandableListView recipeCategory;
+    Button bSelecPic;
+    Button bAddIngridient;
+    Button bSetCategory;
+    Button bSave;
+    ImageView viewImage;
+    ImageView gallaryPic;
 
     // more efficient than HashMap for mapping integers to objects
     SparseArray<Group> groups = new SparseArray<Group>();
+    ArrayList<Grocery> groceries = new ArrayList<Grocery>();
+    ArrayList<Album> cookBooks = new ArrayList<Album>();
 
     private int nIngridientsCounter = 0;
     private int levelId;
@@ -102,7 +110,7 @@ public class AddRecipeFragment extends Fragment {
 
         rootView            = inflater.inflate(R.layout.activity_addrecipe_fragment, container , false);
         popupView            = inflater.inflate(R.layout.popup, container , false);
-        tbLayout            = (TableLayout)          rootView.findViewById(R.id.tbIngredients);
+        tbLayout            = (TableLayout)          rootView.findViewById(R.id.tbIngredients2);
         viewImage           = (ImageView)            rootView.findViewById(R.id.viewImage);
         bAddIngridient      = (Button)               rootView.findViewById(R.id.btnAddIngridient);
         bSave               = (Button)               rootView.findViewById(R.id.btnSaveRecipe);
@@ -121,42 +129,34 @@ public class AddRecipeFragment extends Fragment {
         bSelecPic                    = (Button)             rootView.findViewById(R.id.btnSelectPhoto);
         recipeDishTypeGroup          = (RadioGroup)         rootView.findViewById(R.id.rgDishType);
         recipeDishType               = (RadioButton)        rootView.findViewById(recipeDishTypeGroup.getCheckedRadioButtonId());
+        lvAlbums                     = (ListView)           rootView.findViewById(R.id.lvAlbumes);
 
+
+        // LEVEL
         final Spinner dropdownLevel = (Spinner) rootView.findViewById(R.id.Level);
         levelId = dropdownLevel.getId();
         createSpinner((dropdownLevel), R.array.Levels);
-;
+
+        // KITCHEN TYPE
         final Spinner dropdownKitchenType = (Spinner) rootView.findViewById(R.id.KitchenType);
         KitchenTypeId = dropdownKitchenType.getId();
         createSpinner((dropdownKitchenType), R.array.recipie_category);
 
+        //Handle Category
         createExpendableList();
         ExpandableListView categoryList = (ExpandableListView) rootView.findViewById(R.id.elvCategoriess);
         final MyExpandableListAdapter adapter = new MyExpandableListAdapter(getActivity() , groups);
         categoryList.setAdapter(adapter);
 
-//        final ListView dropdownLevel = (ListView) rootView.findViewById(R.id.lvLevel);
-//        createListView(dropdownLevel, R.array.Levels);
-
-        // Handle Categories list
-//        categoryList.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-//            @Override
-//            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-//                int numItems = adapter.getChildrenCount(groupPosition);
-//                int layoutHight = numItems * 20;
-//             //   ll.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, layoutHight));
-//                return false;
-//            }
-//        });
-
+        // Add ingridient
         bAddIngridient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
                 nIngridientsCounter = addIngridientToScreen(nIngridientsCounter);
             }
         });
-        // Handle Photo select
 
+        // Handle Photo select
         bSelecPic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -164,13 +164,26 @@ public class AddRecipeFragment extends Fragment {
             }
         });
 
-        // Handle Categories btn
-//        bSetCategory.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View arg0) {
-//                btnCategoryDropDawn();
-//            }
-//        });
+
+        // ALBUM
+        cookBooks = Queries.getAlbumUserCreated(Queries.getMyUser());
+        lvAlbums.setAdapter(new AlbumsAdapter(inflater,cookBooks));
+
+        //on item Click
+        lvAlbums.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Intent i = new Intent(getActivity().getApplicationContext(), CookBookGalleryActivity.class);
+                gallaryPic = (ImageView) view.findViewById(R.id.thumb);
+                selectedAlbum = (Album) gallaryPic.getTag();
+                Toast.makeText(
+                        getActivity(),
+                        selectedAlbum.getAlbumName(),
+                        Toast.LENGTH_LONG).show();
+            }
+        });
 
         // Save recipe
         bSave.setOnClickListener(new View.OnClickListener() {
@@ -183,12 +196,6 @@ public class AddRecipeFragment extends Fragment {
 
         return rootView;
     }
-
-
-
-
-
-
 
     private void SaveRecipe(View v) {
 
@@ -207,15 +214,16 @@ public class AddRecipeFragment extends Fragment {
         Recipe r = new Recipe(name, category , subCategory,preparation ,  dishType,
                 difficulty, kitchenType, diet, vegetarian, vegan);
 
-        //EditText name = (EditText) v.findViewById(R.id.etRecName);
-//        r.initRecipe(name, category , subCategory,preparation ,  dishType,
-//                     difficulty, kitchenType, diet, vegetarian, vegan);
         r.updateGroceries(groceries);
-        r.addRecipe(Queries.getMyUser());
         r.savePic(selectedBitmap);
+
+        r.addRecipe(Queries.getMyUser());
+
+        selectedAlbum.addRecipe(r);
+
     }
 
-        private void selectImage() {
+    private void selectImage() {
 
         final CharSequence[] options = { "Take Photo", "Choose from Gallery","Cancel" };
 
@@ -541,7 +549,7 @@ public class AddRecipeFragment extends Fragment {
             Spinner               form        = (Spinner)                rootView.findViewById(nid+2);
             EditText              amount      = (EditText)               rootView.findViewById(nid+3);
 
-          //  g.initGrocery(matirial.getText().toString() , form.toString(), amount.getText().toString());
+            //  g.initGrocery(matirial.getText().toString() , form.toString(), amount.getText().toString());
             Grocery g = new Grocery(matirial.getText().toString() , form.getSelectedItem().toString(), amount.getText().toString());
             groceries.add(g);
         }

@@ -239,7 +239,13 @@ class UserAdapter extends BaseAdapter {
         tvDesc = (TextView) listItem.findViewById(R.id.UserId);
 
         b = u.getProfilePic();
-        iv.setImageBitmap(b);
+        if (b == null){
+            iv.setImageResource(R.drawable.com_facebook_profile_picture_blank_portrait);
+
+        }else {
+            iv.setImageBitmap(b);
+        }
+
         iv.setTag(u);
         iv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -276,7 +282,13 @@ class UserAdapter extends BaseAdapter {
 
         //pw.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         final ImageView RecipePhoto = (ImageView) popupView.findViewById(R.id.ImageRecipePhoto);
-        RecipePhoto.setImageBitmap(photo);
+        if (b == null){
+            RecipePhoto.setImageResource(R.drawable.com_facebook_profile_picture_blank_portrait);
+
+        }else{
+            RecipePhoto.setImageBitmap(photo);
+
+        }
 
         //dismiss the pop-up i.e. drop-down when touched anywhere outside the pop-up
         pw.setTouchInterceptor(new View.OnTouchListener() {
