@@ -198,16 +198,24 @@ public class FeedFragment extends Fragment {
         final ImageView RecipePhoto = (ImageView) popupView.findViewById(R.id.RecipeImage);
         RecipePhoto.setImageBitmap(currRecipe.getRecipePicture());
 
-        final TextView RecipeGrocery = (TextView) popupView.findViewById(R.id.tvIngredients);
-        String myRecipe = "";
+        final TextView RecipeIngAmount = (TextView) popupView.findViewById(R.id.tvIngredientAmount);
+        final TextView RecipeIngType = (TextView) popupView.findViewById(R.id.tvIngredientType);
+        final TextView RecipeIngName = (TextView) popupView.findViewById(R.id.tvIngredientName);
+        String myRecipeAmount = "";
+        String myRecipeType = "";
+        String myRecipeName = "";
         ArrayList<Grocery> grocery = currRecipe.getRecipeGroceries();
 
         for (int j = 0; j < grocery.size(); j++)
         {
-            myRecipe.concat("\n" + grocery.get(j));
+            myRecipeAmount.concat("\n" + grocery.get(j).getAmount());
+            myRecipeType.concat("\n" + grocery.get(j).getForm());
+            myRecipeName.concat("\n" + grocery.get(j).getMaterialName());
         }
 
-        RecipeGrocery.setText(myRecipe);
+        RecipeIngAmount.setText(myRecipeAmount);
+        RecipeIngType.setText(myRecipeType);
+        RecipeIngName.setText(myRecipeName);
 
         final TextView HowToMake = (TextView) popupView.findViewById(R.id.tvHowToMake);
         HowToMake.setText(currRecipe.getPreparation());
