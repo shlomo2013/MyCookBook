@@ -6,6 +6,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -25,6 +26,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -40,6 +42,7 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.MyCookBook.Activity.CookBookGalleryActivity;
@@ -129,7 +132,7 @@ public class AddRecipeFragment extends Fragment {
         recipeDiet                   = (CheckBox)           rootView.findViewById(R.id.cbDiet);
         recipeVegan                  = (CheckBox)           rootView.findViewById(R.id.cbVegan);
         recipeVegetarian             = (CheckBox)           rootView.findViewById(R.id.cbVeg);
-        recipeCategory               = (ExpandableListView) rootView.findViewById(R.id.elvCategoriess);
+        recipeCategory               = (ExpandableListView)           rootView.findViewById(R.id.elvCategoriess);
         bSelecPic                    = (Button)             rootView.findViewById(R.id.btnSelectPhoto);
         recipeDishTypeGroup          = (RadioGroup)         rootView.findViewById(R.id.rgDishType);
         recipeDishType               = (RadioButton)        rootView.findViewById(recipeDishTypeGroup.getCheckedRadioButtonId());
@@ -148,9 +151,16 @@ public class AddRecipeFragment extends Fragment {
 
         //Handle Category
         createExpendableList();
-        ExpandableListView categoryList = (ExpandableListView) rootView.findViewById(R.id.elvCategoriess);
+      //  ExpandableListView categoryList = (ExpandableListView) rootView.findViewById(R.id.elvCategoriess);
+//        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity().getBaseContext(),
+//                        R.array.categories,
+//                        R.layout.listrow_category_details);
+//        recipeCategory.setAdapter(adapter);
+
+
         final MyExpandableListAdapter adapter = new MyExpandableListAdapter(getActivity() , groups);
-        categoryList.setAdapter(adapter);
+        recipeCategory.setAdapter(adapter);
+//
 
         // Add ingridient
         bAddIngridient.setOnClickListener(new View.OnClickListener() {
@@ -205,7 +215,7 @@ public class AddRecipeFragment extends Fragment {
 
         String category = "מרקים";
         String subCategory = "חמים";
-        String dishType = "ss"; //recipeDishType.getText().toString();
+        String dishType = " sdsds"; //recipeDishType.getText().toString(); //(String)recipeDishType.getSel().toString();
 
         String difficulty = (String)recipeLevel.getSelectedItem();
         String kitchenType = (String)recipeKitchenType.getSelectedItem();
@@ -220,7 +230,6 @@ public class AddRecipeFragment extends Fragment {
 
         r.updateGroceries(groceries);
         r.savePic(selectedBitmap);
-
         r.addRecipe(Queries.getMyUser());
 
         if(selectedAlbum!=null)
@@ -309,13 +318,7 @@ public class AddRecipeFragment extends Fragment {
             String s = (String)adapter.getItem(i);
             CheckBox c = new CheckBox(getActivity().getBaseContext());
             c.setText(s);
-            //
-            //            if(i%2 == 0) {
-            //                c.setChecked(true);
-            //            }else
-            //            {
-            //                c.setChecked(false);
-            //            }
+
             items.add(c);
         }
         DropDownListAdapter mAdapter = new DropDownListAdapter(items, getActivity().getBaseContext());
@@ -398,14 +401,14 @@ public class AddRecipeFragment extends Fragment {
 
                 Uri selectedImage = data.getData();
                 String[] filePath = { MediaStore.Images.Media.DATA };
-                //                Cursor c = getActivity().getContentResolver().query(selectedImage,filePath, null, null, null);
-                //                c.moveToFirst();
-                //                int columnIndex = c.getColumnIndex(filePath[0]);
-                //                String picturePath = c.getString(columnIndex);
-                //                c.close();
-                //                Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
-                //                Log.w("path:", picturePath+"");
-                //                viewImage.setImageBitmap(thumbnail);
+                                Cursor c = getActivity().getContentResolver().query(selectedImage,filePath, null, null, null);
+                                c.moveToFirst();
+                                int columnIndex = c.getColumnIndex(filePath[0]);
+                                String picturePath = c.getString(columnIndex);
+                                c.close();
+                                Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
+                                Log.w("path:", picturePath + "");
+                                viewImage.setImageBitmap(thumbnail);
             }
         }
     }
@@ -607,6 +610,58 @@ public class AddRecipeFragment extends Fragment {
         // Apply the adapter to the spinner
         sp.setAdapter(adapter);
 
+    }
+
+}
+
+
+class categoryAdapter extends BaseAdapter {
+
+    private LayoutInflater layoutInflater;
+    private ArrayList<Album> cookbook;
+    ImageView iv;
+
+
+    public categoryAdapter(LayoutInflater inflater ) {
+        this.layoutInflater = inflater;
+    }
+
+    @Override
+    public int getCount() {
+        // Set the count value to the total number of items in the Array
+        return cookbook.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return position;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+
+        // Inflate the item layout and set the views
+        View listItem;
+        listItem = layoutInflater.inflate(R.layout.all_albums_list, null);
+
+        // Initialize the views in the layout
+         iv = (ImageView) listItem.findViewById(R.id.thumb);
+        TextView tvTitle = (TextView) listItem.findViewById(R.id.title);
+        TextView tvDesc = (TextView) listItem.findViewById(R.id.desc);
+
+        Album a = cookbook.get(position);
+        iv.setTag(a);
+
+        iv.setImageBitmap(a.getAlbumPicture());
+        tvTitle.setText(a.getAlbumName());
+        tvDesc.setText(a.getDescription());
+
+        return listItem;
     }
 
 }
