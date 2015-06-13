@@ -117,9 +117,6 @@ public class AddRecipeFragment extends Fragment {
         recipeDiet                   = (CheckBox)           rootView.findViewById(R.id.cbDiet);
         recipeVegan                  = (CheckBox)           rootView.findViewById(R.id.cbVegan);
         recipeVegetarian             = (CheckBox)           rootView.findViewById(R.id.cbVeg);
-//        recipeFirst                  = (CheckBox)           rootView.findViewById(R.id.CBfirst);
-//        recipeMain                   = (CheckBox)           rootView.findViewById(R.id.CBmain);
-//        recipeDesert                 = (CheckBox)           rootView.findViewById(R.id.CBdesert);
         recipeCategory               = (ExpandableListView) rootView.findViewById(R.id.elvCategoriess);
         bSelecPic                    = (Button)             rootView.findViewById(R.id.btnSelectPhoto);
         recipeDishTypeGroup          = (RadioGroup)         rootView.findViewById(R.id.rgDishType);

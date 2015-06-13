@@ -20,13 +20,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.MyCookBook.Entities.Album;
-import com.MyCookBook.Entities.Recipe;
 import com.MyCookBook.Entities.User;
 import com.example.mycookbook.mycookbook.Queries;
 import com.example.mycookbook.mycookbook.R;
@@ -48,19 +48,25 @@ public class AddAlbum extends Fragment {
     ImageView viAlbumPic;
     ListView  lvAllUsers;
     View popupView;
+    EditText albumName;
+    EditText albumType;
+    EditText albumDesc;
+    Bitmap selectedPic;
     private PopupWindow pw;
     private ArrayList<User> allUsers;
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-         popupView = inflater.inflate(R.layout.imagepopup, null);
+        popupView = inflater.inflate(R.layout.imagepopup, null);
 
         View rootView = inflater.inflate(R.layout.add_album,  container , false);
         btnAlbumPic =  (Button)         rootView.findViewById(R.id.btnSelectPhoto);
         btnSave     =  (Button)         rootView.findViewById(R.id.bSaveUser);
         viAlbumPic  =  (ImageView)      rootView.findViewById(R.id.AlbumPic);
         lvAllUsers  =  (ListView)       rootView.findViewById(R.id.AllUsersListView);
-
+        albumType   = (EditText)         rootView.findViewById(R.id.etAlbumType);
+        albumName   = (EditText)         rootView.findViewById(R.id.etAlbumName);
+        albumDesc   = (EditText)         rootView.findViewById(R.id.etAlbumDetails);
         allUsers = Queries.getAllUsers();
         lvAllUsers.setAdapter(new UserAdapter(inflater, allUsers, rootView));
 
@@ -74,15 +80,22 @@ public class AddAlbum extends Fragment {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Album a = new Album();
-               // a.save();
+                ArrayList<User> uu = new ArrayList<User>();
+                uu.add(Queries.getMyUser());
+
+                Album a = new Album(albumName.getText().toString(),
+                        albumType.getText().toString(),
+                        albumDesc.getText().toString(),
+                        Queries.getMyUser(), uu, selectedPic);
+                a.saveAlbum();
+
             }
         });
         return rootView;
 
     }
 
-     //8************************ pic ****************************************
+    //8************************ pic ****************************************
     //8************************ pic ****************************************
 
     private void selectImage() {
@@ -124,13 +137,12 @@ public class AddAlbum extends Fragment {
                     }
                 }
                 try {
-                    Bitmap bitmap;
                     BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
 
-                    bitmap = BitmapFactory.decodeFile(f.getAbsolutePath(),
+                    selectedPic = BitmapFactory.decodeFile(f.getAbsolutePath(),
                             bitmapOptions);
 
-                    viAlbumPic.setImageBitmap(bitmap);
+                    viAlbumPic.setImageBitmap(selectedPic);
 
                     String path = Environment
                             .getExternalStorageDirectory()
@@ -141,7 +153,7 @@ public class AddAlbum extends Fragment {
                     File file = new File(path, String.valueOf(System.currentTimeMillis()) + ".jpg");
                     try {
                         outFile = new FileOutputStream(file);
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 85, outFile);
+                        selectedPic.compress(Bitmap.CompressFormat.JPEG, 85, outFile);
                         outFile.flush();
                         outFile.close();
                     } catch (FileNotFoundException e) {
@@ -184,16 +196,17 @@ class UserAdapter extends BaseAdapter {
     ImageView iv;
     TextView tvTitle;
     TextView tvDesc;
+    Bitmap b;
 
     private LayoutInflater layoutInflater;
     private View rootView;
     private ArrayList<User> users;
 
     public UserAdapter(LayoutInflater inflater, ArrayList<User> users,  View rootView)
-     {
+    {
         this.layoutInflater = inflater;
         this.users = users;
-         this.rootView = rootView;
+        this.rootView = rootView;
     }
 
     @Override
@@ -221,59 +234,62 @@ class UserAdapter extends BaseAdapter {
         User  u = this.users.get(position);
 
         // Initialize the views in the layout
-         iv = (ImageView) listItem.findViewById(R.id.ProfilePic);
-         tvTitle = (TextView) listItem.findViewById(R.id.userName);
-         tvDesc = (TextView) listItem.findViewById(R.id.UserId);
+        iv = (ImageView) listItem.findViewById(R.id.ProfilePic);
+        tvTitle = (TextView) listItem.findViewById(R.id.userName);
+        tvDesc = (TextView) listItem.findViewById(R.id.UserId);
 
-        iv.setImageBitmap(u.getProfilePic());
-
+        b = u.getProfilePic();
+        iv.setImageBitmap(b);
+        iv.setTag(u);
         iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (click) {
-                                         // Handle show big picture
-                                         initiatePopUp(((Recipe)iv.getTag()).getRecipePicture());
-                                         pw.showAtLocation(rootView, Gravity.BOTTOM, 10, 10);
-                                         click = false;
-                                     }
-                                     else{
-                                         pw.dismiss();
-                                         click = true;
-                                     }
+                    // Handle show big picture
+                    initiatePopUp(b);
+                    pw.showAtLocation(rootView, Gravity.BOTTOM, 10, 10);
+                    click = false;
+                }
+                else{
+                    pw.dismiss();
+                    click = true;
+                }
             }
         });
         tvTitle.setText(u.getName());
         tvDesc.setText(u.getUserId());
 
+
         return listItem;
     }
+
     private void initiatePopUp(Bitmap photo){
         View popupView = layoutInflater.inflate(R.layout.imagepopup, null);
         pw = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
-           //Pop-up window background cannot be null if we want the pop-up to listen touch events outside its window
-           pw.setBackgroundDrawable(new BitmapDrawable());
-           pw.setTouchable(true);
+        //Pop-up window background cannot be null if we want the pop-up to listen touch events outside its window
+        pw.setBackgroundDrawable(new BitmapDrawable());
+        pw.setTouchable(true);
 
-           //let pop-up be informed about touch events outside its window. This  should be done before setting the content of pop-up
-           pw.setOutsideTouchable(true);
+        //let pop-up be informed about touch events outside its window. This  should be done before setting the content of pop-up
+        pw.setOutsideTouchable(true);
 
-           //pw.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-           final ImageView RecipePhoto = (ImageView) popupView.findViewById(R.id.ImageRecipePhoto);
-           RecipePhoto.setImageBitmap(photo);
+        //pw.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+        final ImageView RecipePhoto = (ImageView) popupView.findViewById(R.id.ImageRecipePhoto);
+        RecipePhoto.setImageBitmap(photo);
 
-           //dismiss the pop-up i.e. drop-down when touched anywhere outside the pop-up
-           pw.setTouchInterceptor(new View.OnTouchListener() {
+        //dismiss the pop-up i.e. drop-down when touched anywhere outside the pop-up
+        pw.setTouchInterceptor(new View.OnTouchListener() {
 
-               public boolean onTouch(View v, MotionEvent event) {
-                   // TODO Auto-generated method stub
-                   if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
-                       pw.dismiss();
-                       return true;
-                   }
-                   return false;
-               }
-           });
-       }
+            public boolean onTouch(View v, MotionEvent event) {
+                // TODO Auto-generated method stub
+                if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+                    pw.dismiss();
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
 
 }

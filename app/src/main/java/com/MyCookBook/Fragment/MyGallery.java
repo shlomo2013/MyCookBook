@@ -29,32 +29,16 @@ public class MyGallery extends Fragment {
     private ListView lvAlbums;
     private ArrayList<Album> cookBooks;
 
-    // Create Array's of titles, descriptions and thumbs resource id's:
-    private String myTitle[] = { "Cup Cake", "Donut", "Eclair", "Froyo",
-            "Ginger Bread", "Honey Comb", "Icecream Sandwich", "Jelly Bean"};
-
-    private String myDesc[] = { "משפחה", "חברים",
-            "מרוקאי", "תמני", "קינוחים",
-            "פייסבוק", "צבא", "פומבי"};
-
-    private int MyAlbumesPics[] = { R.mipmap.red_camera_icon, R.mipmap.red_balloon_2_icon,
-            R.mipmap.red_balloon_plus_icon , R.mipmap.red_cross_icon ,
-            R.mipmap.red_like_icon ,R.mipmap.red_lock_icon ,
-            R.mipmap.red_like_icon ,R.mipmap.red_lock_icon };
-
-    private int AllAlbumesPics[] = {
-            R.mipmap.red_like_icon ,R.mipmap.red_lock_icon ,
-            R.mipmap.red_unlock_icon , R.mipmap.red_home_icon, };
-
-    private String allTitle[] = {  "Lazania", "Pizza", "Icecream", "Yolo" };
-    private String allDesc[] = { "איטלקי", "בשר", "צמחוני", "טבעוני" };
-
-
-
+    View galleyRowView;
+    ImageView gallaryPic;
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Boolean isMyAlbums = true;
-        View rootView = inflater.inflate(R.layout.gallery_view,  container , false);
+        final View rootView = inflater.inflate(R.layout.gallery_view,  container , false);
+
+        galleyRowView = inflater.inflate(R.layout.all_albums_list,  container , false);
+
+
         Bundle b = getArguments();
         if(b != null) {
             isMyAlbums  = b.getBoolean("MyAlbum");
@@ -64,17 +48,18 @@ public class MyGallery extends Fragment {
         lvAlbums = (ListView) rootView.findViewById(R.id.lvAlbumes);
 
         if (isMyAlbums) {
-                    cookBooks = Queries.getAlbumUserCreated(Queries.getMyUser());
-                    // Set an Adapter to the ListView
-                    lvAlbums.setAdapter(new AlbumsAdapter(inflater, MyAlbumesPics, myDesc, myTitle));
+            cookBooks = Queries.getAlbumUserCreated(Queries.getMyUser());
 
-                }
+            // Set an Adapter to the ListView
+            lvAlbums.setAdapter(new AlbumsAdapter(inflater,cookBooks));
+
+        }
         else{
 
             cookBooks = Queries.getUserAlbum(Queries.getMyUser());
 
             // Set an Adapter to the ListView
-            lvAlbums.setAdapter(new AlbumsAdapter(inflater, AllAlbumesPics, allDesc, allTitle));
+            lvAlbums.setAdapter(new AlbumsAdapter(inflater, cookBooks));
 
         }
 
@@ -85,8 +70,14 @@ public class MyGallery extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Intent i = new Intent(getActivity().getApplicationContext(), CookBookGalleryActivity.class);
+
                 // TODO dana :  שליחה של המזהה עאלבום על מנת לשלוף את כל המתכונים במתכון
-                i.putExtra("AlbumID", "uXA9Uv0d89");
+                gallaryPic           = (ImageView)            view.findViewById(R.id.thumb);
+                Album a = (Album)gallaryPic.getTag();
+                i.putExtra("AlbumID", a.getObjectId() );
+
+                 //TODO - del
+//                i.putExtra("AlbumID", "B4SH6fyzHI");
                 startActivity(i);
             }
         });
@@ -100,21 +91,19 @@ public class MyGallery extends Fragment {
 class AlbumsAdapter extends BaseAdapter {
 
     private LayoutInflater layoutInflater;
-    private int[] picItems;
-    private String[] itemsDesc;
-    private String[] itemsTitle;
+    private ArrayList<Album> cookbook;
+    ImageView iv;
 
-    public AlbumsAdapter(LayoutInflater inflater, int[] itemsPIc ,String[] itemsDesc ,String[] itemsTitle) {
+
+    public AlbumsAdapter(LayoutInflater inflater ,ArrayList<Album> cookbook) {
         this.layoutInflater = inflater;
-        this.picItems = itemsPIc;
-        this.itemsDesc = itemsDesc;
-        this.itemsTitle = itemsTitle;
+        this.cookbook = cookbook;
     }
 
     @Override
     public int getCount() {
-// Set the count value to the total number of items in the Array
-        return picItems.length;
+        // Set the count value to the total number of items in the Array
+        return cookbook.size();
     }
 
     @Override
@@ -130,22 +119,22 @@ class AlbumsAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-// Inflate the item layout and set the views
+        // Inflate the item layout and set the views
         View listItem;
-        int pos = position;
-//        if (listItem == null) {
         listItem = layoutInflater.inflate(R.layout.all_albums_list, null);
-//        }
 
-// Initialize the views in the layout
-        ImageView iv = (ImageView) listItem.findViewById(R.id.thumb);
+        // Initialize the views in the layout
+         iv = (ImageView) listItem.findViewById(R.id.thumb);
         TextView tvTitle = (TextView) listItem.findViewById(R.id.title);
         TextView tvDesc = (TextView) listItem.findViewById(R.id.desc);
 
-// Set the views in the layout
-        iv.setBackgroundResource(picItems[pos]);
-        tvTitle.setText(itemsTitle[pos]);
-        tvDesc.setText(itemsDesc[pos]);
+        Album a = cookbook.get(position);
+        iv.setTag(a);
+
+        iv.setImageBitmap(a.getAlbumPicture());
+        tvTitle.setText(a.getAlbumName());
+        tvDesc.setText(a.getDescription());
+
         return listItem;
     }
 
