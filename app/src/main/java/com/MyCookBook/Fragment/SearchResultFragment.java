@@ -3,6 +3,7 @@ package com.MyCookBook.Fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
@@ -34,6 +36,8 @@ public class SearchResultFragment extends Fragment {
     private ArrayList<Recipe> myRecipes;
     boolean click = true;
     private PopupWindow pw;
+    private PopupWindow pwRecipe;
+    boolean clickRecipe = true;
 
     public SearchResultFragment() {
         // Required empty public constructor
@@ -42,14 +46,13 @@ public class SearchResultFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View rootView = inflater.inflate(R.layout.serch_result, container , false);
+        final View rootView = inflater.inflate(R.layout.serch_result, container, false);
         myRecipes = SearchFragment.getResults();
 
         tbLayout = (TableLayout) rootView.findViewById(R.id.tbResults);
-       // myRecipes = SearchFragment
+        // myRecipes = SearchFragment
 
-        for (int i = 0; i < myRecipes.size(); i++)
-        {
+        for (int i = 0; i < myRecipes.size(); i++) {
             //currRecipe = i;
 
             TextView tvRecipe = new TextView(getActivity().getBaseContext());
@@ -66,11 +69,10 @@ public class SearchResultFragment extends Fragment {
             tvRecipe.setMinimumWidth(350);
 
             String myResipe;
-            myResipe = "אופן הכנה:"  + "\n" + myRecipes.get(i).getPreparation() + "\n" + "רכיבים:";
+            myResipe = "אופן הכנה:" + "\n" + myRecipes.get(i).getPreparation() + "\n" + "רכיבים:";
             ArrayList<Grocery> grocery = myRecipes.get(i).getRecipeGroceries();
 
-            for (int j = 0; j < grocery.size(); j++)
-            {
+            for (int j = 0; j < grocery.size(); j++) {
                 myResipe.concat("\n" + grocery.get(j));
             }
 
@@ -82,6 +84,16 @@ public class SearchResultFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     // TODO: open recipe window
+                    if (clickRecipe) {
+                        // Handle show big picture
+                        initiatePopUp((Recipe)ivRecipePhoto.getTag());
+                        pwRecipe.showAtLocation(rootView, Gravity.BOTTOM, 10, 10);
+                        clickRecipe = false;
+                    }
+                    else{
+                        pwRecipe.dismiss();
+                        clickRecipe = true;
+                    }
                 }
             });
 
@@ -90,19 +102,15 @@ public class SearchResultFragment extends Fragment {
             ivRecipePhoto.setMaxWidth(350);
             ivRecipePhoto.setMaxHeight(350);
             ivRecipePhoto.setAdjustViewBounds(true);
-            //TODO: delete
-            //myRecepies.get(i).setRecipePic(String.valueOf(R.drawable.com_facebook_profile_picture_blank_square));
-            // TODO: return
-            //ivRecipePhoto.setImageResource(Integer.parseInt (myRecepies.get(i).getRecipePic()));
-            ivRecipePhoto.setImageResource(R.drawable.com_facebook_profile_picture_blank_square);
+            ivRecipePhoto.setImageBitmap(myRecipes.get(i).getRecipePicture());
+            ivRecipePhoto.setTag(myRecipes.get(i));
             ivRecipePhoto.setClickable(true);
             ivRecipePhoto.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (click) {
-                        // TODO: id
-                        //Queries.getRecipeById(String.valueOf(ivRecipePhoto.getId()));
-                        initiatePopUp(R.drawable.com_facebook_profile_picture_blank_square);
+                        // Handle show big picture
+                        initiatePopUp(((Recipe)ivRecipePhoto.getTag()).getRecipePicture());
                         pw.showAtLocation(rootView, Gravity.BOTTOM, 10, 10);
                         click = false;
                     }
@@ -113,7 +121,7 @@ public class SearchResultFragment extends Fragment {
                 }
             });
 
-           // Add to layOut
+            // Add to layOut
             tr.addView(tvRecipe);
             tr.addView(ivRecipePhoto);
             tbLayout.addView(tr);
@@ -123,7 +131,7 @@ public class SearchResultFragment extends Fragment {
         return rootView;
     }
 
-    private void initiatePopUp(int resId){
+    private void initiatePopUp(Bitmap photo) {
 
         LayoutInflater layoutInflater = (LayoutInflater) getActivity().getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View popupView = layoutInflater.inflate(R.layout.imagepopup, null);
@@ -138,7 +146,7 @@ public class SearchResultFragment extends Fragment {
         pw.setOutsideTouchable(true);
         //pw.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         final ImageView RecipePhoto = (ImageView) popupView.findViewById(R.id.ImageRecipePhoto);
-        RecipePhoto.setImageResource(resId);
+        RecipePhoto.setImageBitmap(photo);
 
         //dismiss the pop-up i.e. drop-down when touched anywhere outside the pop-up
         pw.setTouchInterceptor(new View.OnTouchListener() {
@@ -152,4 +160,86 @@ public class SearchResultFragment extends Fragment {
                 return false;
             }
         });
-}}
+    }
+
+    private void initiatePopUp(Recipe currRecipe){
+
+        LayoutInflater layoutInflater = (LayoutInflater) getActivity().getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View popupView = layoutInflater.inflate(R.layout.recipe_overview, null);
+
+        pwRecipe = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        //Pop-up window background cannot be null if we want the pop-up to listen touch events outside its window
+        pwRecipe.setBackgroundDrawable(new BitmapDrawable());
+        pwRecipe.setFocusable(true);
+        popupView.setBackgroundColor(getResources().getColor(R.color.primary_material_dark));
+        pwRecipe.setTouchable(true);
+
+        //let pop-up be informed about touch events outside its window. This  should be done before setting the content of pop-up
+        pwRecipe.setOutsideTouchable(true);
+        //pw.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        final TextView RecipeName = (TextView) popupView.findViewById(R.id.tvRcipeName);
+        RecipeName.setText(currRecipe.getName());
+
+        final ImageView RecipePhoto = (ImageView) popupView.findViewById(R.id.RecipeImage);
+        RecipePhoto.setImageBitmap(currRecipe.getRecipePicture());
+
+        final TextView RecipeGrocery = (TextView) popupView.findViewById(R.id.tvIngredients);
+        String myRecipe = "";
+        ArrayList<Grocery> grocery = currRecipe.getRecipeGroceries();
+
+        for (int j = 0; j < grocery.size(); j++)
+        {
+            myRecipe.concat("\n" + grocery.get(j));
+        }
+
+        RecipeGrocery.setText(myRecipe);
+
+        final TextView HowToMake = (TextView) popupView.findViewById(R.id.tvHowToMake);
+        HowToMake.setText(currRecipe.getPreparation());
+
+        final TextView Category = (TextView) popupView.findViewById(R.id.tvCategory);
+        Category.setText(currRecipe.getCategory());
+
+        final TextView KitchenType = (TextView) popupView.findViewById(R.id.tvKitchenType);
+        KitchenType.setText(currRecipe.getKitchenType());
+
+        final TextView Level = (TextView) popupView.findViewById(R.id.tvLevel);
+        Level.setText(currRecipe.getDifficulty());
+
+        final TextView DishType = (TextView) popupView.findViewById(R.id.tvDishType);
+        DishType.setText(currRecipe.getDishType());
+
+        if (currRecipe.getDiet())
+        {
+            final CheckBox cbDiet = (CheckBox) popupView.findViewById(R.id.cbDiet);
+            cbDiet.setChecked(true);
+        }
+
+        if (currRecipe.getVegan())
+        {
+            final CheckBox cbVegan = (CheckBox) popupView.findViewById(R.id.cbVegan);
+            cbVegan.setChecked(true);
+        }
+
+        if (currRecipe.getDiet())
+        {
+            final CheckBox cbVeg = (CheckBox) popupView.findViewById(R.id.cbVeg);
+            cbVeg.setChecked(true);
+        }
+
+        //dismiss the pop-up i.e. drop-down when touched anywhere outside the pop-up
+        pwRecipe.setTouchInterceptor(new View.OnTouchListener() {
+
+            public boolean onTouch(View v, MotionEvent event) {
+                // TODO Auto-generated method stub
+                if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+                    pw.dismiss();
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+}

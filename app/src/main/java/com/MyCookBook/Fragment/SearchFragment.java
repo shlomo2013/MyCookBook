@@ -17,6 +17,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ListView;
@@ -35,9 +37,11 @@ import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Set;
 
 import static com.example.mycookbook.mycookbook.R.array.personal_no_pref_array;
 
@@ -138,21 +142,33 @@ public class SearchFragment extends Fragment {
         KitchenTypeId = dropdownKitchenType.getId();
         createSpinner((dropdownKitchenType), R.array.kitchenType);
 
-        //String[] dataList = R.array.personal_no_pref_array;
+//        String[] dataList = R.array.personal_no_pref_array;
 
         Queries.refreshAllGroceries();
         HashMap<String, String> hm = Queries.groceriesList;
         ArrayList<String> alPref = new ArrayList<>(hm.values());
+        String[] prefList = alPref.toArray(new String[alPref.size()]);
 
-        String[] prefList = new String[hm.size()];
+        // build the table from mPlatesList
+//        Set<String> unionSet = new HashSet<String>();
+//        for (HashMap<String, String> hashMap : hm) {
+//            unionSet.addAll(hashMap.values());
+//        }
+//
+//        String[] prefList = unionSet.toArray(new String[unionSet.size()]);
 
-        for (int i = 0; i < hm.size(); i++)
+        for (int i = 0; i < prefList.length; i++)
         {
             prefList[i] = alPref.get(i);
         }
 
         myListView = (ListView) rootView.findViewById(R.id.listView);
+//        PrefAdapter adapter1 = new PrefAdapter(inflater, alPref, myListView);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity().getBaseContext(), android.R.layout.simple_list_item_multiple_choice  , prefList );
+
+//        Assign adapter to ListView
+        myListView.setAdapter(adapter);
+//        myListView.setAdapter(adapter1);
 
 //        final ArrayAdapter<String> adapter = ArrayAdapter<>(getActivity().getBaseContext(),
 //                //.createFromResource(getActivity().getBaseContext(),
@@ -160,15 +176,14 @@ public class SearchFragment extends Fragment {
 //                android.R.layout.simple_list_item_multiple_choice,
 //                prefList);
 
-        // Assign adapter to ListView
-        myListView.setAdapter(adapter);
+
 
         myListViewNo = (ListView) rootView.findViewById(R.id.listViewNo);
         ArrayAdapter<String> adapterNo = new ArrayAdapter<>(getActivity().getBaseContext(), android.R.layout.simple_list_item_multiple_choice  , prefList );
-//        final ArrayAdapter<CharSequence> adapterNo = ArrayAdapter.createFromResource(getActivity().getBaseContext(),
-//                personal_no_pref_array,
-//                android.R.layout.simple_list_item_multiple_choice);
-
+////        final ArrayAdapter<CharSequence> adapterNo = ArrayAdapter.createFromResource(getActivity().getBaseContext(),
+////                personal_no_pref_array,
+////                android.R.layout.simple_list_item_multiple_choice);
+//
         // Assign adapter to ListView
         myListViewNo.setAdapter(adapterNo);
 
@@ -496,3 +511,61 @@ public class SearchFragment extends Fragment {
     }
 
 }
+//
+//public class PrefAdapter extends ArrayAdapter<ArrayList<HashMap<String, String>>> {
+//    private ArrayList<String> PrefList;
+//    private LayoutInflater layoutInflater;
+//    private View rootView;
+//
+//    public PrefAdapter(LayoutInflater inflater, ArrayList<String> prefList, View rootView)
+//    {
+//        this.PrefList = prefList;
+//        this.layoutInflater = inflater;
+//        this.rootView = rootView;
+//    }
+//
+//    @Override
+//    public int getCount() {
+//        return PrefList.size();
+//    }
+//
+//    @Override
+//    public Object getItem(int position) {
+//        return position;
+//    }
+//
+//    @Override
+//    public long getItemId(int position) {
+//        return position;
+//    }
+//
+//    @Override
+//    public View getView(int position, View convertView, ViewGroup parent) {
+//        return this.rootView;
+//    }
+//}
+
+// /class PrefAdapter extends BaseAdapter {
+//
+//
+//    @Override
+//    public int getCount() {
+//// Set the count value to the total number of items in the Array
+//        return users.size();
+//    }
+//
+//    @Override
+//    public Object getItem(int position) {
+//        return position;
+//    }
+//
+//    @Override
+//    public long getItemId(int position) {
+//        return position;
+//    }
+//
+//    @Override
+//    public View getView(int position, View convertView, ViewGroup parent) {
+//        return
+//    }
+//}
