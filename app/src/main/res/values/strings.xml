@@ -19,6 +19,9 @@
           <item>ס״מ</item>
           <item>מטר</item>
           <item>חופן</item>
+          <item>קופסא/ות</item>
+          <item>חבילה/ות</item>
+          <item>יחידה/ות</item>
       </string-array>
 
     <string-array name="recipie_category">

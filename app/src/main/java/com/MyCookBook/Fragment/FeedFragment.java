@@ -279,6 +279,27 @@ public class FeedFragment extends Fragment {
             final ImageButton btLike = new ImageButton(getActivity().getBaseContext());
             txtLikes = new TextView(getActivity().getBaseContext());
 
+            final TextView tvUserName = new TextView(getActivity().getBaseContext());
+            final ImageView ivUserPhoto = new ImageView(getActivity().getBaseContext());
+
+            // TODO: להוסיף יוזר ותמונה
+//            tvUserName.setText(myRecipes.get(i));
+//            ivUserPhoto.setMaxWidth(10);
+//            ivUserPhoto.setMinimumWidth(10);
+//            ivUserPhoto.setMaxHeight(10);
+//            ivRecipePhoto.setMinimumHeight(10);
+
+            TableRow trName = new TableRow(getActivity().getBaseContext());
+            TableRow.LayoutParams trLPName = new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT,
+                    TableRow.LayoutParams.WRAP_CONTENT);
+            trName.setLayoutParams(trLPName);
+            trName.setGravity(Gravity.RIGHT);
+
+            final TextView tvRecipeName = new TextView(getActivity().getBaseContext());
+
+            tvRecipeName.setText(myRecipes.get(i).getName());
+            tvRecipeName.setTextSize(18);
+
             TableRow tr = new TableRow(getActivity().getBaseContext());
             TableRow.LayoutParams trLP = new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT,
                     TableRow.LayoutParams.WRAP_CONTENT);
@@ -296,7 +317,7 @@ public class FeedFragment extends Fragment {
 
             for (int j = 0; j < grocery.size(); j++)
             {
-                myRecipe.concat("\n" + grocery.get(j));
+                myRecipe.concat("\n" + grocery.get(j).getAmount() + " " +  grocery.get(j).getForm() + " " +  grocery.get(j).getMaterialName());
             }
 
             tvRecipe.setText(myRecipe);
@@ -355,6 +376,11 @@ public class FeedFragment extends Fragment {
                     setFeed();
                 }
             });
+
+//            trName.addView(ivUserPhoto);
+//            trName.addView(tvUserName);
+            trName.addView(tvRecipeName);
+            tbLayout.addView(trName);
 
             // Add to layOut
             tr.addView(tvRecipe);

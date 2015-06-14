@@ -53,7 +53,26 @@ public class SearchResultFragment extends Fragment {
         // myRecipes = SearchFragment
 
         for (int i = 0; i < myRecipes.size(); i++) {
-            //currRecipe = i;
+            final TextView tvUserName = new TextView(getActivity().getBaseContext());
+            final ImageView ivUserPhoto = new ImageView(getActivity().getBaseContext());
+
+            // TODO: להוסיף יוזר ותמונה
+//            tvUserName.setText(myRecipes.get(i));
+//            ivUserPhoto.setMaxWidth(10);
+//            ivUserPhoto.setMinimumWidth(10);
+//            ivUserPhoto.setMaxHeight(10);
+//            ivRecipePhoto.setMinimumHeight(10);
+
+            TableRow trName = new TableRow(getActivity().getBaseContext());
+            TableRow.LayoutParams trLPName = new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT,
+                    TableRow.LayoutParams.WRAP_CONTENT);
+            trName.setLayoutParams(trLPName);
+            trName.setGravity(Gravity.RIGHT);
+
+            final TextView tvRecipeName = new TextView(getActivity().getBaseContext());
+
+            tvRecipeName.setText(myRecipes.get(i).getName());
+            tvRecipeName.setTextSize(18);
 
             TextView tvRecipe = new TextView(getActivity().getBaseContext());
             final ImageView ivRecipePhoto = new ImageView(getActivity().getBaseContext());
@@ -68,16 +87,17 @@ public class SearchResultFragment extends Fragment {
             tvRecipe.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
             tvRecipe.setMinimumWidth(350);
 
-            String myResipe;
-            myResipe = "אופן הכנה:" + "\n" + myRecipes.get(i).getPreparation() + "\n" + "רכיבים:";
+            String myRecipe;
+            myRecipe = "אופן הכנה:" + "\n" + myRecipes.get(i).getPreparation() + "\n" + "רכיבים:";
             ArrayList<Grocery> grocery = myRecipes.get(i).getRecipeGroceries();
 
-            for (int j = 0; j < grocery.size(); j++) {
-                myResipe.concat("\n" + grocery.get(j));
+            for (int j = 0; j < grocery.size(); j++)
+            {
+                myRecipe.concat("\n" + grocery.get(j).getAmount() + " " +  grocery.get(j).getForm() + " " +  grocery.get(j).getMaterialName());
             }
 
 
-            tvRecipe.setText(myResipe);
+            tvRecipe.setText(myRecipe);
             //tvRecipe.setTextDirection(View.LAYOUT_DIRECTION_RTL);
             tvRecipe.setClickable(true);
             tvRecipe.setOnClickListener(new View.OnClickListener() {
@@ -120,6 +140,11 @@ public class SearchResultFragment extends Fragment {
                     }
                 }
             });
+
+//              trName.addView(ivUserPhoto);
+//            trName.addView(tvUserName);
+            trName.addView(tvRecipeName);
+            tbLayout.addView(trName);
 
             // Add to layOut
             tr.addView(tvRecipe);
@@ -185,16 +210,24 @@ public class SearchResultFragment extends Fragment {
         final ImageView RecipePhoto = (ImageView) popupView.findViewById(R.id.RecipeImage);
         RecipePhoto.setImageBitmap(currRecipe.getRecipePicture());
 
-        final TextView RecipeGrocery = (TextView) popupView.findViewById(R.id.tvIngredients);
-        String myRecipe = "";
+        final TextView RecipeIngAmount = (TextView) popupView.findViewById(R.id.tvIngredientAmount);
+        final TextView RecipeIngType = (TextView) popupView.findViewById(R.id.tvIngredientType);
+        final TextView RecipeIngName = (TextView) popupView.findViewById(R.id.tvIngredientName);
+        String myRecipeAmount = "";
+        String myRecipeType = "";
+        String myRecipeName = "";
         ArrayList<Grocery> grocery = currRecipe.getRecipeGroceries();
 
         for (int j = 0; j < grocery.size(); j++)
         {
-            myRecipe.concat("\n" + grocery.get(j));
+            myRecipeAmount.concat("\n" + grocery.get(j).getAmount());
+            myRecipeType.concat("\n" + grocery.get(j).getForm());
+            myRecipeName.concat("\n" + grocery.get(j).getMaterialName());
         }
 
-        RecipeGrocery.setText(myRecipe);
+        RecipeIngAmount.setText(myRecipeAmount);
+        RecipeIngType.setText(myRecipeType);
+        RecipeIngName.setText(myRecipeName);
 
         final TextView HowToMake = (TextView) popupView.findViewById(R.id.tvHowToMake);
         HowToMake.setText(currRecipe.getPreparation());
