@@ -282,12 +282,22 @@ public class FeedFragment extends Fragment {
             final TextView tvUserName = new TextView(getActivity().getBaseContext());
             final ImageView ivUserPhoto = new ImageView(getActivity().getBaseContext());
 
-//            tvUserName.setText(myRecipes.get(i).getCreatedBy().getName());
-//            ivUserPhoto.setImageBitmap(myRecipes.get(i).getCreatedBy().getProfilePic());
-//            ivUserPhoto.setMaxWidth(10);
-//            ivUserPhoto.setMinimumWidth(10);
-//            ivUserPhoto.setMaxHeight(10);
-//            ivRecipePhoto.setMinimumHeight(10);
+            TableRow trUser = new TableRow(getActivity().getBaseContext());
+            TableRow.LayoutParams trLPuser = new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT,
+                    TableRow.LayoutParams.WRAP_CONTENT);
+            trUser.setLayoutParams(trLPuser);
+            trUser.setGravity(Gravity.RIGHT);
+
+            tvUserName.setText(myRecipes.get(i).getCreatedBy().getName());
+            tvUserName.setTextSize(15);
+            tvUserName.setWidth(300);
+            tvUserName.setGravity(Gravity.RIGHT);
+            ivUserPhoto.setImageBitmap(myRecipes.get(i).getCreatedBy().getProfilePic());
+            ivUserPhoto.setMaxWidth(110);
+            ivUserPhoto.setMinimumWidth(110);
+            ivUserPhoto.setMaxHeight(110);
+            ivUserPhoto.setMinimumHeight(110);
+            ivUserPhoto.setAdjustViewBounds(true);
 
             TableRow trName = new TableRow(getActivity().getBaseContext());
             TableRow.LayoutParams trLPName = new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT,
@@ -378,8 +388,10 @@ public class FeedFragment extends Fragment {
                 }
             });
 
-            trName.addView(ivUserPhoto);
-            trName.addView(tvUserName);
+            trUser.addView(tvUserName);
+            trUser.addView(ivUserPhoto);
+            tbLayout.addView(trUser);
+
             trName.addView(tvRecipeName);
             tbLayout.addView(trName);
 
