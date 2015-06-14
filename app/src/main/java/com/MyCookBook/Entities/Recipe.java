@@ -115,15 +115,29 @@ public class Recipe  extends ParseObject {
     }
 
     public ArrayList<Grocery> getRecipeGroceries(){
-        List<ParseObject> groceriesList = this.getList(Groceries);
-        ArrayList<Grocery> returnList = new ArrayList<Grocery>();
+        ArrayList<Grocery> returnRec = new ArrayList<Grocery>();
+        List<ParseObject> recList = null;
 
-        if(groceriesList!=null){
-            for(ParseObject obj:groceriesList){
-                returnList.add((Grocery)obj);
+        ParseRelation relation = this.getRelation(Groceries);
+        ParseQuery query = relation.getQuery();
+
+        try {
+            recList = query.find();
+        }catch (Exception e){
+            Log.d("bug",e.getMessage());
+        }
+        if(recList==null)
+        {
+            Log.d("recList: ","is null");
+        }else {
+            for (ParseObject rec : recList) {
+                returnRec.add((Grocery) rec);
             }
         }
-        return returnList;
+
+        return returnRec;
+
+
     }
 
 
@@ -162,6 +176,9 @@ public class Recipe  extends ParseObject {
 
     public String getName(){
         return this.getString(Name);
+    }
+    public User getCreatedBy(){
+        return ((User)this.get("createdBy"));
     }
 
     public String getCategory(){
