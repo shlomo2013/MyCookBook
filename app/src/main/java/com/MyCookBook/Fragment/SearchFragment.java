@@ -16,6 +16,7 @@ import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.BaseExpandableListAdapter;
@@ -345,6 +346,41 @@ public class SearchFragment extends Fragment {
         cbVeg.setOnClickListener(checkBoxListenerSpec);
         cbVegan.setOnClickListener(checkBoxListenerSpec);
         cbDiet.setOnClickListener(checkBoxListenerSpec);
+
+        myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                int count = myListView.getCount();
+                SparseBooleanArray sparseBooleanArray = myListView.getCheckedItemPositions();
+
+                for (int i = 0; i < count; i++) {
+                    if (sparseBooleanArray.get(i)) {
+                        groceryIn.add(String.valueOf(myListView.getItemAtPosition(position)));
+                    }
+                    else
+                    {
+                        if (groceryIn.contains(myListView.getItemAtPosition(position)))
+                        {
+                            groceryIn.remove(myListView.getItemAtPosition(position));
+                        }
+                    }
+                }
+            }
+        });
+
+        myListViewNo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                int count = myListViewNo.getCount();
+                SparseBooleanArray sparseBooleanArray = myListViewNo.getCheckedItemPositions();
+
+                for (int i = 0; i < count; i++) {
+                    if (sparseBooleanArray.get(i)) {
+                        groceryOut.add(String.valueOf(myListViewNo.getItemAtPosition(position)));
+                    }
+                }
+            }
+        });
 
         myListView.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
             @Override

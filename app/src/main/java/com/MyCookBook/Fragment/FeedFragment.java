@@ -282,8 +282,8 @@ public class FeedFragment extends Fragment {
             final TextView tvUserName = new TextView(getActivity().getBaseContext());
             final ImageView ivUserPhoto = new ImageView(getActivity().getBaseContext());
 
-            // TODO: להוסיף יוזר ותמונה
-//            tvUserName.setText(myRecipes.get(i));
+//            tvUserName.setText(myRecipes.get(i).getCreatedBy().getName());
+//            ivUserPhoto.setImageBitmap(myRecipes.get(i).getCreatedBy().getProfilePic());
 //            ivUserPhoto.setMaxWidth(10);
 //            ivUserPhoto.setMinimumWidth(10);
 //            ivUserPhoto.setMaxHeight(10);
@@ -325,7 +325,6 @@ public class FeedFragment extends Fragment {
             tvRecipe.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // TODO: open recipe window
                     if (clickRecipe) {
                         // Handle show big picture
                         initiatePopUp((Recipe)ivRecipePhoto.getTag());
@@ -377,8 +376,8 @@ public class FeedFragment extends Fragment {
                 }
             });
 
-//            trName.addView(ivUserPhoto);
-//            trName.addView(tvUserName);
+            trName.addView(ivUserPhoto);
+            trName.addView(tvUserName);
             trName.addView(tvRecipeName);
             tbLayout.addView(trName);
 
