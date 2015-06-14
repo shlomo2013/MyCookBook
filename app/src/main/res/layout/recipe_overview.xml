@@ -47,7 +47,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_gravity="right"
                 android:layout_alignParentEnd="true"
-                />
+                android:textColor="#fffcfdff" />
 
 
             <TextView
@@ -60,7 +60,8 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 android:layout_gravity="right"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:textColor="#fffcfdff" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -73,7 +74,8 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 android:layout_weight="1"
-                android:autoText="true" />
+                android:autoText="true"
+                android:textColor="#fffcfdff" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -84,7 +86,8 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 android:layout_weight="1"
-                android:layout_gravity="center_vertical" />
+                android:layout_gravity="center_vertical"
+                android:textColor="#fffcfdff" />
 
         </LinearLayout>
 
@@ -105,7 +108,8 @@
                 android:id="@+id/cbVeg"
                 android:editable="false"
                 android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="false"/>
+                android:layout_alignParentEnd="false"
+                android:textColor="#fffcfdff" />
 
             <CheckBox
                 android:layout_width="wrap_content"
@@ -113,7 +117,8 @@
                 android:text="טבעוני"
                 android:enabled="false"
                 android:editable="false"
-                android:id="@+id/cbVegan"/>
+                android:id="@+id/cbVegan"
+                android:textColor="#fffcfdff" />
 
             <CheckBox
                 android:layout_width="wrap_content"
@@ -121,7 +126,8 @@
                 android:text="דיאטטי"
                 android:enabled="false"
                 android:editable="false"
-                android:id="@+id/cbDiet" />
+                android:id="@+id/cbDiet"
+                android:textColor="#fffcfdff" />
         </LinearLayout>
 
 
@@ -177,7 +183,8 @@
                     android:layout_gravity="right"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:textColor="#fffcfdff" />
 
 
 
@@ -210,7 +217,8 @@
             android:id="@+id/tvHowToMake"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:textColor="#fffcfdff" />
     </LinearLayout>
 
 
