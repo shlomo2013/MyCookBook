@@ -152,6 +152,24 @@ public class Queries {
         return retAlbum;
     }
 
+    public static User getUserById(String objectId) {
+        ParseQuery<ParseObject> recQuery = ParseQuery.getQuery("User");
+        recQuery.whereEqualTo("objectId", objectId);
+        List<ParseObject> recList = null;
+        User retUser = null;
+        try {
+            recList = recQuery.find();
+        } catch (Exception e) {
+            Log.d("getUserById Err", "cannot find Recipe by objId");
+        }
+        if (recList.size() != 0) {
+            retUser = (User) recList.get(0);
+        }
+
+        return retUser;
+    }
+
+
     public static ArrayList<Grocery> getGroceriesById(ArrayList<String> objectIds) {
         ParseQuery<ParseObject> recQuery = ParseQuery.getQuery("Grocery");
         recQuery.whereContainedIn("objectId", objectIds);

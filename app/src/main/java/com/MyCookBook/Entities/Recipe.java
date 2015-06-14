@@ -178,7 +178,7 @@ public class Recipe  extends ParseObject {
         return this.getString(Name);
     }
     public User getCreatedBy(){
-        return ((User)this.get("createdBy"));
+        return Queries.getUserById(((ParseObject)this.get("createdBy")).getObjectId());
     }
 
     public String getCategory(){
