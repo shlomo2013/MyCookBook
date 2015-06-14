@@ -15,8 +15,8 @@
         android:layout_weight="1">
 
         <ImageButton
-            android:layout_width="75dp"
-            android:layout_height="75dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:id="@+id/btnFeed"
             android:background="#000000"
             android:scaleType="centerCrop"
@@ -24,8 +24,8 @@
             android:clickable="true" />
 
         <ImageButton
-            android:layout_width="75dp"
-            android:layout_height="75dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:background="#000000"
             android:id="@+id/btnPersonal"
             android:scaleType="centerCrop"
@@ -37,8 +37,8 @@
 
 
         <ImageButton
-            android:layout_width="75dp"
-            android:layout_height="75dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:background="#000000"
             android:id="@+id/btnSearch"
             android:scaleType="centerCrop"
@@ -48,8 +48,8 @@
             android:clickable="true" />
 
         <ImageButton
-            android:layout_width="75dp"
-            android:layout_height="75dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:background="#000000"
             android:id="@+id/btnAddRecipe"
             android:scaleType="centerCrop"
@@ -58,6 +58,19 @@
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/btnSearch"
             android:layout_toEndOf="@+id/btnSearch" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:id="@+id/imageView2"
+            android:layout_toRightOf="@+id/btnAddRecipe"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="right"
+            android:src="@mipmap/bg"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:cropToPadding="false"
+            android:adjustViewBounds="true" />
 
     </RelativeLayout>
 

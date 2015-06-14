@@ -208,9 +208,9 @@ public class FeedFragment extends Fragment {
 
         for (int j = 0; j < grocery.size(); j++)
         {
-            myRecipeAmount.concat("\n" + grocery.get(j).getAmount());
-            myRecipeType.concat("\n" + grocery.get(j).getForm());
-            myRecipeName.concat("\n" + grocery.get(j).getMaterialName());
+            myRecipeAmount = myRecipeAmount + "\n" + grocery.get(j).getAmount();
+            myRecipeType = myRecipeType +"\n" + grocery.get(j).getForm();
+            myRecipeName = myRecipeName + "\n" + grocery.get(j).getMaterialName();
         }
 
         RecipeIngAmount.setText(myRecipeAmount);
@@ -282,8 +282,8 @@ public class FeedFragment extends Fragment {
             final TextView tvUserName = new TextView(getActivity().getBaseContext());
             final ImageView ivUserPhoto = new ImageView(getActivity().getBaseContext());
 
-            // TODO: להוסיף יוזר ותמונה
-//            tvUserName.setText(myRecipes.get(i));
+//            tvUserName.setText(myRecipes.get(i).getCreatedBy().getName());
+//            ivUserPhoto.setImageBitmap(myRecipes.get(i).getCreatedBy().getProfilePic());
 //            ivUserPhoto.setMaxWidth(10);
 //            ivUserPhoto.setMinimumWidth(10);
 //            ivUserPhoto.setMaxHeight(10);
@@ -312,20 +312,21 @@ public class FeedFragment extends Fragment {
             tvRecipe.setTag(myRecipes.get(i));
 
             String myRecipe;
-            myRecipe = "אופן הכנה:"  + "\n" + myRecipes.get(i).getPreparation() + "\n" + "רכיבים:";
-            ArrayList<Grocery> grocery = myRecipes.get(i).getRecipeGroceries();
+            myRecipe = "אופן הכנה:" + "\n" + myRecipes.get(i).getPreparation();// + "\n" + "רכיבים:";
+//            ArrayList<Grocery> grocery = myRecipes.get(i).getRecipeGroceries();
+//
+//            for (int j = 0; j < grocery.size(); j++)
+//            {
+//                myRecipe = myRecipe + "\n" + grocery.get(j).getAmount() + " " +  grocery.get(j).getForm() + " " +  grocery.get(j).getMaterialName();
+//            }
 
-            for (int j = 0; j < grocery.size(); j++)
-            {
-                myRecipe.concat("\n" + grocery.get(j).getAmount() + " " +  grocery.get(j).getForm() + " " +  grocery.get(j).getMaterialName());
-            }
+            tvRecipe.setText(myRecipe.substring(0, 70) + "...");
+            tvRecipe.setWidth(600);
 
-            tvRecipe.setText(myRecipe);
             tvRecipe.setClickable(true);
             tvRecipe.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // TODO: open recipe window
                     if (clickRecipe) {
                         // Handle show big picture
                         initiatePopUp((Recipe)ivRecipePhoto.getTag());
@@ -377,8 +378,8 @@ public class FeedFragment extends Fragment {
                 }
             });
 
-//            trName.addView(ivUserPhoto);
-//            trName.addView(tvUserName);
+            trName.addView(ivUserPhoto);
+            trName.addView(tvUserName);
             trName.addView(tvRecipeName);
             tbLayout.addView(trName);
 
