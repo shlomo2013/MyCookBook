@@ -1,9 +1,9 @@
 package com.MyCookBook.Fragment;
 
+import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +23,7 @@ public class MenuFragment extends Fragment{
     ImageButton btnSearch;
     ImageButton btnAddRecipe;
     ImageButton btnLogOff;
+//    ImageView ivProfile;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -34,7 +35,9 @@ public class MenuFragment extends Fragment{
         btnSearch    = (ImageButton) rootView.findViewById(R.id.btnSearch);
         btnAddRecipe = (ImageButton) rootView.findViewById(R.id.btnAddRecipe);
         btnLogOff    = (ImageButton) rootView.findViewById(R.id.btnAddRecipe);
+//        ivProfile    = (ImageView) rootView.findViewById(R.id.ivProfilepic);
 
+//        ivProfile.setImageBitmap(Queries.getProfilePicture());
         btnFeed.setOnClickListener(btnOnClickListener);
         btnPersonal.setOnClickListener(btnOnClickListener);
         btnSearch.setOnClickListener(btnOnClickListener);

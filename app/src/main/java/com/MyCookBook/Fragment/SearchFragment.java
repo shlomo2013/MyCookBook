@@ -1,50 +1,30 @@
 package com.MyCookBook.Fragment;
 
 import android.app.AlertDialog;
+import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.app.LauncherActivity;
-import android.content.ClipData;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.opengl.EGLExt;
 import android.os.Bundle;
 import android.support.annotation.ArrayRes;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.app.Fragment;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ListView;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
-import android.widget.ExpandableListView;
 import android.widget.Toast;
 
 import com.MyCookBook.Entities.Recipe;
 import com.example.mycookbook.mycookbook.Queries;
 import com.example.mycookbook.mycookbook.R;
 
-import java.sql.Array;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Set;
-
-import static com.example.mycookbook.mycookbook.R.array.personal_no_pref_array;
 
 public class SearchFragment extends Fragment {
 
@@ -127,14 +107,6 @@ public class SearchFragment extends Fragment {
         final Spinner dropdownBread = (Spinner) rootView.findViewById(R.id.lowBread);
         createSpinner((dropdownBread), R.array.subCategoryBread);
 
-        /*final Spinner dropdownComp = (Spinner) rootView.findViewById(R.id.component);
-        compId = dropdownComp.getId();
-        createSpinner((dropdownComp), personal_no_pref_array);
-
-        final Spinner dropdownNoCopm = (Spinner) rootView.findViewById(R.id.noComponent);
-        noCopmId = dropdownNoCopm.getId();
-        createSpinner((dropdownNoCopm), personal_no_pref_array); */
-
         final Spinner dropdownLevel = (Spinner) rootView.findViewById(R.id.Level);
         levelId = dropdownLevel.getId();
         createSpinner((dropdownLevel), R.array.Levels);
@@ -169,6 +141,8 @@ public class SearchFragment extends Fragment {
 
 //        Assign adapter to ListView
         myListView.setAdapter(adapter);
+
+
 //        myListView.setAdapter(adapter1);
 
 //        final ArrayAdapter<String> adapter = ArrayAdapter<>(getActivity().getBaseContext(),
@@ -187,26 +161,6 @@ public class SearchFragment extends Fragment {
 //
         // Assign adapter to ListView
         myListViewNo.setAdapter(adapterNo);
-
-        rgpTypes = (RadioGroup) rootView.findViewById(R.id.RBgroup);
-
-        rgpTypes.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                RadioButton rb = (RadioButton) group.findViewById(checkedId);
-                if(null!=rb && checkedId > -1){
-                    switch (rb.getId())
-                    {
-                        case R.id.RBall:
-                            break;
-                        case R.id.RBwebsite:
-                            break;
-                        case R.id.RBusers:
-                            break;
-                    }
-                }
-            }
-        });
 
         cbSoop=(CheckBox) rootView.findViewById(R.id.CBsoop);
         cbBreakfast=(CheckBox) rootView.findViewById(R.id.CBbreakfast);
@@ -347,65 +301,6 @@ public class SearchFragment extends Fragment {
         cbVegan.setOnClickListener(checkBoxListenerSpec);
         cbDiet.setOnClickListener(checkBoxListenerSpec);
 
-        myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                int count = myListView.getCount();
-                SparseBooleanArray sparseBooleanArray = myListView.getCheckedItemPositions();
-
-                for (int i = 0; i < count; i++) {
-                    if (sparseBooleanArray.get(i)) {
-                        groceryIn.add(String.valueOf(myListView.getItemAtPosition(position)));
-                    }
-                    else
-                    {
-                        if (groceryIn.contains(myListView.getItemAtPosition(position)))
-                        {
-                            groceryIn.remove(myListView.getItemAtPosition(position));
-                        }
-                    }
-                }
-            }
-        });
-
-        myListViewNo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                int count = myListViewNo.getCount();
-                SparseBooleanArray sparseBooleanArray = myListViewNo.getCheckedItemPositions();
-
-                for (int i = 0; i < count; i++) {
-                    if (sparseBooleanArray.get(i)) {
-                        groceryOut.add(String.valueOf(myListViewNo.getItemAtPosition(position)));
-                    }
-                }
-            }
-        });
-
-        myListView.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(android.widget.AdapterView<?> parent, View view, int position, long id) {
-                final SparseBooleanArray checkedItems = myListView.getCheckedItemPositions();
-                //ListIte adapter = new ItemListAdapter(this, data);
-                //setListAdapter(adapter);
-
-                // For each element in the status array
-                final int checkedItemsCount = checkedItems.size();
-                for (int i = 0; i < checkedItemsCount; ++i) {
-                    // This tells us the item position we are looking at
-                    final int position1 = checkedItems.keyAt(i);
-                    //Object obj =  myListView.getItemAtPosition(position);
-                    //LauncherActivity.ListItem = myListView.getItemAtPosition(position);
-
-                    // And this tells us the item status at the above position
-                    //final boolean isChecked = checkedItems.valueAt(i);
-
-                    // And we can get our data from the adapter like that
-                    //final CharSequence currentItem = adapter.getItem(position);
-                }
-            }
-        });
-
         final Button btnSearch = (Button) rootView.findViewById(R.id.btSearch);
 
         searchButtenListener = new View.OnClickListener() {
@@ -431,6 +326,20 @@ public class SearchFragment extends Fragment {
 
                 if (String.valueOf(dropdownSweets.getSelectedItem()).equals("בחר")  == false) {
                     subCategory.add(String.valueOf(dropdownSweets.getSelectedItem()));
+                }
+
+                SparseBooleanArray checked =  myListView.getCheckedItemPositions();
+                for (int i = 0; i < myListView.getAdapter().getCount(); i++) {
+                    if (checked.get(i)) {
+                        groceryIn.add((myListView.getItemAtPosition(i)).toString());
+                    }
+                }
+
+                checked =  myListViewNo.getCheckedItemPositions();
+                for (int i = 0; i < myListViewNo.getAdapter().getCount(); i++) {
+                    if (checked.get(i)) {
+                        groceryOut.add((myListViewNo.getItemAtPosition(i)).toString());
+                    }
                 }
 
                 String level = String.valueOf(dropdownLevel.getSelectedItem());

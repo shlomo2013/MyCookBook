@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.MyCookBook.Entities.Album;
 import com.MyCookBook.Entities.User;
@@ -43,11 +45,15 @@ import java.util.ArrayList;
  */
 public class AddAlbum extends Fragment {
 
+    boolean click = true;
+
     Button btnAlbumPic;
     Button btnSave;
     ImageView viAlbumPic;
+    ImageView viUserPic;
     ListView  lvAllUsers;
     View popupView;
+    View UserListView;
     EditText albumName;
     EditText albumType;
     EditText albumDesc;
@@ -58,17 +64,43 @@ public class AddAlbum extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         popupView = inflater.inflate(R.layout.imagepopup, null);
+        UserListView = inflater.inflate(R.layout.all_users_list, null);
 
         View rootView = inflater.inflate(R.layout.add_album,  container , false);
         btnAlbumPic =  (Button)         rootView.findViewById(R.id.btnSelectPhoto);
         btnSave     =  (Button)         rootView.findViewById(R.id.bSaveUser);
         viAlbumPic  =  (ImageView)      rootView.findViewById(R.id.AlbumPic);
-        lvAllUsers  =  (ListView)       rootView.findViewById(R.id.AllUsersListView);
+        viUserPic  =  (ImageView)        UserListView.findViewById(R.id.ProfilePic);
+        lvAllUsers  =  (ListView)        rootView.findViewById(R.id.AllUsersListView);
         albumType   = (EditText)         rootView.findViewById(R.id.etAlbumType);
         albumName   = (EditText)         rootView.findViewById(R.id.etAlbumName);
         albumDesc   = (EditText)         rootView.findViewById(R.id.etAlbumDetails);
         allUsers = Queries.getAllUsers();
+
         lvAllUsers.setAdapter(new UserAdapter(inflater, allUsers, rootView));
+
+        lvAllUsers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (click) {
+
+                    Toast.makeText(getActivity(), "item", Toast.LENGTH_SHORT);
+
+                }
+            }
+        });
+
+        viUserPic.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), ",pic", Toast.LENGTH_SHORT);
+
+            }
+        });
+
 
         btnAlbumPic.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,6 +128,36 @@ public class AddAlbum extends Fragment {
         });
         return rootView;
 
+    }
+
+
+    private void initiatePopUp(Bitmap photo){
+        pw = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        //Pop-up window background cannot be null if we want the pop-up to listen touch events outside its window
+        pw.setBackgroundDrawable(new BitmapDrawable());
+        pw.setTouchable(true);
+
+        //let pop-up be informed about touch events outside its window. This  should be done before setting the content of pop-up
+        pw.setOutsideTouchable(true);
+
+        //pw.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+        final ImageView RecipePhoto = (ImageView) popupView.findViewById(R.id.ImageRecipePhoto);
+        RecipePhoto.setImageBitmap(photo);
+
+
+        //dismiss the pop-up i.e. drop-down when touched anywhere outside the pop-up
+        pw.setTouchInterceptor(new View.OnTouchListener() {
+
+            public boolean onTouch(View v, MotionEvent event) {
+                // TODO Auto-generated method stub
+                if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+                    pw.dismiss();
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
     //8************************ pic ****************************************
@@ -234,22 +296,20 @@ class UserAdapter extends BaseAdapter {
         // Inflate the item layout and set the views
         View listItem;
         listItem = layoutInflater.inflate(R.layout.all_users_list, null);
-        User  u = this.users.get(position);
 
         // Initialize the views in the layout
         iv = (ImageView) listItem.findViewById(R.id.ProfilePic);
         tvTitle = (TextView) listItem.findViewById(R.id.userName);
         tvDesc = (TextView) listItem.findViewById(R.id.UserId);
 
+        User  u = this.users.get(position);
+        tvTitle.setText(u.getName());
+        tvDesc.setText(u.getUserId());
+
         b = u.getProfilePic();
-        if (b == null){
-            iv.setImageResource(R.drawable.com_facebook_profile_picture_blank_portrait);
-
-        }else {
-            iv.setImageBitmap(b);
-        }
-
+        iv.setImageBitmap(b);
         iv.setTag(u);
+
         iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -258,21 +318,17 @@ class UserAdapter extends BaseAdapter {
                     initiatePopUp(b);
                     pw.showAtLocation(rootView, Gravity.BOTTOM, 10, 10);
                     click = false;
-                }
-                else{
+                } else {
                     pw.dismiss();
                     click = true;
                 }
             }
         });
-        tvTitle.setText(u.getName());
-        tvDesc.setText(u.getUserId());
 
 
         return listItem;
     }
-
-    private void initiatePopUp(Bitmap photo){
+    private void initiatePopUp(Bitmap photo) {
         View popupView = layoutInflater.inflate(R.layout.imagepopup, null);
         pw = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
@@ -285,10 +341,10 @@ class UserAdapter extends BaseAdapter {
 
         //pw.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         final ImageView RecipePhoto = (ImageView) popupView.findViewById(R.id.ImageRecipePhoto);
-        if (b == null){
+        if (b == null) {
             RecipePhoto.setImageResource(R.drawable.com_facebook_profile_picture_blank_portrait);
 
-        }else{
+        } else {
             RecipePhoto.setImageBitmap(photo);
 
         }
@@ -306,5 +362,4 @@ class UserAdapter extends BaseAdapter {
             }
         });
     }
-
 }

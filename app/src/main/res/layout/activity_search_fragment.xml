@@ -13,7 +13,8 @@
     tools:context="com.MyCookBook.Fragment.SearchFragment"
     android:id="@+id/search"
     android:textDirection="rtl"
-    android:minHeight="1110dp">
+    android:descendantFocusability="blocksDescendants"
+    android:minHeight="1080dp">
 
     <CheckBox
         android:layout_width="wrap_content"
@@ -111,11 +112,11 @@
         android:id="@+id/textView"
         android:gravity="right"
         android:textAlignment="gravity"
-        android:layout_marginTop="38dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
         android:textStyle="bold"
-        android:textColor="#ffff4f45" />
+        android:textColor="#ffff4f45"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/CBsalad"
+        android:layout_alignEnd="@+id/CBsalad" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -157,43 +158,6 @@
         android:layout_toLeftOf="@+id/CBmain"
         android:layout_toStartOf="@+id/CBmain" />
 
-
-
-    <RadioGroup
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:id="@+id/RBgroup"
-        android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/CBsides"
-        android:layout_alignEnd="@+id/CBsides">
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="הכל"
-            android:id="@+id/RBall"
-            android:checked="true"
-            android:elegantTextHeight="false"
-             />
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="חיפוש באתר"
-            android:id="@+id/RBwebsite"
-            android:layout_gravity="right"
-            />
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="מתכוני גולשים"
-            android:id="@+id/RBusers"
-             />
-
-    </RadioGroup>
 
     <Spinner
         android:id="@+id/lowSweets"
@@ -293,7 +257,9 @@
         android:layout_alignParentStart="true"
         android:choiceMode="multipleChoice"
         android:clickable="false"
-        android:background="@android:drawable/bottom_bar" />
+        android:descendantFocusability="blocksDescendants"
+        android:background="@android:drawable/bottom_bar"
+        android:focusable="false" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -316,7 +282,9 @@
         android:layout_alignParentStart="true"
         android:choiceMode="multipleChoice"
         android:clickable="false"
-        android:background="@android:drawable/bottom_bar" />
+        android:descendantFocusability="blocksDescendants"
+        android:background="@android:drawable/bottom_bar"
+        android:focusable="false" />
 
     <TextView
         android:layout_width="wrap_content"

@@ -33,6 +33,8 @@ public class SettingsPersonal extends Fragment {
     private ListView lvNoCategoriesList;
     Button btnSaveCategory;
 
+    public static ArrayList<String> GroceryIn;
+    public static ArrayList<String> GroceryOut;
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
@@ -62,16 +64,30 @@ public class SettingsPersonal extends Fragment {
     View.OnClickListener btnOnClickListener = new View.OnClickListener(){
         @Override
         public void onClick(View v){
-            lCheck =  lvCategoriesList.getCheckedItemPositions();
-            lCheck.get(2);
 
-            lCategoriesAdapter = lvCategoriesList.getAdapter();
-            CheckBox b = (CheckBox) lCategoriesAdapter.getItem(0);
-            b.isSelected();
-            b.getText();
-             b = (CheckBox) lCategoriesAdapter.getItem(2);
-                      b.isSelected();
-                      b.getText();
+//            SparseBooleanArray checked =  lvCategoriesList.getCheckedItemPositions();
+//            for (int i = 0; i < lvCategoriesList.getAdapter().getCount(); i++) {
+//                if (checked.get(i)) {
+//                    GroceryIn.add((lvCategoriesList.getItemAtPosition(i)).toString());
+//                }
+//            }
+            SparseBooleanArray checked =  lvNoCategoriesList.getCheckedItemPositions();
+             for (int i = 0; i < lvNoCategoriesList.getAdapter().getCount(); i++) {
+                 if (checked.get(i)) {
+                     GroceryOut.add((lvNoCategoriesList.getItemAtPosition(i)).toString());
+                 }
+             }
+
+//            lCheck =  lvCategoriesList.getCheckedItemPositions();
+//            lCheck.get(2);
+//
+//            lCategoriesAdapter = lvCategoriesList.getAdapter();
+//            CheckBox b = (CheckBox) lCategoriesAdapter.getItem(0);
+//            b.isSelected();
+//            b.getText();
+//             b = (CheckBox) lCategoriesAdapter.getItem(2);
+//                      b.isSelected();
+//                      b.getText();
 
         }
     };
