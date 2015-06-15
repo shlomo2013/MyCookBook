@@ -56,6 +56,7 @@ public class PersonalFragment extends Fragment {
     Button btnAllAlbums;
     Button btnSettings;
     Button btnAddAlbum;
+    Button btnMyRecipes;
 
     ArrayList<CheckBox> alFoodCategory;
     ArrayList<CheckBox> alNoFoodCategory;
@@ -76,24 +77,19 @@ public class PersonalFragment extends Fragment {
         rootView         = inflater.inflate(R.layout.activity_personal_fregment, container, false);
         SettingsView     = inflater.inflate(R.layout.settings_personal, container, false);
         AddAlbumView     = inflater.inflate(R.layout.add_album, container, false);
-
-       // dropDownView    = inflater.inflate(R.layout.drop_down_list_row, container, false);
         popupView       = inflater.inflate(R.layout.popup, null);
-       // singlGalleryView     = inflater.inflate(R.layout.custom_toast, container, false);
-
-
-  //      llPopup                   = (LinearLayout)       rootView.findViewById(R.id.DropDownList);
-  //      lvDropDownList            = (ListView)           popupView.findViewById(R.id.lvDropDownList);
 
         btnMyAlbums = (Button) rootView.findViewById(R.id.bMyAlbums);
         btnAllAlbums = (Button) rootView.findViewById(R.id.bAllAlbums);
         btnSettings  = (Button) rootView.findViewById(R.id.bSettings);
         btnAddAlbum  = (Button) rootView.findViewById(R.id.bAddAlbum);
+        btnMyRecipes  = (Button) rootView.findViewById(R.id.bMyRecipes);
 
         btnMyAlbums.setOnClickListener(btnOnClickListener);
         btnAllAlbums.setOnClickListener(btnOnClickListener);
         btnSettings.setOnClickListener(btnOnClickListener);
         btnAddAlbum.setOnClickListener(btnOnClickListener);
+        btnMyRecipes.setOnClickListener(btnOnClickListener);
 
         subFrag = new MyGallery();
         fragTransaction = getFragmentManager().beginTransaction().add(R.id.fragPersonal, subFrag);
@@ -224,60 +220,60 @@ public class PersonalFragment extends Fragment {
         return tr;
     }
 
-    public void handleNoCategories(){
-        final Button btnDDNoPersonalCategories = (Button)rootView.findViewById(R.id.btnDropDownPersonalCategoriesNOT);
-        btnDDNoPersonalCategories.setOnClickListener(new Button.OnClickListener(){
-
-            @Override
-            public void onClick(View arg0) {
-                //    ListView  lvDropDownListNot = (ListView)         rootView.findViewById(R.id.lvDropDownListNot);
-
-                // get all of the categories
-                initCategories(lvDropDownList , alNoFoodCategory, R.array.personal_no_pref_array);
-
-                // set the pop up window
-                initiatePopUp();
-
-                // dismiss
-                Button btnDismiss = (Button)popupView.findViewById(R.id.dismiss);
-                btnDismiss.setOnClickListener(new Button.OnClickListener(){
-                    @Override
-                    public void onClick(View v) {
-                        pw.dismiss();
-                    }});
-
-                pw.showAsDropDown(btnDDNoPersonalCategories);
-
-            }});
-    }
-
-    public void handleCategories(){
-        final Button btnDDPersonalCategories = (Button)rootView.findViewById(R.id.btnDropDownPersonalCategories);
-        btnDDPersonalCategories.setOnClickListener(new Button.OnClickListener(){
-
-            @Override
-            public void onClick(View arg0) {
-
-                // get all of the categories
-                initCategories(lvDropDownList , alFoodCategory, R.array.recipie_category);
-
-                // set the pop up window
-                initiatePopUp();
-
-                // dismiss
-                Button btnDismiss = (Button)popupView.findViewById(R.id.dismiss);
-                btnDismiss.setOnClickListener(new Button.OnClickListener(){
-                    @Override
-                    public void onClick(View v) {
-                        pw.dismiss();
-                    }});
-
-                pw.showAsDropDown(btnDDPersonalCategories);
-
-            }});
-
-
-    }
+//    public void handleNoCategories(){
+//        final Button btnDDNoPersonalCategories = (Button)rootView.findViewById(R.id.btnDropDownPersonalCategoriesNOT);
+//        btnDDNoPersonalCategories.setOnClickListener(new Button.OnClickListener(){
+//
+//            @Override
+//            public void onClick(View arg0) {
+//                //    ListView  lvDropDownListNot = (ListView)         rootView.findViewById(R.id.lvDropDownListNot);
+//
+//                // get all of the categories
+//                initCategories(lvDropDownList , alNoFoodCategory, R.array.personal_no_pref_array);
+//
+//                // set the pop up window
+//                initiatePopUp();
+//
+//                // dismiss
+//                Button btnDismiss = (Button)popupView.findViewById(R.id.dismiss);
+//                btnDismiss.setOnClickListener(new Button.OnClickListener(){
+//                    @Override
+//                    public void onClick(View v) {
+//                        pw.dismiss();
+//                    }});
+//
+//                pw.showAsDropDown(btnDDNoPersonalCategories);
+//
+//            }});
+//    }
+//
+//    public void handleCategories(){
+//        final Button btnDDPersonalCategories = (Button)rootView.findViewById(R.id.btnDropDownPersonalCategories);
+//        btnDDPersonalCategories.setOnClickListener(new Button.OnClickListener(){
+//
+//            @Override
+//            public void onClick(View arg0) {
+//
+//                // get all of the categories
+//                initCategories(lvDropDownList , alFoodCategory, R.array.recipie_category);
+//
+//                // set the pop up window
+//                initiatePopUp();
+//
+//                // dismiss
+//                Button btnDismiss = (Button)popupView.findViewById(R.id.dismiss);
+//                btnDismiss.setOnClickListener(new Button.OnClickListener(){
+//                    @Override
+//                    public void onClick(View v) {
+//                        pw.dismiss();
+//                    }});
+//
+//                pw.showAsDropDown(btnDDPersonalCategories);
+//
+//            }});
+//
+//
+//    }
 
     View.OnClickListener btnOnClickListener = new View.OnClickListener(){
         @Override
@@ -304,6 +300,9 @@ public class PersonalFragment extends Fragment {
             }
             else if (v == btnAddAlbum) {
                            subFrag = new AddAlbum();
+            }
+            else if (v == btnMyRecipes) {
+                subFrag = new MyRecipes();
             }
 
             fragTransaction = getFragmentManager().beginTransaction().replace(R.id.fragPersonal, subFrag);

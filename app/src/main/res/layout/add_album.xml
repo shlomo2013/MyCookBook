@@ -130,7 +130,7 @@
             <ListView
                 android:layout_width="fill_parent"
                 android:id="@+id/AllUsersListView"
-                android:layout_height="match_parent"
+                android:layout_height="260dp"
                 android:layout_weight="1">
 
             </ListView>

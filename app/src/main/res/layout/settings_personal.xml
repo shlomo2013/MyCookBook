@@ -9,36 +9,43 @@
         android:fillViewport="true"
         android:layout_row="0"
         android:layout_column="0" >
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent">
 
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:id="@+id/ll1"
+    android:padding="10dp"
+    android:orientation="vertical"
+    android:layout_gravity="top">
 
-    <TextView
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:textAppearance="?android:attr/textAppearanceMedium"
-                  android:textDirection="rtl"
-                  android:paddingRight="20dp"
-                  android:text="קטגוריות שהיית רוצה שיופיעו "
-                  android:id="@+id/tvCategory"
-                  android:layout_alignParentRight="true"
-                  android:layout_alignParentEnd="true"
-                  android:textStyle="bold"
-                  android:textColor="#ffff4f45"
-                  android:layout_gravity="center_vertical" />
 
-              <ListView
-                  android:layout_width="wrap_content"
-                  android:layout_height="250dp"
-                  android:id="@+id/lvCategoriess"
-                  android:layout_below="@+id/textView4"
-                  android:layout_alignParentLeft="true"
-                  android:layout_alignParentStart="true"
-                  android:choiceMode="multipleChoice"
-                  android:background="@android:drawable/bottom_bar"
-                  android:layout_gravity="center_horizontal" />
+    <!--<TextView-->
+                  <!--android:layout_width="match_parent"-->
+                  <!--android:layout_height="wrap_content"-->
+                  <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
+                  <!--android:textDirection="rtl"-->
+                  <!--android:paddingRight="20dp"-->
+                  <!--android:text="קטגוריות שהיית רוצה שיופיעו "-->
+                  <!--android:id="@+id/tvCategory"-->
+                  <!--android:layout_alignParentRight="true"-->
+                  <!--android:layout_alignParentEnd="true"-->
+                  <!--android:textStyle="bold"-->
+                  <!--android:textColor="#ffff4f45"-->
+                  <!--android:layout_gravity="center_vertical" />-->
+
+              <!--<ListView-->
+                  <!--android:layout_width="wrap_content"-->
+                  <!--android:layout_height="250dp"-->
+                  <!--android:id="@+id/lvCategoriess"-->
+                  <!--android:layout_below="@+id/textView4"-->
+                  <!--android:layout_alignParentLeft="true"-->
+                  <!--android:layout_alignParentStart="true"-->
+                  <!--android:choiceMode="multipleChoice"-->
+                  <!--android:background="@android:drawable/bottom_bar"-->
+                  <!--android:layout_gravity="center_horizontal" />-->
 
     <TextView
                   android:layout_width="match_parent"
@@ -56,17 +63,22 @@
 
               <ListView
                   android:layout_width="wrap_content"
-                  android:layout_height="250dp"
-                  android:id="@+id/lvNoCategoriess"
+                  android:layout_height="match_parent"
+                  android:id="@+id/listViewNo"
                   android:layout_below="@+id/textView4"
                   android:layout_alignParentLeft="true"
                   android:layout_alignParentStart="true"
                   android:choiceMode="multipleChoice"
+                  android:descendantFocusability="blocksDescendants"
                   android:background="@android:drawable/bottom_bar"
                   android:layout_gravity="center_horizontal" />
+</LinearLayout>
+
 <LinearLayout
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content" android:gravity="center_horizontal"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/ll1"
+    android:gravity="center_horizontal"
     android:orientation="horizontal">
     <Button
         android:layout_width="wrap_content"
@@ -80,5 +92,6 @@
         android:text="שמור"
         android:id="@+id/bSaveCategory" />
 </LinearLayout>
-</LinearLayout>
+</RelativeLayout>
+
 </ScrollView>

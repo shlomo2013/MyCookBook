@@ -30,27 +30,26 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="הגדרות"
-                android:textSize="10sp"
+                android:textSize="9sp"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_gravity="top"
                 android:clickable="false"
                 android:elegantTextHeight="false"
-                android:layout_weight="0.25"
+                android:layout_weight="0.30"
                 android:backgroundTint="#ae222222" />
             <Button
                 android:id="@+id/bAddAlbum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="הוסף אלבום"
-                android:textSize="10sp"
-                android:layout_below="@+id/btnDropDownPersonalCategories"
+                android:textSize="9sp"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_gravity="top"
                 android:clickable="false"
                 android:elegantTextHeight="false"
-                android:layout_weight="0.25"
+                android:layout_weight="0.22"
                 android:backgroundTintMode="src_over"
                 android:backgroundTint="#ae222222" />
 
@@ -59,12 +58,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="ספרי המתכונים ששיתפו איתי"
-                android:textSize="10sp"
-                android:layout_below="@+id/btnDropDownPersonalCategoriesNOT"
+                android:textSize="9dp"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_gravity="top"
-                android:layout_weight="0.25"
+                android:layout_weight="0.26"
                 android:backgroundTint="#ae222222" />
 
             <Button
@@ -72,48 +70,61 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="ספרי המתכונים שלי"
-                android:textSize="10sp"
-                android:layout_below="@+id/btnSettings"
+                android:textSize="9sp"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_gravity="top"
-                android:layout_weight="0.25"
+                android:layout_weight="0.10"
                 android:backgroundTint="#ae222222"
                 android:backgroundTintMode="src_over" />
 
+            <Button
+                android:id="@+id/bMyRecipes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="מתכונים שלי"
+                android:textSize="9sp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_gravity="top"
+                android:clickable="false"
+                android:elegantTextHeight="false"
+                android:layout_weight="0.15"
+                android:backgroundTintMode="src_over"
+                android:backgroundTint="#ae222222" />
         </LinearLayout>
 
         <FrameLayout
-                android:layout_width="match_parent"
-                android:id="@+id/fragPersonal"
-                android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:id="@+id/fragPersonal"
+            android:layout_height="match_parent"
             android:orientation="vertical"
-                android:background="#ae222222"
+            android:background="#ae222222"
             android:layout_below="@+id/rlButtons" />
         <!--<LinearLayout-->
-            <!--android:layout_width="fill_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:id="@+id/contentLayout"-->
-            <!--android:weightSum="1"-->
-            <!--android:orientation="vertical"-->
-            <!--android:layout_below="@id/rlButtons"-->
-            <!--android:baselineAligned="false">-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/contentLayout"-->
+        <!--android:weightSum="1"-->
+        <!--android:orientation="vertical"-->
+        <!--android:layout_below="@id/rlButtons"-->
+        <!--android:baselineAligned="false">-->
 
-            <!--<ListView-->
-                <!--android:id="@+id/lvMyAlbumes"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="0dp"-->
-                <!--android:layout_weight="0.50">-->
-            <!--</ListView>-->
+        <!--<ListView-->
+        <!--android:id="@+id/lvMyAlbumes"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:layout_weight="0.50">-->
+        <!--</ListView>-->
 
-            <!--<ListView-->
-                <!--android:id="@+id/lvAllAlbumes"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="0dp"-->
-                <!--android:layout_gravity="bottom"-->
-                <!--android:layout_below="@id/lvMyAlbumes"-->
-                <!--android:layout_weight="0.50">-->
-            <!--</ListView>-->
+        <!--<ListView-->
+        <!--android:id="@+id/lvAllAlbumes"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:layout_gravity="bottom"-->
+        <!--android:layout_below="@id/lvMyAlbumes"-->
+        <!--android:layout_weight="0.50">-->
+        <!--</ListView>-->
         <!--</LinearLayout>-->
 
 

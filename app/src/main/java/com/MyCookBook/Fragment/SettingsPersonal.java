@@ -13,10 +13,11 @@ import android.widget.CheckBox;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
-import com.MyCookBook.Utiltis.DropDownListAdapter;
+import com.example.mycookbook.mycookbook.Queries;
 import com.example.mycookbook.mycookbook.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by nirgadasi on 5/30/15.
@@ -29,8 +30,9 @@ public class SettingsPersonal extends Fragment {
     private ArrayList<CheckBox> alFoodCategory;
     private SparseBooleanArray lCheck;
     private ArrayList<CheckBox> alNoFoodCategory;
-    private ListView lvCategoriesList;
     private ListView lvNoCategoriesList;
+    private  ListView myListViewNo;
+
     Button btnSaveCategory;
 
     public static ArrayList<String> GroceryIn;
@@ -39,23 +41,36 @@ public class SettingsPersonal extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.settings_personal,  container , false);
-        lvCategoriesList            = (ListView)           rootView.findViewById(R.id.lvCategoriess);
-        lvNoCategoriesList            = (ListView)           rootView.findViewById(R.id.lvNoCategoriess);
-        btnSaveCategory            = (Button)           rootView.findViewById(R.id.bSaveCategory);
+//        lvNoCategoriesList          = (ListView)           rootView.findViewById(R.id.lvNoCategoriess);
+        btnSaveCategory             = (Button)           rootView.findViewById(R.id.bSaveCategory);
+        myListViewNo                = (ListView) rootView.findViewById(R.id.listViewNo);
+
+        Queries.refreshAllGroceries();
+        HashMap<String, String> hm = Queries.groceriesList;
+        ArrayList<String> alPref = new ArrayList<>(hm.values());
+        String[] prefList = alPref.toArray(new String[alPref.size()]);
+
+        myListViewNo = (ListView) rootView.findViewById(R.id.listViewNo);
+        ArrayAdapter<String> adapterNo = new ArrayAdapter<String>(getActivity().getBaseContext(),
+                android.R.layout.simple_list_item_multiple_choice  ,
+                prefList );
+
+        // Assign adapter to ListView
+        myListViewNo.setAdapter(adapterNo);
+
+//        alFoodCategory =  initCategories( R.array.categories);
+//        ddlCategiriesAdapter = new DropDownListAdapter(alFoodCategory, getActivity().getBaseContext());
+//        lvCategoriesList.setAdapter(ddlCategiriesAdapter);
 
 
-        alFoodCategory =  initCategories( R.array.categories);
-        ddlCategiriesAdapter = new DropDownListAdapter(alFoodCategory, getActivity().getBaseContext());
-        lvCategoriesList.setAdapter(ddlCategiriesAdapter);
+//        alNoFoodCategory =  initCategories( R.array.personal_no_pref_array);
+//        ddlNoCategiriesAdapter = new DropDownListAdapter(alNoFoodCategory, getActivity().getBaseContext());
+//        lvNoCategoriesList.setAdapter(ddlNoCategiriesAdapter);
 
 
         //on item Click
         btnSaveCategory.setOnClickListener(btnOnClickListener);
 
-
-        alNoFoodCategory =  initCategories( R.array.personal_no_pref_array);
-        ddlNoCategiriesAdapter = new DropDownListAdapter(alNoFoodCategory, getActivity().getBaseContext());
-        lvNoCategoriesList.setAdapter(ddlNoCategiriesAdapter);
 
         return rootView;
 
@@ -72,11 +87,11 @@ public class SettingsPersonal extends Fragment {
 //                }
 //            }
             SparseBooleanArray checked =  lvNoCategoriesList.getCheckedItemPositions();
-             for (int i = 0; i < lvNoCategoriesList.getAdapter().getCount(); i++) {
-                 if (checked.get(i)) {
-                     GroceryOut.add((lvNoCategoriesList.getItemAtPosition(i)).toString());
-                 }
-             }
+            for (int i = 0; i < lvNoCategoriesList.getAdapter().getCount(); i++) {
+                if (checked.get(i)) {
+                    GroceryOut.add((lvNoCategoriesList.getItemAtPosition(i)).toString());
+                }
+            }
 
 //            lCheck =  lvCategoriesList.getCheckedItemPositions();
 //            lCheck.get(2);

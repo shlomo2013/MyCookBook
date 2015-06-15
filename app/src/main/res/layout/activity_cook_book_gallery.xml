@@ -24,15 +24,6 @@
              android:layout_centerHorizontal="true" />
 
 
-        <Button
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/btnAddRecipeToAlbum"
-            android:scaleType="centerCrop"
-            android:text="הוסף מתכון"
-            android:layout_alignParentTop="true" />
-
-
         <Gallery
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

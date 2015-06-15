@@ -3,7 +3,6 @@ package com.MyCookBook.Fragment;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -276,37 +275,37 @@ public class AddRecipeFragment extends Fragment {
 
     }
 
-    public void handleCategories() {
-        final Button btnDDPersonalCategories = (Button) rootView.findViewById(R.id.btnDropDownPersonalCategories);
-        btnDDPersonalCategories.setOnClickListener(new Button.OnClickListener() {
-
-            @Override
-            public void onClick(View arg0) {
-                LayoutInflater layoutInflater = (LayoutInflater) getActivity().getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-                popupView = layoutInflater.inflate(R.layout.popup, null);
-                lvDropDownList = (ListView) popupView.findViewById(R.id.lvDropDownList);
-
-                // get all of the categories
-                initCategories(lvDropDownList, alFoodCategory, R.array.recipie_category);
-
-                // set the pop up window
-                initiatePopUp();
-
-                // dismiss
-                Button btnDismiss = (Button) popupView.findViewById(R.id.dismiss);
-                btnDismiss.setOnClickListener(new Button.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        pw.dismiss();
-                    }
-                });
-
-                pw.showAsDropDown(btnDDPersonalCategories);
-
-            }
-        });
-    }
+//    public void handleCategories() {
+//        final Button btnDDPersonalCategories = (Button) rootView.findViewById(R.id.btnDropDownPersonalCategories);
+//        btnDDPersonalCategories.setOnClickListener(new Button.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View arg0) {
+//                LayoutInflater layoutInflater = (LayoutInflater) getActivity().getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//
+//                popupView = layoutInflater.inflate(R.layout.popup, null);
+//                lvDropDownList = (ListView) popupView.findViewById(R.id.lvDropDownList);
+//
+//                // get all of the categories
+//                initCategories(lvDropDownList, alFoodCategory, R.array.recipie_category);
+//
+//                // set the pop up window
+//                initiatePopUp();
+//
+//                // dismiss
+//                Button btnDismiss = (Button) popupView.findViewById(R.id.dismiss);
+//                btnDismiss.setOnClickListener(new Button.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        pw.dismiss();
+//                    }
+//                });
+//
+//                pw.showAsDropDown(btnDDPersonalCategories);
+//
+//            }
+//        });
+//    }
 
     public void initCategories(ListView lvListView, ArrayList<CheckBox> items, int ArrayName){
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity().getBaseContext(),

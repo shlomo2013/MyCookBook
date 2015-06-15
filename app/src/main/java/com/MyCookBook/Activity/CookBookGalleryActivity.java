@@ -50,7 +50,6 @@ import java.util.ArrayList;
 public class CookBookGalleryActivity extends ActionBarActivity {
 
     Gallery g;
-    Button bAddRecipe;
     private PopupWindow pw;
     boolean click = true;
     Bitmap[] imageBitmaps;
@@ -98,7 +97,6 @@ public class CookBookGalleryActivity extends ActionBarActivity {
 
         // Gallery
         g           = (Gallery)findViewById(R.id.gallery);
-        bAddRecipe  = (Button) findViewById(R.id.btnAddRecipeToAlbum);
         tbLayout    = (TableLayout) findViewById(R.id.tbIngredients);
 
         // Recipe Include
@@ -181,9 +179,6 @@ public class CookBookGalleryActivity extends ActionBarActivity {
             t.show();
         }
 
-        bAddRecipe.setOnClickListener(btnAddRecipeOnClickListener);
-
-
         // Create adapter gallery
         g.setAdapter( new ImageAdapter(this, RecipesList, imageBitmaps));
         g.setOnItemClickListener(onGalletyItemSelect);
@@ -234,27 +229,6 @@ public class CookBookGalleryActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
-
-
-    public View.OnClickListener btnAddRecipeOnClickListener = new View.OnClickListener(){
-        @Override
-        public void onClick(View v){
-            if (click) {
-                initiatePopUp();
-                // Handle show big picture
-                pw.showAsDropDown(bAddRecipe);
-                click = false;
-            }
-            else{
-                pw.dismiss();
-                click = true;
-            }
-
-
-        }
-
-    };
 
     AdapterView.OnItemClickListener onGalletyItemSelect = new AdapterView.OnItemClickListener() {
 
