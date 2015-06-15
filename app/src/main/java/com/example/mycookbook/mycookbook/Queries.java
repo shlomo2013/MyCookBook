@@ -463,7 +463,8 @@ public class Queries {
         }
 
         for(ParseObject grc:returnList){
-            groceriesList.put(grc.getObjectId(), ((Grocery) grc).getMaterialName());
+            if(!groceriesList.containsValue(((Grocery) grc).getMaterialName()))
+                groceriesList.put(grc.getObjectId(), ((Grocery) grc).getMaterialName());
         }
     }
 
