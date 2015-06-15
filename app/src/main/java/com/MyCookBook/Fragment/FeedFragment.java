@@ -282,57 +282,69 @@ public class FeedFragment extends Fragment {
             if (child instanceof TableRow) ((ViewGroup) child).removeAllViews();
         }
 
-        for (int i = 0; i < myRecipes.size(); i++)
-        {
-            final TextView tvRecipe = new TextView(getActivity().getBaseContext());
-            final ImageView ivRecipePhoto = new ImageView(getActivity().getBaseContext());
-            final ImageButton btLike = new ImageButton(getActivity().getBaseContext());
-            txtLikes = new TextView(getActivity().getBaseContext());
+        for (int i = 0; i < myRecipes.size(); i++) {
+            boolean badRecipe = false;
+            ArrayList<Grocery> RecipeGroceries;
+            RecipeGroceries = myRecipes.get(i).getRecipeGroceries();
 
-            final TextView tvUserName = new TextView(getActivity().getBaseContext());
-            final ImageView ivUserPhoto = new ImageView(getActivity().getBaseContext());
+//            for (int x = 0; x < RecipeGroceries.size(); x++) {
+//                for (int j = 0; j < SettingsPersonal.GroceryOut.size(); j++) {
+//                    if (RecipeGroceries.get(i).getMaterialName().equals(SettingsPersonal.GroceryOut.get(i).toString())) {
+//                        badRecipe = true;
+//                    }
+//                }
+//            }
 
-            TableRow trUser = new TableRow(getActivity().getBaseContext());
-            TableRow.LayoutParams trLPuser = new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT,
-                    TableRow.LayoutParams.WRAP_CONTENT);
-            trUser.setLayoutParams(trLPuser);
-            trUser.setGravity(Gravity.RIGHT);
+            if (!badRecipe) {
+                final TextView tvRecipe = new TextView(getActivity().getBaseContext());
+                final ImageView ivRecipePhoto = new ImageView(getActivity().getBaseContext());
+                final ImageButton btLike = new ImageButton(getActivity().getBaseContext());
+                txtLikes = new TextView(getActivity().getBaseContext());
 
-            tvUserName.setText(myRecipes.get(i).getCreatedBy().getName());
-            tvUserName.setTextSize(15);
-            tvUserName.setWidth(300);
-            tvUserName.setGravity(Gravity.RIGHT);
-            ivUserPhoto.setImageBitmap(myRecipes.get(i).getCreatedBy().getProfilePic());
-            ivUserPhoto.setMaxWidth(110);
-            ivUserPhoto.setMinimumWidth(110);
-            ivUserPhoto.setMaxHeight(110);
-            ivUserPhoto.setMinimumHeight(110);
-            ivUserPhoto.setAdjustViewBounds(true);
+                final TextView tvUserName = new TextView(getActivity().getBaseContext());
+                final ImageView ivUserPhoto = new ImageView(getActivity().getBaseContext());
 
-            TableRow trName = new TableRow(getActivity().getBaseContext());
-            TableRow.LayoutParams trLPName = new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT,
-                    TableRow.LayoutParams.WRAP_CONTENT);
-            trName.setLayoutParams(trLPName);
-            trName.setGravity(Gravity.RIGHT);
+                TableRow trUser = new TableRow(getActivity().getBaseContext());
+                TableRow.LayoutParams trLPuser = new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT,
+                        TableRow.LayoutParams.WRAP_CONTENT);
+                trUser.setLayoutParams(trLPuser);
+                trUser.setGravity(Gravity.RIGHT);
 
-            final TextView tvRecipeName = new TextView(getActivity().getBaseContext());
+                tvUserName.setText(myRecipes.get(i).getCreatedBy().getName());
+                tvUserName.setTextSize(15);
+                tvUserName.setWidth(300);
+                tvUserName.setGravity(Gravity.RIGHT);
+                ivUserPhoto.setImageBitmap(myRecipes.get(i).getCreatedBy().getProfilePic());
+                ivUserPhoto.setMaxWidth(110);
+                ivUserPhoto.setMinimumWidth(110);
+                ivUserPhoto.setMaxHeight(110);
+                ivUserPhoto.setMinimumHeight(110);
+                ivUserPhoto.setAdjustViewBounds(true);
 
-            tvRecipeName.setText(myRecipes.get(i).getName());
-            tvRecipeName.setTextSize(18);
+                TableRow trName = new TableRow(getActivity().getBaseContext());
+                TableRow.LayoutParams trLPName = new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT,
+                        TableRow.LayoutParams.WRAP_CONTENT);
+                trName.setLayoutParams(trLPName);
+                trName.setGravity(Gravity.RIGHT);
 
-            TableRow tr = new TableRow(getActivity().getBaseContext());
-            TableRow.LayoutParams trLP = new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT,
-                    TableRow.LayoutParams.WRAP_CONTENT);
-            tr.setLayoutParams(trLP);
-            tr.setGravity(Gravity.RIGHT);
+                final TextView tvRecipeName = new TextView(getActivity().getBaseContext());
 
-            // Handle recipe text
-            tvRecipe.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-            tvRecipe.setMinimumWidth(350);
-            tvRecipe.setTag(myRecipes.get(i));
+                tvRecipeName.setText(myRecipes.get(i).getName());
+                tvRecipeName.setTextSize(18);
 
-            String myRecipe;
-            myRecipe = "אופן הכנה:" + "\n" + myRecipes.get(i).getPreparation();// + "\n" + "רכיבים:";
+                TableRow tr = new TableRow(getActivity().getBaseContext());
+                TableRow.LayoutParams trLP = new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT,
+                        TableRow.LayoutParams.WRAP_CONTENT);
+                tr.setLayoutParams(trLP);
+                tr.setGravity(Gravity.RIGHT);
+
+                // Handle recipe text
+                tvRecipe.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+                tvRecipe.setMinimumWidth(350);
+                tvRecipe.setTag(myRecipes.get(i));
+
+                String myRecipe;
+                myRecipe = "אופן הכנה:" + "\n" + myRecipes.get(i).getPreparation();// + "\n" + "רכיבים:";
 //            ArrayList<Grocery> grocery = myRecipes.get(i).getRecipeGroceries();
 //
 //            for (int j = 0; j < grocery.size(); j++)
@@ -340,106 +352,105 @@ public class FeedFragment extends Fragment {
 //                myRecipe = myRecipe + "\n" + grocery.get(j).getAmount() + " " +  grocery.get(j).getForm() + " " +  grocery.get(j).getMaterialName();
 //            }
 
-            tvRecipe.setText(myRecipe.substring(0, 70) + "...");
-            tvRecipe.setWidth(600);
+                tvRecipe.setText(myRecipe.substring(0, 70) + "...");
+                tvRecipe.setWidth(600);
 
-            tvRecipe.setClickable(true);
-            tvRecipe.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (clickRecipe) {
-                        // Handle show big picture
-                        initiatePopUp((Recipe)ivRecipePhoto.getTag());
-                        pwRecipe.showAtLocation(rootView, Gravity.BOTTOM, 10, 10);
-                        clickRecipe = false;
+                tvRecipe.setClickable(true);
+                tvRecipe.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (clickRecipe) {
+                            // Handle show big picture
+                            initiatePopUp((Recipe) ivRecipePhoto.getTag());
+                            pwRecipe.showAtLocation(rootView, Gravity.BOTTOM, 10, 10);
+                            clickRecipe = false;
+                        } else {
+                            pwRecipe.dismiss();
+                            clickRecipe = true;
+                        }
                     }
-                    else{
-                        pwRecipe.dismiss();
-                        clickRecipe = true;
+                });
+
+                // Handle recipe image
+                ivRecipePhoto.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+                ivRecipePhoto.setMaxWidth(350);
+                ivRecipePhoto.setMaxHeight(350);
+                ivRecipePhoto.setAdjustViewBounds(true);
+                ivRecipePhoto.setImageBitmap(myRecipes.get(i).getRecipePicture());
+                ivRecipePhoto.setTag(myRecipes.get(i));
+                ivRecipePhoto.setClickable(true);
+                ivRecipePhoto.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (click) {
+                            // Handle show big picture
+                            initiatePopUp(((Recipe) ivRecipePhoto.getTag()).getRecipePicture());
+                            pw.showAtLocation(rootView, Gravity.BOTTOM, 10, 10);
+                            click = false;
+                        } else {
+                            pw.dismiss();
+                            click = true;
+                        }
                     }
-                }
-            });
+                });
 
-            // Handle recipe image
-            ivRecipePhoto.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-            ivRecipePhoto.setMaxWidth(350);
-            ivRecipePhoto.setMaxHeight(350);
-            ivRecipePhoto.setAdjustViewBounds(true);
-            ivRecipePhoto.setImageBitmap(myRecipes.get(i).getRecipePicture());
-            ivRecipePhoto.setTag(myRecipes.get(i));
-            ivRecipePhoto.setClickable(true);
-            ivRecipePhoto.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (click) {
-                        // Handle show big picture
-                        initiatePopUp(((Recipe)ivRecipePhoto.getTag()).getRecipePicture());
-                        pw.showAtLocation(rootView, Gravity.BOTTOM, 10, 10);
-                        click = false;
+                // Handle like button
+                btLike.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+                btLike.setImageResource(R.mipmap.red_like_icon);
+                btLike.setClickable(true);
+                btLike.setTag(myRecipes.get(i));
+                btLike.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ((Recipe) btLike.getTag()).Like();
+                        txtLikes.setText(((Recipe) btLike.getTag()).getLikesCounter() + "אהבו!");
+                        setFeed();
                     }
-                    else{
-                        pw.dismiss();
-                        click = true;
-                    }
-                }
-            });
+                });
 
-            // Handle like button
-            btLike.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-            btLike.setImageResource(R.mipmap.red_like_icon);
-            btLike.setClickable(true);
-            btLike.setTag(myRecipes.get(i));
-            btLike.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ((Recipe)btLike.getTag()).Like();
-                    txtLikes.setText(((Recipe)btLike.getTag()).getLikesCounter() + "אהבו!");
-                    setFeed();
-                }
-            });
+                trUser.addView(tvUserName);
+                trUser.addView(ivUserPhoto);
+                trUser.setBackgroundColor(Color.argb(255, 115, 115, 115));
+                tbLayout.addView(trUser);
 
-            trUser.addView(tvUserName);
-            trUser.addView(ivUserPhoto);
-            trUser.setBackgroundColor(Color.argb(255, 115, 115, 115));
-            tbLayout.addView(trUser);
+                trName.addView(tvRecipeName);
+                trName.setBackgroundColor(Color.argb(255, 135, 135, 135));
+                tbLayout.addView(trName);
 
-            trName.addView(tvRecipeName);
-            trName.setBackgroundColor(Color.argb(255, 135, 135, 135));
-            tbLayout.addView(trName);
+                // Add to layOut
+                tr.addView(tvRecipe);
+                tr.addView(ivRecipePhoto);
+                tr.setBackgroundColor(Color.argb(255, 135, 135, 135));
 
-            // Add to layOut
-            tr.addView(tvRecipe);
-            tr.addView(ivRecipePhoto);
-            tr.setBackgroundColor(Color.argb(255, 135, 135, 135));
+                tbLayout.addView(tr);
 
-            tbLayout.addView(tr);
+                TableRow tr2 = new TableRow(getActivity().getBaseContext());
+                TableRow.LayoutParams trLP2 = new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT,
+                        TableRow.LayoutParams.WRAP_CONTENT);
+                tr2.setLayoutParams(trLP2);
+                tr2.setGravity(Gravity.RIGHT);
 
-            TableRow tr2 = new TableRow(getActivity().getBaseContext());
-            TableRow.LayoutParams trLP2 = new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT,
-                    TableRow.LayoutParams.WRAP_CONTENT);
-            tr2.setLayoutParams(trLP2);
-            tr2.setGravity(Gravity.RIGHT);
+                txtLikes.setText(myRecipes.get(i).getLikesCounter() + "אהבו!");
 
-            txtLikes.setText(myRecipes.get(i).getLikesCounter() + "אהבו!");
+                // Add to layOut
+                tr2.addView(txtLikes);
+                tr2.addView(btLike);
+                tr2.setBackgroundColor(Color.argb(255, 135, 135, 135));
+                tbLayout.addView(tr2);
 
-            // Add to layOut
-            tr2.addView(txtLikes);
-            tr2.addView(btLike);
-            tr2.setBackgroundColor(Color.argb(255, 135, 135, 135));
-            tbLayout.addView(tr2);
+                // Add empty line
+                TableRow trEmptyLine = new TableRow(getActivity().getBaseContext());
+                TableRow.LayoutParams trLP2empty = new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT,
+                        TableRow.LayoutParams.WRAP_CONTENT);
+                trEmptyLine.setLayoutParams(trLP2empty);
+                trEmptyLine.setGravity(Gravity.RIGHT);
 
-            // Add empty line
-            TableRow trEmptyLine = new TableRow(getActivity().getBaseContext());
-            TableRow.LayoutParams trLP2empty = new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT,
-                                TableRow.LayoutParams.WRAP_CONTENT);
-            trEmptyLine.setLayoutParams(trLP2empty);
-            trEmptyLine.setGravity(Gravity.RIGHT);
+                final TextView tvEmptyLine = new TextView(getActivity().getBaseContext());
+                tvEmptyLine.setTextSize(14);
 
-            final TextView tvEmptyLine = new TextView(getActivity().getBaseContext());
-            tvEmptyLine.setTextSize(14);
-
-            trEmptyLine.addView(tvEmptyLine);
-            tbLayout.addView(trEmptyLine);
+                trEmptyLine.addView(tvEmptyLine);
+                tbLayout.addView(trEmptyLine);
+            }
         }
     }
 

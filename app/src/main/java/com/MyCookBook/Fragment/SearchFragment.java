@@ -15,7 +15,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ListView;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -162,26 +161,6 @@ public class SearchFragment extends Fragment {
 //
         // Assign adapter to ListView
         myListViewNo.setAdapter(adapterNo);
-
-        rgpTypes = (RadioGroup) rootView.findViewById(R.id.RBgroup);
-
-        rgpTypes.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                RadioButton rb = (RadioButton) group.findViewById(checkedId);
-                if(null!=rb && checkedId > -1){
-                    switch (rb.getId())
-                    {
-                        case R.id.RBall:
-                            break;
-                        case R.id.RBwebsite:
-                            break;
-                        case R.id.RBusers:
-                            break;
-                    }
-                }
-            }
-        });
 
         cbSoop=(CheckBox) rootView.findViewById(R.id.CBsoop);
         cbBreakfast=(CheckBox) rootView.findViewById(R.id.CBbreakfast);

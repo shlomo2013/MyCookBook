@@ -33,6 +33,8 @@ public class SettingsPersonal extends Fragment {
     private ListView lvNoCategoriesList;
     Button btnSaveCategory;
 
+    public static ArrayList<String> GroceryIn;
+    public static ArrayList<String> GroceryOut;
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
@@ -63,16 +65,16 @@ public class SettingsPersonal extends Fragment {
         @Override
         public void onClick(View v){
 
-            SparseBooleanArray checked =  lvCategoriesList.getCheckedItemPositions();
-            for (int i = 0; i < lvCategoriesList.getAdapter().getCount(); i++) {
-                if (checked.get(i)) {
-//                    groceryIn.add((lvCategoriesList.getItemAtPosition(i)).toString());
-                }
-            }
-             checked =  lvNoCategoriesList.getCheckedItemPositions();
+//            SparseBooleanArray checked =  lvCategoriesList.getCheckedItemPositions();
+//            for (int i = 0; i < lvCategoriesList.getAdapter().getCount(); i++) {
+//                if (checked.get(i)) {
+//                    GroceryIn.add((lvCategoriesList.getItemAtPosition(i)).toString());
+//                }
+//            }
+            SparseBooleanArray checked =  lvNoCategoriesList.getCheckedItemPositions();
              for (int i = 0; i < lvNoCategoriesList.getAdapter().getCount(); i++) {
                  if (checked.get(i)) {
-//                     groceryIn.add((lvNoCategoriesList.getItemAtPosition(i)).toString());
+                     GroceryOut.add((lvNoCategoriesList.getItemAtPosition(i)).toString());
                  }
              }
 
