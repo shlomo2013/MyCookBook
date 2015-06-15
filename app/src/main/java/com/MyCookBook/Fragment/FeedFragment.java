@@ -54,6 +54,7 @@ public class FeedFragment extends Fragment {
     RadioButton rbNew;
     RadioButton rbLoved;
     RadioButton rbTop;
+    RadioButton rbRecommend;
     boolean textChanged = false;
 
     public FeedFragment() {
@@ -102,6 +103,7 @@ public class FeedFragment extends Fragment {
                         rbNew = (RadioButton) rootView.findViewById(R.id.RBnew);
                         rbLoved = (RadioButton) rootView.findViewById(R.id.RBloved);
                         rbTop = (RadioButton) rootView.findViewById(R.id.RBtop5);
+                        rbRecommend = (RadioButton) rootView.findViewById(R.id.RBrecommend);
 
                         if (rbNew.isChecked()) {
                             setFilterByRB(rbNew);
@@ -111,6 +113,9 @@ public class FeedFragment extends Fragment {
                         }
                         if (rbTop.isChecked()) {
                             setFilterByRB(rbTop);
+                        }
+                        if (rbRecommend.isChecked()) {
+                            setFilterByRB(rbRecommend);
                         }
                     }
                 }
@@ -287,17 +292,16 @@ public class FeedFragment extends Fragment {
             ArrayList<Grocery> RecipeGroceries;
             RecipeGroceries = myRecipes.get(i).getRecipeGroceries();
 
-            if(SettingsPersonal.GroceryOut !=null) {
-                if (SettingsPersonal.GroceryOut.size() != 0 && SettingsPersonal.GroceryOut != null) {
-                    for (int x = 0; x < RecipeGroceries.size(); x++) {
-                        for (int j = 0; j < SettingsPersonal.GroceryOut.size(); j++) {
-                            if (RecipeGroceries.get(i).getMaterialName().equals(SettingsPersonal.GroceryOut.get(i).toString())) {
-                                badRecipe = true;
-                            }
+            if (SettingsPersonal.GroceryOut.size() != 0 && SettingsPersonal.GroceryOut != null) {
+                for (int x = 0; x < RecipeGroceries.size(); x++) {
+                    for (int j = 0; j < SettingsPersonal.GroceryOut.size(); j++) {
+                        if (RecipeGroceries.get(i).getMaterialName().equals(SettingsPersonal.GroceryOut.get(i).toString())) {
+                            badRecipe = true;
                         }
                     }
                 }
             }
+
             if (!badRecipe) {
                 final TextView tvRecipe = new TextView(getActivity().getBaseContext());
                 final ImageView ivRecipePhoto = new ImageView(getActivity().getBaseContext());
@@ -469,6 +473,11 @@ public class FeedFragment extends Fragment {
                 break;
             case R.id.RBtop5:
                 myRecipes = Queries.getTopRatedRecipes(5);
+                setFeed();
+                break;
+            case R.id.RBrecommend:
+                // TODO
+//                myRecipes = Queries.getTopRatedRecipes(5);
                 setFeed();
                 break;
         }

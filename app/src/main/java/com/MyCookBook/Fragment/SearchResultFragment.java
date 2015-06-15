@@ -162,6 +162,7 @@ public class SearchResultFragment extends Fragment {
             tvEmptyLine.setTextSize(14);
 
             trEmptyLine.addView(tvEmptyLine);
+                trEmptyLine.setBackgroundColor(Color.argb(255, 100, 100, 100));
             tbLayout.addView(trEmptyLine);
         }
 
