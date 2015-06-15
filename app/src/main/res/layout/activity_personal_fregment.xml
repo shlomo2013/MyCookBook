@@ -36,7 +36,7 @@
                 android:layout_gravity="top"
                 android:clickable="false"
                 android:elegantTextHeight="false"
-                android:layout_weight="0.30"
+                android:layout_weight="0.26"
                 android:backgroundTint="#ae222222" />
             <Button
                 android:id="@+id/bAddAlbum"

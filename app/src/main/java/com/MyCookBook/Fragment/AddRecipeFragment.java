@@ -121,7 +121,7 @@ public class AddRecipeFragment extends Fragment {
         bAddIngridient      = (Button)               rootView.findViewById(R.id.btnAddIngridient);
         bSave               = (Button)               rootView.findViewById(R.id.btnSaveRecipe);
         lvDropDownList      = (ListView)             popupView.findViewById(R.id.lvDropDownList);
-        ll                  = (LinearLayout)             rootView.findViewById(R.id.LinearLayout1);
+        ll                  = (LinearLayout)         rootView.findViewById(R.id.LinearLayout1);
 
         // arguments from screen
         recipeName                   = (EditText)           rootView.findViewById(R.id.etRecName);
@@ -146,7 +146,7 @@ public class AddRecipeFragment extends Fragment {
         // KITCHEN TYPE
         final Spinner dropdownKitchenType = (Spinner) rootView.findViewById(R.id.KitchenType);
         KitchenTypeId = dropdownKitchenType.getId();
-        createSpinner((dropdownKitchenType), R.array.recipie_category);
+        createSpinner((dropdownKitchenType), R.array.categories);
 
         //Handle Category
         createExpendableList();

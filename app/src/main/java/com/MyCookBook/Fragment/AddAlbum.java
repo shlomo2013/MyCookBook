@@ -315,7 +315,8 @@ class UserAdapter extends BaseAdapter {
             public void onClick(View v) {
                 if (click) {
                     // Handle show big picture
-                    initiatePopUp(b);
+                    User u2 = (User)iv.getTag() ;
+                    initiatePopUp(u2.getProfilePic());
                     pw.showAtLocation(rootView, Gravity.BOTTOM, 10, 10);
                     click = false;
                 } else {
