@@ -11,6 +11,8 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 
+import java.util.ArrayList;
+
 /**
  * Created by shirabd on 09/05/2015.
  */
@@ -22,6 +24,7 @@ public class User extends ParseObject {
     public static final String Email ="Email";
     public static final String Gender ="Gender";
     public static final String Birthday ="Birthday";
+    public static final String AllergiesSet = "AllergiesSet";
 
     public User() {
     }
@@ -111,5 +114,22 @@ public class User extends ParseObject {
         }
 
         return bmp;
+    }
+
+    public void setAllergiesSet(ArrayList<String> allergiesSet) {
+        if(allergiesSet!=null && AllergiesSet.length()!=0)
+            this.put(AllergiesSet,allergiesSet);
+    }
+
+
+    public ArrayList<String> getAllergiesSet() {
+        ArrayList<String> retCategories = new ArrayList<String>();
+
+        for (Object s : this.getList(AllergiesSet)) {
+            retCategories.add(s.toString());
+        }
+
+        return retCategories;
+        //ArrayList<String>)this.getList(AllergiesSet);
     }
 }
