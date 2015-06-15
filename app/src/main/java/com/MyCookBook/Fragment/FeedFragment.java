@@ -287,13 +287,15 @@ public class FeedFragment extends Fragment {
             ArrayList<Grocery> RecipeGroceries;
             RecipeGroceries = myRecipes.get(i).getRecipeGroceries();
 
-//            for (int x = 0; x < RecipeGroceries.size(); x++) {
-//                for (int j = 0; j < SettingsPersonal.GroceryOut.size(); j++) {
-//                    if (RecipeGroceries.get(i).getMaterialName().equals(SettingsPersonal.GroceryOut.get(i).toString())) {
-//                        badRecipe = true;
-//                    }
-//                }
-//            }
+            if (SettingsPersonal.GroceryOut.size() != 0 && SettingsPersonal.GroceryOut != null) {
+                for (int x = 0; x < RecipeGroceries.size(); x++) {
+                    for (int j = 0; j < SettingsPersonal.GroceryOut.size(); j++) {
+                        if (RecipeGroceries.get(i).getMaterialName().equals(SettingsPersonal.GroceryOut.get(i).toString())) {
+                            badRecipe = true;
+                        }
+                    }
+                }
+            }
 
             if (!badRecipe) {
                 final TextView tvRecipe = new TextView(getActivity().getBaseContext());
