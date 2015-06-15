@@ -293,7 +293,7 @@ public class FeedFragment extends Fragment {
             RecipeGroceries = myRecipes.get(i).getRecipeGroceries();
 
             if (SettingsPersonal.GroceryOut != null) {
-                if (SettingsPersonal.GroceryOut.size() != 0 && SettingsPersonal.GroceryOut != null) {
+                if (SettingsPersonal.GroceryOut.size() != 0) {
                     for (int x = 0; x < RecipeGroceries.size(); x++) {
                         for (int j = 0; j < SettingsPersonal.GroceryOut.size(); j++) {
                             if (RecipeGroceries.get(i).getMaterialName().equals(SettingsPersonal.GroceryOut.get(i).toString())) {
@@ -478,7 +478,7 @@ public class FeedFragment extends Fragment {
                 break;
             case R.id.RBrecommend:
                 // TODO
-//                myRecipes = Queries.getTopRatedRecipes(5);
+//                myRecipes = Queries.get
                 setFeed();
                 break;
         }
