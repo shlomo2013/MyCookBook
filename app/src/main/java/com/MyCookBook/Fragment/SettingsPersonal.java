@@ -62,16 +62,30 @@ public class SettingsPersonal extends Fragment {
     View.OnClickListener btnOnClickListener = new View.OnClickListener(){
         @Override
         public void onClick(View v){
-            lCheck =  lvCategoriesList.getCheckedItemPositions();
-            lCheck.get(2);
 
-            lCategoriesAdapter = lvCategoriesList.getAdapter();
-            CheckBox b = (CheckBox) lCategoriesAdapter.getItem(0);
-            b.isSelected();
-            b.getText();
-             b = (CheckBox) lCategoriesAdapter.getItem(2);
-                      b.isSelected();
-                      b.getText();
+            SparseBooleanArray checked =  lvCategoriesList.getCheckedItemPositions();
+            for (int i = 0; i < lvCategoriesList.getAdapter().getCount(); i++) {
+                if (checked.get(i)) {
+//                    groceryIn.add((lvCategoriesList.getItemAtPosition(i)).toString());
+                }
+            }
+             checked =  lvNoCategoriesList.getCheckedItemPositions();
+             for (int i = 0; i < lvNoCategoriesList.getAdapter().getCount(); i++) {
+                 if (checked.get(i)) {
+//                     groceryIn.add((lvNoCategoriesList.getItemAtPosition(i)).toString());
+                 }
+             }
+
+//            lCheck =  lvCategoriesList.getCheckedItemPositions();
+//            lCheck.get(2);
+//
+//            lCategoriesAdapter = lvCategoriesList.getAdapter();
+//            CheckBox b = (CheckBox) lCategoriesAdapter.getItem(0);
+//            b.isSelected();
+//            b.getText();
+//             b = (CheckBox) lCategoriesAdapter.getItem(2);
+//                      b.isSelected();
+//                      b.getText();
 
         }
     };

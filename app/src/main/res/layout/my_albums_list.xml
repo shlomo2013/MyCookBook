@@ -26,7 +26,8 @@ android:layout_width="wrap_content"
 android:layout_height="wrap_content"
 android:text="כותרת"
 android:textSize="16dp"
-android:textStyle="bold" />
+android:textStyle="bold"
+    android:textColor="#ffffffff" />
  
 <TextView
 android:id="@+id/desc"

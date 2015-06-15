@@ -3,6 +3,7 @@ package com.MyCookBook.Fragment;
 import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -53,6 +54,7 @@ public class FeedFragment extends Fragment {
     RadioButton rbNew;
     RadioButton rbLoved;
     RadioButton rbTop;
+    boolean textChanged = false;
 
     public FeedFragment() {
 
@@ -71,6 +73,14 @@ public class FeedFragment extends Fragment {
                 android.R.layout.simple_list_item_1);
         myAutoComplete.setAdapter(adapter);
 
+        myAutoComplete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myAutoComplete.setText("");
+                textChanged = true;
+            }
+        });
+
         autoCompListenerCategory = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -84,24 +94,24 @@ public class FeedFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
+
                 category = String.valueOf(myAutoComplete.getText());
 
                 if (category.equals("")) {
-                    rbNew = (RadioButton) rootView.findViewById(R.id.RBnew);
-                    rbLoved = (RadioButton) rootView.findViewById(R.id.RBloved);
-                    rbTop = (RadioButton) rootView.findViewById(R.id.RBtop5);
+                    if  (textChanged) {
+                        rbNew = (RadioButton) rootView.findViewById(R.id.RBnew);
+                        rbLoved = (RadioButton) rootView.findViewById(R.id.RBloved);
+                        rbTop = (RadioButton) rootView.findViewById(R.id.RBtop5);
 
-                    if (rbNew.isChecked())
-                    {
-                        setFilterByRB(rbNew);
-                    }
-                    if (rbLoved.isChecked())
-                    {
-                        setFilterByRB(rbLoved);
-                    }
-                    if (rbTop.isChecked())
-                    {
-                        setFilterByRB(rbTop);
+                        if (rbNew.isChecked()) {
+                            setFilterByRB(rbNew);
+                        }
+                        if (rbLoved.isChecked()) {
+                            setFilterByRB(rbLoved);
+                        }
+                        if (rbTop.isChecked()) {
+                            setFilterByRB(rbTop);
+                        }
                     }
                 }
                 else
@@ -390,14 +400,18 @@ public class FeedFragment extends Fragment {
 
             trUser.addView(tvUserName);
             trUser.addView(ivUserPhoto);
+            trUser.setBackgroundColor(Color.argb(255, 115, 115, 115));
             tbLayout.addView(trUser);
 
             trName.addView(tvRecipeName);
+            trName.setBackgroundColor(Color.argb(255, 135, 135, 135));
             tbLayout.addView(trName);
 
             // Add to layOut
             tr.addView(tvRecipe);
             tr.addView(ivRecipePhoto);
+            tr.setBackgroundColor(Color.argb(255, 135, 135, 135));
+
             tbLayout.addView(tr);
 
             TableRow tr2 = new TableRow(getActivity().getBaseContext());
@@ -411,7 +425,21 @@ public class FeedFragment extends Fragment {
             // Add to layOut
             tr2.addView(txtLikes);
             tr2.addView(btLike);
+            tr2.setBackgroundColor(Color.argb(255, 135, 135, 135));
             tbLayout.addView(tr2);
+
+            // Add empty line
+            TableRow trEmptyLine = new TableRow(getActivity().getBaseContext());
+            TableRow.LayoutParams trLP2empty = new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT,
+                                TableRow.LayoutParams.WRAP_CONTENT);
+            trEmptyLine.setLayoutParams(trLP2empty);
+            trEmptyLine.setGravity(Gravity.RIGHT);
+
+            final TextView tvEmptyLine = new TextView(getActivity().getBaseContext());
+            tvEmptyLine.setTextSize(14);
+
+            trEmptyLine.addView(tvEmptyLine);
+            tbLayout.addView(trEmptyLine);
         }
     }
 

@@ -1,19 +1,18 @@
 package com.MyCookBook.Fragment;
 
 
+import android.app.Fragment;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TableLayout;
@@ -107,11 +106,10 @@ public class SearchResultFragment extends Fragment {
                     // TODO: open recipe window
                     if (clickRecipe) {
                         // Handle show big picture
-                        initiatePopUp((Recipe)ivRecipePhoto.getTag());
+                        initiatePopUp((Recipe) ivRecipePhoto.getTag());
                         pwRecipe.showAtLocation(rootView, Gravity.BOTTOM, 10, 10);
                         clickRecipe = false;
-                    }
-                    else{
+                    } else {
                         pwRecipe.dismiss();
                         clickRecipe = true;
                     }
@@ -131,11 +129,10 @@ public class SearchResultFragment extends Fragment {
                 public void onClick(View v) {
                     if (click) {
                         // Handle show big picture
-                        initiatePopUp(((Recipe)ivRecipePhoto.getTag()).getRecipePicture());
+                        initiatePopUp(((Recipe) ivRecipePhoto.getTag()).getRecipePicture());
                         pw.showAtLocation(rootView, Gravity.BOTTOM, 10, 10);
                         click = false;
-                    }
-                    else{
+                    } else {
                         pw.dismiss();
                         click = true;
                     }
@@ -145,12 +142,27 @@ public class SearchResultFragment extends Fragment {
 //              trName.addView(ivUserPhoto);
 //            trName.addView(tvUserName);
             trName.addView(tvRecipeName);
+            trName.setBackgroundColor(Color.argb(255, 135, 135, 135));
             tbLayout.addView(trName);
 
             // Add to layOut
             tr.addView(tvRecipe);
             tr.addView(ivRecipePhoto);
+            tr.setBackgroundColor(Color.argb(255, 135, 135, 135));
             tbLayout.addView(tr);
+
+            // Add empty line
+            TableRow trEmptyLine = new TableRow(getActivity().getBaseContext());
+            TableRow.LayoutParams trLP2empty = new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT,
+                    TableRow.LayoutParams.WRAP_CONTENT);
+            trEmptyLine.setLayoutParams(trLP2empty);
+            trEmptyLine.setGravity(Gravity.RIGHT);
+
+            final TextView tvEmptyLine = new TextView(getActivity().getBaseContext());
+            tvEmptyLine.setTextSize(14);
+
+            trEmptyLine.addView(tvEmptyLine);
+            tbLayout.addView(trEmptyLine);
         }
 
 
