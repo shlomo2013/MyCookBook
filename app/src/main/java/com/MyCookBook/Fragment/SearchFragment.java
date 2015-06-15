@@ -385,9 +385,9 @@ public class SearchFragment extends Fragment {
                     frag = new SearchResultFragment();
                     //frag.startActivity(in);
 
-                    fragTransaction = getFragmentManager().beginTransaction().replace(R.id.fragContainer, frag);
+                    fragTransaction = getFragmentManager().beginTransaction().replace(R.id.fragSearch, frag);
                     fragTransaction.addToBackStack(null);
-                    fragTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+//                    fragTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                     fragTransaction.commit();
                 }
                 else
