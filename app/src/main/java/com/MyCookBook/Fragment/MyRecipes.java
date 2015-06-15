@@ -44,6 +44,8 @@ public class MyRecipes extends Fragment {
     private final String strAddToAlbum = "הוסף לספר מתכונים";
     private final String srtEditRecipe = "עריכה";
     private final String strCancle = "ביטול";
+
+    private  Recipe selectedRecipe;
     View RecipeRowView;
     View rootView;
 
@@ -70,6 +72,7 @@ public class MyRecipes extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+                selectedRecipe = userRecipies.get(position);
                 openOptionWindow();
 //                Intent i = new Intent(getActivity().getApplicationContext(), CookBookGalleryActivity.class);
 //                RecipePic           = (ImageView)            view.findViewById(R.id.thumb);
@@ -158,15 +161,25 @@ public class MyRecipes extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 ListView lv = (ListView)view.findViewById(R.id.lvAlbumes);
-                lv
+                Album a  = cookBooks.get(position);
                 Toast.makeText(
                         getActivity(),
-                        lv,
+                        a.getAlbumName(),
                         Toast.LENGTH_LONG).show();
 
 
                 pwAlbum.dismiss();
 
+
+                if (selectedRecipe != null){
+                    a.addRecipe(selectedRecipe);
+                }
+                else{
+                    Toast.makeText(
+                            getActivity(),"No",
+                            Toast.LENGTH_LONG).show();
+
+                }
             }
 
 

@@ -191,19 +191,19 @@ public class CookBookGalleryActivity extends ActionBarActivity {
             }
         });
         btnSaveAlbum.setOnClickListener(new View.OnClickListener() {
-                  @Override
-                  public void onClick(View v) {
-                      ArrayList<User> uu = new ArrayList<User>();
-                      uu.add(Queries.getMyUser());
-                      selectedAlbum.setAlbumName(albumName.getText().toString());
-                      selectedAlbum.setAlbumType(albumType.getText().toString());
-                      selectedAlbum.setDescription(albumDesc.getText().toString());
+            @Override
+            public void onClick(View v) {
+                ArrayList<User> uu = new ArrayList<User>();
+                uu.add(Queries.getMyUser());
+                selectedAlbum.setAlbumName(albumName.getText().toString());
+                selectedAlbum.setAlbumType(albumType.getText().toString());
+                selectedAlbum.setDescription(albumDesc.getText().toString());
 
-                      isAlbumEditable= !isAlbumEditable;
-                      setEditableAlbum(isAlbumEditable);
+                isAlbumEditable= !isAlbumEditable;
+                setEditableAlbum(isAlbumEditable);
 
-                  }
-              });
+            }
+        });
     }
 
     @Override
@@ -251,16 +251,31 @@ public class CookBookGalleryActivity extends ActionBarActivity {
             Diet.setChecked(r.getDiet());
 
             HowToMake.setText(r.getPreparation());
-            ArrayList<Grocery> gg = r.getRecipeGroceries();
-            for(int i = 0; i < gg.size(); i++) {
-                Grocery g = gg.get(i);
+//            ArrayList<Grocery> gg = r.getRecipeGroceries();
+//            for(int i = 0; i < gg.size(); i++) {
+//                Grocery g = gg.get(i);
 //                IngredientName.setText(g.getAmount());
 //                IngredientType.setText(g.getForm());
 //                IngredientAmount.setText(g.getMaterialName());
 //
-                addIngridientToScreen(g.getMaterialName(),g.getForm() , g.getAmount());
+//                addIngridientToScreen(g.getMaterialName(),g.getForm() , g.getAmount());
+//
+//            }
+            ArrayList<Grocery> grocery = r.getRecipeGroceries();
 
+            String myRecipeAmount = "";
+            String myRecipeType = "";
+            String myRecipeName = "";
+
+            for (int j = 0; j < grocery.size(); j++)
+            {
+                myRecipeAmount = myRecipeAmount + "\n" + grocery.get(j).getAmount();
+                myRecipeType = myRecipeType +"\n" + grocery.get(j).getForm();
+                myRecipeName = myRecipeName + "\n" + grocery.get(j).getMaterialName();
             }
+            IngredientName.setText(myRecipeName);
+            IngredientType.setText(myRecipeType);
+            IngredientAmount.setText(myRecipeAmount);
 
             ivRecipeImage.setVisibility(View.VISIBLE);
             RcipeName.setVisibility(View.VISIBLE);
@@ -366,18 +381,18 @@ public class CookBookGalleryActivity extends ActionBarActivity {
         tr.setLayoutParams(trLP);
         tr.setTextDirection(View.LAYOUT_DIRECTION_RTL);
 /**
-        // Handle AutoCompleteTextView
-        actNewIngredient.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-        actNewIngredient.setMaxWidth(320);
+ // Handle AutoCompleteTextView
+ actNewIngredient.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+ actNewIngredient.setMaxWidth(320);
 
-        // Handle Spinner
-        spNewIngredientType.setScrollContainer(true);
-        spNewIngredientType.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT));
+ // Handle Spinner
+ spNewIngredientType.setScrollContainer(true);
+ spNewIngredientType.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT));
 
-        // Handle EditText
-        etNewIngredientAmount.setInputType(3);
-        etNewIngredientAmount.setLayoutParams(new TableRow.LayoutParams(130, TableRow.LayoutParams.WRAP_CONTENT));
-**/
+ // Handle EditText
+ etNewIngredientAmount.setInputType(3);
+ etNewIngredientAmount.setLayoutParams(new TableRow.LayoutParams(130, TableRow.LayoutParams.WRAP_CONTENT));
+ **/
         // Add to layOut
         tr.addView(actNewIngredient);
         tr.addView(spNewIngredientType);
@@ -386,7 +401,7 @@ public class CookBookGalleryActivity extends ActionBarActivity {
         tbLayout.addView(tr);
     }
 
- //8************************ pic ****************************************
+    //8************************ pic ****************************************
     //8************************ pic ****************************************
 
     private void selectImage() {
