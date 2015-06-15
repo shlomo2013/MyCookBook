@@ -213,7 +213,9 @@ public class AddRecipeFragment extends Fragment {
     private void SaveRecipe(View v) {
 
         String category = "מרקים";
+        // אין תת קטגוריה עדין
         String subCategory = "חמים";
+        // צריך לקחת את התיאור של הרדיו בטן שנבחר
         String dishType = " sdsds"; //recipeDishType.getText().toString(); //(String)recipeDishType.getSel().toString();
 
         String difficulty = (String)recipeLevel.getSelectedItem();
