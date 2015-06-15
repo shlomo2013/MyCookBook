@@ -12,7 +12,9 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_gravity="center_horizontal"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:touchscreenBlocksFocus="false"
+        android:theme="@style/tooltip_bubble_text">
 
         <ImageButton
             android:layout_width="60dp"
@@ -21,7 +23,8 @@
             android:background="#000000"
             android:scaleType="centerCrop"
             android:src="@mipmap/red_home_icon"
-            android:clickable="true" />
+            android:clickable="true"
+            android:theme="@android:style/Widget.ImageButton" />
 
         <ImageButton
             android:layout_width="60dp"
@@ -33,7 +36,8 @@
             android:clickable="true"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/btnFeed"
-            android:layout_toEndOf="@+id/btnFeed" />
+            android:layout_toEndOf="@+id/btnFeed"
+            android:theme="@android:style/Widget.ImageButton" />
 
 
         <ImageButton
@@ -45,7 +49,8 @@
             android:src="@mipmap/red_search_icon"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/btnPersonal"
-            android:clickable="true" />
+            android:clickable="true"
+            android:theme="@android:style/Widget.ImageButton" />
 
         <ImageButton
             android:layout_width="60dp"
@@ -57,7 +62,23 @@
             android:clickable="true"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/btnSearch"
-            android:layout_toEndOf="@+id/btnSearch" />
+            android:layout_toEndOf="@+id/btnSearch"
+            android:theme="@android:style/Widget.ImageButton" />
+
+        <!--<ImageView-->
+            <!--android:layout_width="60dp"-->
+            <!--android:layout_height="73dp"-->
+            <!--android:id="@+id/ivProfilepic"-->
+            <!--android:src="@drawable/com_facebook_profile_picture_blank_square"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_alignBottom="@+id/btnAddRecipe"-->
+            <!--android:layout_toRightOf="@+id/btnAddRecipe"-->
+            <!--android:layout_toEndOf="@+id/btnAddRecipe"-->
+            <!--android:layout_alignParentEnd="true"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:theme="@style/com_facebook_loginview_default_style" />-->
+
+            <!--android:theme="@style/com_facebook_loginview_default_style" />-->
 
         <ImageView
             android:layout_width="match_parent"

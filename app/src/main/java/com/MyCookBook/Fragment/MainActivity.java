@@ -4,16 +4,9 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.widget.ImageButton;
 
-import com.MyCookBook.Entities.Recipe;
-import com.MyCookBook.Entities.User;
-import com.example.mycookbook.mycookbook.Queries;
 import com.example.mycookbook.mycookbook.R;
-import com.parse.ParseObject;
-
-import java.util.ArrayList;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -46,6 +39,16 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setMyUserId(savedInstanceState);
+
+
+        frag = new FeedFragment();
+              fragTransaction = getFragmentManager().beginTransaction().add(R.id.fragContainer, frag);
+              fragTransaction.commit();
+
+              frag = new MenuFragment();
+              fragTransaction = getFragmentManager().beginTransaction().add(R.id.menuFrag, frag);
+              fragTransaction.commit();
+
 
         //Queries.updateMyUser(myUserId);
 
@@ -105,13 +108,7 @@ public class MainActivity extends ActionBarActivity {
     //Queries.updateTypeRecipes(Recipe.Category,"jjjjjjj",Queries.getMyUser());
 
 **/
-        frag = new FeedFragment();
-        fragTransaction = getFragmentManager().beginTransaction().add(R.id.fragContainer, frag);
-        fragTransaction.commit();
 
-        frag = new MenuFragment();
-        fragTransaction = getFragmentManager().beginTransaction().add(R.id.menuFrag, frag);
-        fragTransaction.commit();
 }
     // return view;//super.onCreateView(inflater, container, savedInstanceState);
 
