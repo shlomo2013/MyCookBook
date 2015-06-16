@@ -13,12 +13,14 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.util.SparseBooleanArray;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -77,7 +79,17 @@ public class AddAlbum extends Fragment {
         albumDesc   = (EditText)         rootView.findViewById(R.id.etAlbumDetails);
         allUsers = Queries.getAllUsers();
 
-        lvAllUsers.setAdapter(new UserAdapter(inflater, allUsers, rootView));
+//        lvAllUsers.setAdapter(new UserAdapter(inflater, allUsers, rootView));
+
+        String[] userList = new String[allUsers.size()];// = allUsers.toArray(new String[allUsers.size()]);
+
+        for (int i = 0; i < userList.length; i++)
+        {
+            userList[i] = allUsers.get(i).getName();
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity().getBaseContext(), android.R.layout.simple_list_item_multiple_choice  , userList );
+        lvAllUsers.setAdapter(adapter);
 
         lvAllUsers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -113,7 +125,6 @@ public class AddAlbum extends Fragment {
             @Override
             public void onClick(View v) {
                 ArrayList<User> uu = new ArrayList<User>();
-                uu.add(Queries.getMyUser());
 
                 Album a = new Album(albumName.getText().toString(),
                         albumType.getText().toString(),
@@ -122,6 +133,15 @@ public class AddAlbum extends Fragment {
 
                 a.setAlbumName(albumName.getText().toString());
                 a.setAlbumType(albumType.getText().toString());
+
+                SparseBooleanArray checked =  lvAllUsers.getCheckedItemPositions();
+                for (int i = 0; i < lvAllUsers.getAdapter().getCount(); i++) {
+                    if (checked.get(i)) {
+                        User currUser = new User();
+//                        Queries.getUserById()
+//                        uu.add(( lvAllUsers.getItemAtPosition(i)));
+                    }
+                }
                 a.saveAlbum();
 
             }
