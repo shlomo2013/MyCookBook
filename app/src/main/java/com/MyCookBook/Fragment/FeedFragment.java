@@ -477,8 +477,7 @@ public class FeedFragment extends Fragment {
                 setFeed();
                 break;
             case R.id.RBrecommend:
-                // TODO
-//                myRecipes = Queries.get
+                myRecipes = Queries.RecomendedRecipes(15);
                 setFeed();
                 break;
         }
