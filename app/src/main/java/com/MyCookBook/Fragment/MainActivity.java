@@ -40,7 +40,6 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
         setMyUserId(savedInstanceState);
 
-
         frag = new FeedFragment();
               fragTransaction = getFragmentManager().beginTransaction().add(R.id.fragContainer, frag);
               fragTransaction.commit();

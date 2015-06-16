@@ -124,9 +124,6 @@ public class connAct extends Activity {
                                     Queries.getMyUser().put("Profile",file);
                                     Queries.getMyUser().saveInBackground();
 
-                                    ImageView IV= (ImageView)findViewById(R.id.imageView);
-                                    IV.setImageBitmap(bitmap);
-                                    //Log.d("url ", object.getJSONObject("picture").getJSONObject("data").getString("url"));
                                     s.saveInBackground();
                                 }catch(Exception e){
                                     Log.v("Facebook Profile picture", "cannot retrieved");
@@ -186,16 +183,8 @@ public class connAct extends Activity {
         intent.putExtra("faceUser",accessToken);
         Queries.isUserAlreadyExists(accessToken.getUserId());
 
-        ImageView IV= (ImageView)findViewById(R.id.imageView);
-        Bitmap btmp = Queries.getProfilePicture();
-
-        if(btmp!=null) {
-            IV.setImageBitmap(btmp);
-        }else{
-            Log.d("Profile picture:","not shown");
-        }
-
         intent.putExtra("myUserId",Queries.getMyUser().getUserId());
+        createPersonalSettings();
         startActivity(intent);
     }
 
@@ -209,6 +198,7 @@ public class connAct extends Activity {
         //ImageView IV= (ImageView)findViewById(R.id.imageView);
         //Drawable drw = ImageOperations(this,urlString,"profile");
         //IV.setBackgroundDrawable(drw);
+        createPersonalSettings();
         Intent intent;
         intent = new Intent(this, MainActivity.class);
         intent.putExtra("faceUser", accessToken);
@@ -221,6 +211,23 @@ public class connAct extends Activity {
         URL url = new URL(address);
         Object content = url.getContent();
         return content;
+    }
+    private void createPersonalSettings(){
+        List<ParseObject> recList = null;
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("PersonalSettings");
+        query.whereEqualTo(PersonalSettings.User, Queries.getMyUser().getObjectId());
+        try {
+            recList = query.find();
+        } catch (Exception e) {
+            Log.d("HashSettings Error:",e.getMessage());
+        }
+
+        if (recList != null && recList.size() != 0) {
+            PersonalSettings userSettings = (PersonalSettings) recList.get(0);
+        }else{
+            PersonalSettings pes = new PersonalSettings(Queries.getMyUser());
+            pes.saveInBackground();
+        }
     }
 
     public Bitmap getBitmapFromURL(String src) {
