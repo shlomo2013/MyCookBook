@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.MyCookBook.Entities.Album;
 import com.MyCookBook.Entities.Grocery;
+import com.MyCookBook.Entities.PersonalSettings;
 import com.MyCookBook.Entities.Recipe;
 import com.MyCookBook.Entities.User;
 import com.parse.GetDataCallback;
@@ -18,6 +19,7 @@ import com.parse.ParseQuery;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +29,10 @@ import java.util.Map;
  */
 public class Queries {
     static User myUser;
+    static PersonalSettings personalSettings;
+//    static HashMap<String,Integer> cacheSettings = new HashMap<String,Integer>();
+    static ArrayList<String> sinunCatHeb = new ArrayList<String>();
+
     static boolean success;
     public static HashMap<String,String> groceriesList = new HashMap<>();
     /*
@@ -303,6 +309,35 @@ public class Queries {
         return returnRec;
     }
 
+
+
+    public static ArrayList<Recipe> RecomendedRecipes(int amount) {
+        refreshCachedSettings();
+        ArrayList<Recipe> returnRec = new ArrayList<Recipe>();
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Recipe");
+
+        if(sinunCatHeb!=null && sinunCatHeb.size()!=0) {
+            String []strings = new String[sinunCatHeb.size()];
+            sinunCatHeb.toArray(strings);
+            query.whereContainedIn(Recipe.Category, Arrays.asList(strings));
+        }
+
+        query.setLimit(amount);
+        List<ParseObject> recList = null;
+        try {
+            recList = query.find();
+        } catch (Exception e) {
+            Log.d("Queries Exception", "cannot find recipies for user");
+        }
+        if (recList != null) {
+            for (ParseObject rec : recList) {
+                returnRec.add((Recipe) rec);
+            }
+        }
+        return returnRec;
+    }
+
+
     public static ArrayList<Recipe> RecipesSearchPartial(ArrayList<String> category,ArrayList<String> subCategory,ArrayList<String> dishType,String difficulty,String kitchenType, ArrayList<String> groceryIn,
                                                          ArrayList<String> groceryOut) {
         ArrayList<Recipe> returnRec = new ArrayList<Recipe>();
@@ -517,5 +552,98 @@ public class Queries {
             }
         }
         return userList;
+    }
+    public static void refreshCachedSettings() {
+        List<ParseObject> recList = null;
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("PersonalSettings");
+        query.whereEqualTo(PersonalSettings.User, getMyUser().getObjectId());
+        try {
+            recList = query.find();
+        } catch (Exception e) {
+            Log.d("HashSettings Error:",e.getMessage());
+        }
+        HashMap<String,Integer> cacheSettings = new HashMap<String,Integer>();
+        if (recList != null && recList.size() != 0) {
+            PersonalSettings userSettings = (PersonalSettings) recList.get(0);
+
+            cacheSettings.put(userSettings.Sweets, new Integer(userSettings.getValue(userSettings.Sweets)));
+            cacheSettings.put(userSettings.Breakfast, new Integer(userSettings.getValue(userSettings.Breakfast)));
+            cacheSettings.put(userSettings.salads, new Integer(userSettings.getValue(userSettings.salads)));
+            cacheSettings.put(userSettings.additions, new Integer(userSettings.getValue(userSettings.additions)));
+            cacheSettings.put(userSettings.Drinks, new Integer(userSettings.getValue(userSettings.Drinks)));
+            cacheSettings.put(userSettings.BreadAndBaking, new Integer(userSettings.getValue(userSettings.BreadAndBaking)));
+            cacheSettings.put(userSettings.RiceAndPastas, new Integer(userSettings.getValue(userSettings.RiceAndPastas)));
+            cacheSettings.put(userSettings.Alcohol, new Integer(userSettings.getValue(userSettings.Alcohol)));
+            cacheSettings.put(userSettings.Meat, new Integer(userSettings.getValue(userSettings.Meat)));
+
+            ArrayList<Integer> sortList = new ArrayList<Integer>(cacheSettings.values());
+            Collections.sort(sortList);
+            ArrayList<String> sinunCat = new ArrayList<String>();
+            sinunCat.add(getKeyByValue(cacheSettings,sortList.get(sortList.size()-1)));
+            sinunCat.add(getKeyByValue(cacheSettings,sortList.get(sortList.size()-2)));
+            sinunCat.add(getKeyByValue(cacheSettings,sortList.get(sortList.size()-3)));
+            sinunCat.add(getKeyByValue(cacheSettings,sortList.get(sortList.size()-4)));
+
+            for(int i=0;i<sinunCat.size();i++){
+                switch (sinunCat.get(i)){
+                    case "Sweets":sinunCatHeb.add("מתוקים");
+                                 break;
+                    case "Breakfast":sinunCatHeb.add("מרקים");
+                        break;
+                    case "salads":sinunCatHeb.add("סלטים");
+                        break;
+                    case "additions":sinunCatHeb.add("תוספות");
+                        break;
+                    case "Drinks":sinunCatHeb.add("שתיה");
+                        break;
+                    case "BreadAndBaking":sinunCatHeb.add("לחם ומאפים");
+                        break;
+                    case "RiceAndPastas":sinunCatHeb.add("אורז ופסטה");
+                        break;
+                    case "Alcohol":sinunCatHeb.add("משקאות");
+                        break;
+                    case "Meat":sinunCatHeb.add("בשרים");
+                        break;
+
+                }
+            }
+        }
+    }
+
+    public static String getKeyByValue(HashMap<String,Integer> hash, Integer intValue) {
+        String strKey = null;
+        for (Map.Entry entry : hash.entrySet()) {
+            if (intValue.equals(entry.getValue())) {
+                strKey = entry.getKey().toString();
+                break; //breaking because its one to one map
+            }
+        }
+        return strKey;
+    }
+
+    public static String convertCategoryName(String category){
+        String returnValue = null;
+        switch (category){
+            case "מתוקים": returnValue =PersonalSettings.Sweets;
+                            break;
+            case "מרקים":returnValue =PersonalSettings.soups;
+                break;
+            case "סלטים":returnValue  = PersonalSettings.salads;
+                break;
+            case "תוספות":returnValue  = PersonalSettings.additions;
+                break;
+            case "שתיה":returnValue = PersonalSettings.Drinks;
+                break;
+            case "לחם ומאפים":returnValue  = PersonalSettings.BreadAndBaking;
+                break;
+            case "אורז ופסטה":returnValue = PersonalSettings.RiceAndPastas;
+                break;
+            case "משקאות":returnValue = PersonalSettings.Alcohol;
+                break;
+            case "בשרים":returnValue = PersonalSettings.Meat;
+                break;
+
+        }
+        return returnValue;
     }
 }
