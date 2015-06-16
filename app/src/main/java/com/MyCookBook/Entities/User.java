@@ -125,10 +125,11 @@ public class User extends ParseObject {
     public ArrayList<String> getAllergiesSet() {
         ArrayList<String> retCategories = new ArrayList<String>();
 
-        for (Object s : this.getList(AllergiesSet)) {
-            retCategories.add(s.toString());
+        if(retCategories != null && retCategories.size() != 0) {
+            for (Object s : this.getList(AllergiesSet)) {
+                retCategories.add(s.toString());
+            }
         }
-
         return retCategories;
         //ArrayList<String>)this.getList(AllergiesSet);
     }

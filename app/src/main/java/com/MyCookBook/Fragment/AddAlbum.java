@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -13,6 +14,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -235,14 +237,14 @@ public class AddAlbum extends Fragment {
 
                 Uri selectedImage = data.getData();
                 String[] filePath = { MediaStore.Images.Media.DATA };
-                //                Cursor c = getActivity().getContentResolver().query(selectedImage,filePath, null, null, null);
-                //                c.moveToFirst();
-                //                int columnIndex = c.getColumnIndex(filePath[0]);
-                //                String picturePath = c.getString(columnIndex);
-                //                c.close();
-                //                Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
-                //                Log.w("path:", picturePath+"");
-                //                viewImage.setImageBitmap(thumbnail);
+                                Cursor c = getActivity().getContentResolver().query(selectedImage,filePath, null, null, null);
+                                c.moveToFirst();
+                                int columnIndex = c.getColumnIndex(filePath[0]);
+                                String picturePath = c.getString(columnIndex);
+                                c.close();
+                                Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
+                                Log.w("path:", picturePath + "");
+                viAlbumPic.setImageBitmap(thumbnail);
             }
         }
     }

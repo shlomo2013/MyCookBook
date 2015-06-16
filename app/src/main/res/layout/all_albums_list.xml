@@ -1,49 +1,53 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:orientation="vertical"
-android:padding="5dp" >
- 
-<ImageView
-android:id="@+id/thumb"
-android:layout_width="80dp"
-android:layout_height="80dp"
-android:contentDescription="@string/app_name" />
- 
-<LinearLayout
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:layout_centerVertical="true"
-android:layout_marginLeft="10dp"
-android:layout_marginRight="5dp"
-android:layout_toLeftOf="@+id/arrow"
-android:layout_toRightOf="@+id/thumb"
-android:orientation="vertical" >
- 
-<TextView
-android:id="@+id/title"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:text="כותרת"
-android:textSize="16dp"
-android:textStyle="bold" />
- 
-<TextView
-android:id="@+id/desc"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:layout_marginTop="5dp"
-android:textSize="12dp" />
-</LinearLayout>
- 
-<ImageView
-android:id="@+id/arrow"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:layout_alignParentRight="true"
-android:layout_centerVertical="true"
-android:layout_marginRight="5dp"
-android:contentDescription="@string/app_name"
-android:src="@android:drawable/ic_media_play" />
- 
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="5dp"
+    android:background="#d8333030">
+
+    <ImageView
+        android:id="@+id/thumb"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:contentDescription="@string/app_name" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="5dp"
+        android:layout_toLeftOf="@+id/arrow"
+        android:layout_toRightOf="@+id/thumb"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="כותרת"
+            android:textColor="@android:color/background_light"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:textColorHighlight="@android:color/background_light" />
+
+        <TextView
+            android:id="@+id/desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/background_light"
+            android:layout_marginTop="5dp"
+            android:textSize="12dp" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="5dp"
+        android:contentDescription="@string/app_name"
+        android:src="@android:drawable/ic_media_play" />
+
 </RelativeLayout>
