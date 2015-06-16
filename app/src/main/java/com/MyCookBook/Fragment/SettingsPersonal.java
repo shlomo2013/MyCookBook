@@ -12,7 +12,9 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.MyCookBook.Entities.User;
 import com.example.mycookbook.mycookbook.Queries;
 import com.example.mycookbook.mycookbook.R;
 
@@ -35,15 +37,19 @@ public class SettingsPersonal extends Fragment {
 
     Button btnSaveCategory;
 
-    public static ArrayList<String> GroceryIn;
+    public static ArrayList<String> userGroceryOut;
     public static ArrayList<String> GroceryOut;
-
+    private  User user = Queries.getMyUser();
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.settings_personal,  container , false);
-//        lvNoCategoriesList          = (ListView)           rootView.findViewById(R.id.lvNoCategoriess);
         btnSaveCategory             = (Button)           rootView.findViewById(R.id.bSaveCategory);
         myListViewNo                = (ListView) rootView.findViewById(R.id.listViewNo);
+
+
+        GroceryOut = new ArrayList<String>();
+        userGroceryOut =  user.getAllergiesSet();
+
 
         Queries.refreshAllGroceries();
         HashMap<String, String> hm = Queries.groceriesList;
@@ -51,21 +57,23 @@ public class SettingsPersonal extends Fragment {
         String[] prefList = alPref.toArray(new String[alPref.size()]);
 
         myListViewNo = (ListView) rootView.findViewById(R.id.listViewNo);
-        ArrayAdapter<String> adapterNo = new ArrayAdapter<String>(getActivity().getBaseContext(),
-                android.R.layout.simple_list_item_multiple_choice  ,
-                prefList );
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity().getBaseContext(),
+                android.R.layout.simple_list_item_multiple_choice  , prefList );
 
         // Assign adapter to ListView
-        myListViewNo.setAdapter(adapterNo);
-
-//        alFoodCategory =  initCategories( R.array.categories);
-//        ddlCategiriesAdapter = new DropDownListAdapter(alFoodCategory, getActivity().getBaseContext());
-//        lvCategoriesList.setAdapter(ddlCategiriesAdapter);
+        myListViewNo.setAdapter(adapter);
 
 
-//        alNoFoodCategory =  initCategories( R.array.personal_no_pref_array);
-//        ddlNoCategiriesAdapter = new DropDownListAdapter(alNoFoodCategory, getActivity().getBaseContext());
-//        lvNoCategoriesList.setAdapter(ddlNoCategiriesAdapter);
+        for(int i = 0; i < userGroceryOut.size(); i++) {
+            for(int j= 0; j < GroceryOut.size() ; j++) {
+                if(GroceryOut.get(j) == userGroceryOut.get(i)){
+                    myListViewNo.setItemChecked(j, true);
+
+                }
+            }
+        }
+
 
 
         //on item Click
@@ -80,19 +88,19 @@ public class SettingsPersonal extends Fragment {
         @Override
         public void onClick(View v){
 
-//            SparseBooleanArray checked =  lvCategoriesList.getCheckedItemPositions();
-//            for (int i = 0; i < lvCategoriesList.getAdapter().getCount(); i++) {
-//                if (checked.get(i)) {
-//                    GroceryIn.add((lvCategoriesList.getItemAtPosition(i)).toString());
-//                }
-//            }
-            SparseBooleanArray checked =  lvNoCategoriesList.getCheckedItemPositions();
-            for (int i = 0; i < lvNoCategoriesList.getAdapter().getCount(); i++) {
+            SparseBooleanArray checked =  myListViewNo.getCheckedItemPositions();
+            for (int i = 0; i < myListViewNo.getAdapter().getCount(); i++) {
                 if (checked.get(i)) {
-                    GroceryOut.add((lvNoCategoriesList.getItemAtPosition(i)).toString());
+                    GroceryOut.add((myListViewNo.getItemAtPosition(i)).toString());
                 }
             }
 
+            Toast.makeText(
+                    getActivity(),
+                    GroceryOut.size(),
+                    Toast.LENGTH_LONG).show();
+
+            user.setAllergiesSet(GroceryOut);
 //            lCheck =  lvCategoriesList.getCheckedItemPositions();
 //            lCheck.get(2);
 //

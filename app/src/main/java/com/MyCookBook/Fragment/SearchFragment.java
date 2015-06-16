@@ -40,6 +40,11 @@ public class SearchFragment extends Fragment {
     private CheckBox cbDrinks;
     private CheckBox cbBread;
     private CheckBox cbMeat;
+    private CheckBox cbSalad;
+    private CheckBox cbRiceAndPasta;
+    private CheckBox cbSides;
+
+
 
     // Dish types checkboxes
     private CheckBox cbMain;
@@ -168,6 +173,9 @@ public class SearchFragment extends Fragment {
         cbDrinks=(CheckBox) rootView.findViewById(R.id.CBdrinks);
         cbSweets=(CheckBox) rootView.findViewById(R.id.CBsweets);
         cbMeat=(CheckBox) rootView.findViewById(R.id.CBmeat);
+        cbSalad = (CheckBox) rootView.findViewById(R.id.CBsalad);
+        cbSides = (CheckBox) rootView.findViewById(R.id.CBsides);
+        cbRiceAndPasta = (CheckBox) rootView.findViewById(R.id.CBricePasta);
 
         // Listener for Categories checkboxes
         checkBoxListenerCategory = new View.OnClickListener() {
@@ -226,15 +234,15 @@ public class SearchFragment extends Fragment {
                     categoryArr.add("בשרים");
                 }
 
-                if(cbMeat.isChecked()){
+                if(cbSalad.isChecked()){
                     categoryArr.add("סלטים");
                 }
 
-                if(cbMeat.isChecked()){
+                if(cbRiceAndPasta.isChecked()){
                     categoryArr.add("אורז ופסטה");
                 }
 
-                if(cbMeat.isChecked()){
+                if(cbSides.isChecked()){
                     categoryArr.add("תוספות");
                 }
 
@@ -246,6 +254,9 @@ public class SearchFragment extends Fragment {
         cbSweets.setOnClickListener(checkBoxListenerCategory);
         cbBread.setOnClickListener(checkBoxListenerCategory);
         cbDrinks.setOnClickListener(checkBoxListenerCategory);
+        cbSides.setOnClickListener(checkBoxListenerCategory);
+        cbSalad.setOnClickListener(checkBoxListenerCategory);
+        cbRiceAndPasta.setOnClickListener(checkBoxListenerCategory);
 
         cbMain=(CheckBox) rootView.findViewById(R.id.CBmain);
         cbFirst=(CheckBox) rootView.findViewById(R.id.CBfirst);
@@ -385,7 +396,7 @@ public class SearchFragment extends Fragment {
                     frag = new SearchResultFragment();
                     //frag.startActivity(in);
 
-                    fragTransaction = getFragmentManager().beginTransaction().replace(R.id.fragSearch, frag);
+                    fragTransaction = getFragmentManager().beginTransaction().replace(R.id.fragContainer, frag);
                     fragTransaction.addToBackStack(null);
 //                    fragTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                     fragTransaction.commit();

@@ -49,7 +49,6 @@ import com.MyCookBook.Entities.Album;
 import com.MyCookBook.Entities.Grocery;
 import com.MyCookBook.Entities.Recipe;
 import com.MyCookBook.Utiltis.DropDownListAdapter;
-import com.MyCookBook.Utiltis.ExpandableListAdapter;
 import com.MyCookBook.Utiltis.Group;
 import com.MyCookBook.Utiltis.MyExpandableListAdapter;
 import com.example.mycookbook.mycookbook.Queries;
@@ -61,8 +60,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created by nirgadasi on 4/29/15.
@@ -105,73 +102,14 @@ public class AddRecipeFragment extends Fragment {
     ArrayList<Grocery> groceries = new ArrayList<Grocery>();
     ArrayList<Album> cookBooks = new ArrayList<Album>();
 
-    private int nIngredientsCounter = 0;
+    private int nIngridientsCounter = 0;
     private int levelId;
     private int KitchenTypeId;
-
-    ExpandableListAdapter listAdapter;
-    ExpandableListView expListView;
-    List<String> listDataHeader;
-    HashMap<String, List<String>> listDataChild;
 
     public AddRecipeFragment() {
 
     }
 
-    public void createExtCategories(){
-        // get the listview
-        expListView = (ExpandableListView)rootView.findViewById(R.id.lvExp);
-
-        // preparing list data
-        prepareListData();
-
-        listAdapter = new ExpandableListAdapter(getActivity().getBaseContext(), listDataHeader, listDataChild);
-
-        // setting list adapter
-        expListView.setAdapter(listAdapter);
-    }
-
-    /*
-     * Preparing the list data
-     */
-    private void prepareListData() {
-        listDataHeader = new ArrayList<String>();
-        listDataChild = new HashMap<String, List<String>>();
-
-        // Adding child data
-        listDataHeader.add("Top 250");
-        listDataHeader.add("Now Showing");
-        listDataHeader.add("Coming Soon..");
-
-        // Adding child data
-        List<String> top250 = new ArrayList<String>();
-        top250.add("The Shawshank Redemption");
-        top250.add("The Godfather");
-        top250.add("The Godfather: Part II");
-        top250.add("Pulp Fiction");
-        top250.add("The Good, the Bad and the Ugly");
-        top250.add("The Dark Knight");
-        top250.add("12 Angry Men");
-
-        List<String> nowShowing = new ArrayList<String>();
-        nowShowing.add("The Conjuring");
-        nowShowing.add("Despicable Me 2");
-        nowShowing.add("Turbo");
-        nowShowing.add("Grown Ups 2");
-        nowShowing.add("Red 2");
-        nowShowing.add("The Wolverine");
-
-        List<String> comingSoon = new ArrayList<String>();
-        comingSoon.add("2 Guns");
-        comingSoon.add("The Smurfs 2");
-        comingSoon.add("The Spectacular Now");
-        comingSoon.add("The Canyons");
-        comingSoon.add("Europa Report");
-
-        listDataChild.put(listDataHeader.get(0), top250); // Header, Child data
-        listDataChild.put(listDataHeader.get(1), nowShowing);
-        listDataChild.put(listDataHeader.get(2), comingSoon);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -227,7 +165,7 @@ public class AddRecipeFragment extends Fragment {
         bAddIngridient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                nIngredientsCounter = addIngridientToScreen(nIngredientsCounter);
+                nIngridientsCounter = addIngridientToScreen(nIngridientsCounter);
             }
         });
 
@@ -314,7 +252,6 @@ public class AddRecipeFragment extends Fragment {
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
                     startActivityForResult(intent, 1);
                 } else if (options[item].equals("Choose from Gallery")) {
-
                     Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     startActivityForResult(intent, 2);
 
@@ -583,7 +520,7 @@ public class AddRecipeFragment extends Fragment {
 //          groups.append(j, group);
 //        }
 
-
+        Group CategoryGroup = new Group("קטגוריה" );
         // Group CategoryGroup = new Group("קטגוריות " );
 
         // Create an ArrayAdapter using the string array and a default spinner layout
@@ -591,31 +528,13 @@ public class AddRecipeFragment extends Fragment {
                 R.array.recipie_category,
                 android.R.layout.simple_expandable_list_item_1);
 
-        //for (int i = 0; i < adapter.getCount(); i++) {
-            Group ItalainGroup = new Group((String)adapter.getItem(0));
-            ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(getActivity().getBaseContext(),
-                    R.array.italian_category,
-                    android.R.layout.simple_expandable_list_item_1);
-            //String category =(String)adapter.getItem(i);
+        for (int i = 0; i < adapter.getCount(); i++) {
+            String category =(String)adapter.getItem(i);
 
             //  createListView;
-            for(int j=0;j<adapter1.getCount();j++){
-                ItalainGroup.children.add((String)adapter.getItem(j));
-            }
-            groups.append(0, ItalainGroup);
-
-        Group EasternGroup = new Group((String)adapter.getItem(1));
-        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(getActivity().getBaseContext(),
-                R.array.eastern_category,
-                android.R.layout.simple_expandable_list_item_1);
-        //String category =(String)adapter.getItem(i);
-
-        //  createListView;
-        for(int j=0;j<adapter2.getCount();j++){
-            ItalainGroup.children.add((String)adapter.getItem(j));
+            CategoryGroup.children.add(category);
         }
-        groups.append(1, EasternGroup);
-        //}
+        groups.append(0, CategoryGroup);
 
 //        CategoryGroup = new Group("תת קטגוריה" );
 //   //     CategoryGroup = new Group("תת קטגוריה " );
@@ -660,7 +579,7 @@ public class AddRecipeFragment extends Fragment {
 
         int nid = 1;
 
-        for (int i = 1 ; i <= nIngredientsCounter; i++){
+        for (int i = 1 ; i <= nIngridientsCounter; i++){
             nid = i;
             nid *= 10;
 

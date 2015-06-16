@@ -37,7 +37,7 @@
             android:choiceMode="multipleChoice"
             android:descendantFocusability="blocksDescendants"
             android:background="@android:drawable/bottom_bar"
-            android:layout_gravity="center_horizontal"
+            android:layout_gravity="right"
             android:clickable="false"
             android:focusable="false"  />
     </LinearLayout>
