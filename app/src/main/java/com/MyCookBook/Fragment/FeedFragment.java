@@ -360,7 +360,11 @@ public class FeedFragment extends Fragment {
 //                myRecipe = myRecipe + "\n" + grocery.get(j).getAmount() + " " +  grocery.get(j).getForm() + " " +  grocery.get(j).getMaterialName();
 //            }
 
-                tvRecipe.setText(myRecipe.substring(0, 70) + "...");
+                if(myRecipe.length()<70) {
+                    tvRecipe.setText(myRecipe.substring(0, myRecipe.length()-1));
+                }else{
+                    tvRecipe.setText(myRecipe.substring(0, 70) + "...");
+                }
                 tvRecipe.setWidth(600);
 
                 tvRecipe.setClickable(true);
