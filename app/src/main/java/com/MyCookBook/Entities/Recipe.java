@@ -13,6 +13,7 @@ import com.parse.ParseRelation;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -141,16 +142,31 @@ public class Recipe  extends ParseObject {
     }
 
 
-    public void Like(){
+    public void Like() {
         ParseRelation<ParseObject> relation = this.getRelation(Likes);
         relation.add(Queries.getMyUser());
         this.increment(LikesCounter);
         try {
             this.save();
-        }catch(Exception e){
+        } catch (Exception e) {
             Log.d("Like: ", e.getMessage());
 
         }
+
+        List<ParseObject> recList = null;
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("PersonalSettings");
+        query.whereEqualTo(PersonalSettings.User, Queries.getMyUser().getObjectId());
+        try {
+            recList = query.find();
+        } catch (Exception e) {
+            Log.d("HashSettings Error:", e.getMessage());
+        }
+
+        if (recList != null && recList.size() != 0) {
+            PersonalSettings userSettings = (PersonalSettings) recList.get(0);
+            userSettings.incCategory(Queries.convertCategoryName(this.getCategory()));
+        }
+
     }
 
     public void LikebyUser(User user){
