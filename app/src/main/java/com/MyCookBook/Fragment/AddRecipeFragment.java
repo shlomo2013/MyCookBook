@@ -43,7 +43,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
-
+ 
 import com.MyCookBook.Activity.CookBookGalleryActivity;
 import com.MyCookBook.Entities.Album;
 import com.MyCookBook.Entities.Grocery;
