@@ -281,13 +281,15 @@ public class Queries {
 
             //query.whereContainedIn(Recipe.Groceries, Arrays.asList(getGroceriesById(groceryIn)));
             //query.whereEqualTo(Recipe.Groceries, Arrays.asList(getGroceriesById(groceryIn).get(0)));
-            query.whereContainedIn(Recipe.Groceries, groceryIn);
+            //getGroceriesById()
+            query.whereContainedIn(Recipe.Groceries, getGroceriesById(createObjectIdList(groceryIn)));
            // query.include(Recipe.Groceries);
 
         }
 
         if(groceryOut!=null && groceryOut.size()!=0){
-            query.whereNotContainedIn(Recipe.Groceries, groceryOut);
+            query.whereNotContainedIn(Recipe.Groceries, getGroceriesById(createObjectIdList(groceryOut)));
+            //query.whereNotContainedIn(Recipe.Groceries, groceryOut);
         }
 
         //query.orderByDescending("createdAt");
@@ -376,13 +378,17 @@ public class Queries {
 
             //query.whereContainedIn(Recipe.Groceries, Arrays.asList(getGroceriesById(groceryIn)));
             //query.whereEqualTo(Recipe.Groceries, Arrays.asList(getGroceriesById(groceryIn).get(0)));
-            query.whereContainedIn(Recipe.Groceries, groceryIn);
+            //query.whereContainedIn(Recipe.Groceries, groceryIn);
             // query.include(Recipe.Groceries);
+            query.whereContainedIn(Recipe.Groceries, getGroceriesById(createObjectIdList(groceryIn)));
+
 
         }
 
         if(groceryOut!=null && groceryOut.size()!=0){
-            query.whereNotContainedIn(Recipe.Groceries, groceryOut);
+            //query.whereNotContainedIn(Recipe.Groceries, groceryOut);
+            query.whereNotContainedIn(Recipe.Groceries, getGroceriesById(createObjectIdList(groceryOut)));
+
         }
 
         //query.orderByDescending("createdAt");
