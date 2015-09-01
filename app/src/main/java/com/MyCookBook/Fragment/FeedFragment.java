@@ -366,6 +366,7 @@ public class FeedFragment extends Fragment {
                 } else {
                     tvRecipe.setText(myRecipe.substring(0, 70) + "...");
                 }
+                
                 tvRecipe.setWidth(600);
 
                 tvRecipe.setClickable(true);
