@@ -22,6 +22,7 @@ public class PersonalSettings  extends ParseObject {
     public static final String RiceAndPastas = "RiceAndPastas";
     public static final String Alcohol = "Alcohol";
     public static final String Meat = "Meat";
+    public static final String Classify = "Classify";
 
     public static final String ANIN_TASTE = "1";
     public static final String STANDARD_TASTE = "2";
@@ -55,6 +56,7 @@ public class PersonalSettings  extends ParseObject {
         this.put(RiceAndPastas,0);
         this.put(Alcohol,0);
         this.put(Meat,0);
+        this.put(Classify,0);
         this.put(User, user.getObjectId());
     }
 

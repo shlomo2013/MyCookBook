@@ -633,6 +633,30 @@ public class Queries {
         }
     }
 
+    public static ArrayList<PersonalSettings> getUsersSettings() {
+        List<ParseObject> recList = null;
+        ArrayList<PersonalSettings> list = new ArrayList<>();
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("PersonalSettings");
+        //query.whereEqualTo(PersonalSettings.User, getMyUser().getObjectId());
+        try {
+            recList = query.find();
+        } catch (Exception e) {
+            Log.d("HashSettings Error:", e.getMessage());
+        }
+        HashMap<String, Integer> cacheSettings = new HashMap<String, Integer>();
+        if (recList != null && recList.size() != 0) {
+            PersonalSettings userSettings = null;
+            for(ParseObject object: recList){
+                userSettings = (PersonalSettings)object;
+                if(!String.valueOf(userSettings.getValue(PersonalSettings.Classify)).equals("0")){
+                    list.add(userSettings);
+                }
+            }
+        }
+
+        return list;
+    }
+
 
     public static String getKeyByValue(HashMap<String,Integer> hash, Integer intValue) {
         String strKey = null;

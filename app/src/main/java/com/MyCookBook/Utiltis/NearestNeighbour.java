@@ -37,8 +37,19 @@ public class NearestNeighbour{
         data.add(new DataEntry(new double[]{0,20,0}, PersonalSettings.STANDARD_TASTE));
         data.add(new DataEntry(new double[]{0,20,0}, PersonalSettings.STANDARD_TASTE));
 
+        data.add(new DataEntry(new double[]{0, 0, 20}, PersonalSettings.AMAMI_TASTE));
         data.add(new DataEntry(new double[]{0,0,20}, PersonalSettings.AMAMI_TASTE));
-        data.add(new DataEntry(new double[]{0,0,20}, PersonalSettings.AMAMI_TASTE));
+
+        ArrayList<PersonalSettings> l = Queries.getUsersSettings();
+        for(PersonalSettings curr:l){
+            String sweets = String.valueOf(curr.getValue(PersonalSettings.Sweets));
+            String salads= String.valueOf(curr.getValue(PersonalSettings.salads));
+            String meat= String.valueOf(curr.getValue(PersonalSettings.Meat));
+            String classify= String.valueOf(curr.getValue(PersonalSettings.Classify));
+
+
+            data.add(new DataEntry(new double[]{Double.parseDouble(sweets),Double.parseDouble(meat),Double.parseDouble(salads)}, classify));
+        }
 
        /* ArrayList<PersonalSettings> settings = Queries.getClassified();
         for(PersonalSettings curr:settings){
@@ -60,7 +71,15 @@ public class NearestNeighbour{
         }
 
         String result = nn.classify(new DataEntry(new double[]{Double.parseDouble(sweets),Double.parseDouble(meat),Double.parseDouble(salads)},"Ignore")).toString();
-        System.out.println("Classified as: "+ PersonalSettings.convertTaste(result));
+        System.out.println("Classified as: " + PersonalSettings.convertTaste(result));
+        Queries.personalSettings.put(PersonalSettings.Classify, Integer.valueOf(result));
+        try {
+            Queries.personalSettings.save();
+        }
+        catch (Exception e){
+
+        }
+
         //Queries.getMyUser().setClassification(result);
 
     }
