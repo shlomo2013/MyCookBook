@@ -22,6 +22,25 @@ public class PersonalSettings  extends ParseObject {
     public static final String RiceAndPastas = "RiceAndPastas";
     public static final String Alcohol = "Alcohol";
     public static final String Meat = "Meat";
+
+    public static final String ANIN_TASTE = "1";
+    public static final String STANDARD_TASTE = "2";
+    public static final String AMAMI_TASTE = "3";
+
+    public static String convertTaste(String value){
+        switch(value){
+            case ANIN_TASTE:
+                return "אנין טעם";
+            case STANDARD_TASTE:
+                return "טעם סטנדרטי";
+            case AMAMI_TASTE:
+                return "טעם עממי";
+        }
+        return "";
+    }
+
+
+
     public PersonalSettings(){
     }
 

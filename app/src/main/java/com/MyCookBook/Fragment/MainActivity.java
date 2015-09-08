@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.widget.ImageButton;
 
+import com.MyCookBook.Utiltis.NearestNeighbour;
+import com.example.mycookbook.mycookbook.Queries;
 import com.example.mycookbook.mycookbook.R;
 
 public class MainActivity extends ActionBarActivity {
@@ -39,6 +41,8 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setMyUserId(savedInstanceState);
+        Queries.setPersonalSettings();
+        NearestNeighbour.Knn();
 
         frag = new FeedFragment();
               fragTransaction = getFragmentManager().beginTransaction().add(R.id.fragContainer, frag);

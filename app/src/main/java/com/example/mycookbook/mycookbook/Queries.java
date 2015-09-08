@@ -29,7 +29,7 @@ import java.util.Map;
  */
 public class Queries {
     static User myUser;
-    static PersonalSettings personalSettings;
+    public static PersonalSettings personalSettings;
 //    static HashMap<String,Integer> cacheSettings = new HashMap<String,Integer>();
     static ArrayList<String> sinunCatHeb = new ArrayList<String>();
 
@@ -571,6 +571,7 @@ public class Queries {
         HashMap<String,Integer> cacheSettings = new HashMap<String,Integer>();
         if (recList != null && recList.size() != 0) {
             PersonalSettings userSettings = (PersonalSettings) recList.get(0);
+            personalSettings = userSettings;
 
             cacheSettings.put(userSettings.Sweets, new Integer(userSettings.getValue(userSettings.Sweets)));
             cacheSettings.put(userSettings.Breakfast, new Integer(userSettings.getValue(userSettings.Breakfast)));
@@ -615,6 +616,23 @@ public class Queries {
             }
         }
     }
+
+    public static void setPersonalSettings() {
+        List<ParseObject> recList = null;
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("PersonalSettings");
+        query.whereEqualTo(PersonalSettings.User, getMyUser().getObjectId());
+        try {
+            recList = query.find();
+        } catch (Exception e) {
+            Log.d("HashSettings Error:",e.getMessage());
+        }
+        HashMap<String,Integer> cacheSettings = new HashMap<String,Integer>();
+        if (recList != null && recList.size() != 0) {
+            PersonalSettings userSettings = (PersonalSettings) recList.get(0);
+            personalSettings = userSettings;
+        }
+    }
+
 
     public static String getKeyByValue(HashMap<String,Integer> hash, Integer intValue) {
         String strKey = null;
