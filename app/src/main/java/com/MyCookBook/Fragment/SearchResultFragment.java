@@ -95,8 +95,12 @@ public class SearchResultFragment extends Fragment {
 //                myRecipe = myRecipe + "\n" + grocery.get(j).getAmount() + " " +  grocery.get(j).getForm() + " " +  grocery.get(j).getMaterialName();
 //            }
 
+            if(myRecipe.length()>70) {
+                tvRecipe.setText(myRecipe.substring(0, 70) + "...");
+            }else{
+                tvRecipe.setText(myRecipe);
+            }
 
-            tvRecipe.setText(myRecipe.substring(0, 70) + "...");
             tvRecipe.setWidth(600);
 
             tvRecipe.setClickable(true);

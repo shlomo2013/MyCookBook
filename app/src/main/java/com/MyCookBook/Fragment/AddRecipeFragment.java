@@ -3,6 +3,7 @@ package com.MyCookBook.Fragment;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -10,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -51,6 +53,7 @@ import com.MyCookBook.Entities.Recipe;
 import com.MyCookBook.Utiltis.DropDownListAdapter;
 import com.MyCookBook.Utiltis.Group;
 import com.MyCookBook.Utiltis.MyExpandableListAdapter;
+import com.MyCookBook.Utiltis.RotateOrientation;
 import com.example.mycookbook.mycookbook.Queries;
 import com.example.mycookbook.mycookbook.R;
 
@@ -368,12 +371,16 @@ public class AddRecipeFragment extends Fragment {
                     }
                 }
                 try {
-                    BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
+                    //BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
+                    //selectedBitmap = BitmapFactory.decodeFile(f.getAbsolutePath(), bitmapOptions);
 
-                    selectedBitmap = BitmapFactory.decodeFile(f.getAbsolutePath(),
-                            bitmapOptions);
+                    selectedBitmap = Recipe.decodeSampledBitmapFromPath(f.getAbsolutePath(), 200, 200);
+                    int rot=getCameraPhotoOrientation(getActivity().getApplicationContext(),Uri.fromFile(f),f.getAbsolutePath());
+                    if(rot!=0)
+                        selectedBitmap=new RotateOrientation().RotateOrientationCall(selectedBitmap,rot);
 
                     viewImage.setImageBitmap(selectedBitmap);
+                    //viewImage.setImageBitmap();
 
 
                     String path = Environment
@@ -412,6 +419,37 @@ public class AddRecipeFragment extends Fragment {
                                 viewImage.setImageBitmap(thumbnail);
             }
         }
+    }
+
+    public static int getCameraPhotoOrientation(Context context, Uri imageUri, String imagePath){
+        int rotate = 0;
+        try {
+            context.getContentResolver().notifyChange(imageUri, null);
+            File imageFile = new File(imagePath);
+            ExifInterface exif = new ExifInterface(
+                    imageFile.getAbsolutePath());
+            int orientation = exif.getAttributeInt(
+                    ExifInterface.TAG_ORIENTATION,
+                    ExifInterface.ORIENTATION_NORMAL);
+
+            switch (orientation) {
+                case ExifInterface.ORIENTATION_ROTATE_270:
+                    rotate = 270;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_180:
+                    rotate = 180;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                    rotate = 90;
+                    break;
+            }
+
+
+            Log.d("error: ", "Exit orientation: " + orientation);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rotate;
     }
 
     public int addIngridientToScreen(int nExsistingIngridients){
